@@ -1,0 +1,20 @@
+.footer{
+  padding: 20px 0;
+  background: #1384E2;
+  color: white;
+
+  span {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  p {
+    padding-top: 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+  }
+  svg{
+    font-size: 19px;
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "my-app",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@heroicons/react": "^1.0.6",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/styles": "^4.11.4",
+    "@mui/icons-material": "^5.4.1",
+    "@mui/material": "^5.4.1",
+    "@mui/styled-engine-sc": "^5.4.1",
+    "@mui/styles": "^5.5.1",
+    "@zeit/next-sass": "^1.0.1",
+    "antd": "^4.19.5",
+    "axios": "^0.26.0",
+    "bcryptjs": "^2.4.3",
+    "js-cookie": "^3.0.1",
+    "material-ui-popup-state": "^2.0.0",
+    "next": "12.0.10",
+    "next-redux-wrapper": "^7.0.5",
+    "next-seo": "^5.1.0",
+    "next-themes": "^0.1.1",
+    "node-sass": "^6.0.1",
+    "notistack": "^2.0.3",
+    "prop-types": "^15.8.1",
+    "react": "17.0.2",
+    "react-burger-menu": "^3.0.6",
+    "react-dom": "17.0.2",
+    "react-hook-form": "^7.28.1",
+    "react-loading-skeleton": "^3.0.3",
+    "react-redux": "^7.2.6",
+    "react-slick": "^0.28.1",
+    "react-spring": "^9.4.4",
+    "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.1",
+    "styled-components": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.24",
+    "eslint": "^8.9.0",
+    "eslint-config-next": "12.0.10",
+    "tailwindcss": "^2.2.19"
+  }
+}
+
