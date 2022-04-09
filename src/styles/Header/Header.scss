@@ -1,0 +1,101 @@
+@import "../mixin";
+
+.navbar {
+  top: 0;
+  width: 100%;
+  padding: 20px 0;
+  background: #1384E2;
+  position: fixed;
+  z-index: 50;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    &__burger {
+      width: 30px;
+      height: 30px;
+      position: relative;
+      cursor: pointer;
+      &:hover{
+        cursor: pointer;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 30px;
+
+        background-color: #ffffff;
+        cursor: pointer;
+        height: 3px;
+      }
+
+      span{
+        position: absolute;
+        cursor: pointer;
+        top: 10px;
+
+        width: 30px;
+        background-color: #ffffff;
+        height: 3px;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 30px;
+
+        background-color: #ffffff;
+        height: 3px;
+        bottom: 8px;
+      }
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+
+      &__logo {
+        width: 100px !important;
+        margin-left: 50px;
+      }
+    }
+
+
+    &__search {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.31);
+      border-radius: 5px;
+      padding-left: 10px;
+
+      input {
+        width: 540px;
+        background: none;
+        border: none;
+        padding: 10px;
+        outline: none;
+        color: #ffffff;
+      }
+
+      input::placeholder {
+        color: #ffffff;
+      }
+
+      @include muiIcons;
+    }
+
+    &__icons {
+      @include muiIcons;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+}
+
+
