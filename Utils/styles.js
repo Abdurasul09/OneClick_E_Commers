@@ -64,6 +64,8 @@ const useStyle = makeStyles((theme) => ({
     },
     loginBtn: {
         marginTop: "7rem",
+        display: "flex",
+        alignItems: "center",
     },
     navbarBtn: {
         color: "#fff",
@@ -218,6 +220,36 @@ const useStyle = makeStyles((theme) => ({
     subMenu: {
         display: "flex",
         flexDirection: "column"
+    },
+//    Flex
+    flex: {
+       display: "flex",
+       alignItems: "center",
+       justifyContent: "space-between"
+    },
+    flex1: {
+        display: "flex",
+        flexDirection: "column",
+        margin: 0,
+        padding: 0,
+    },
+
+//Categories
+    categoryChildren: {
+        padding: 10,
+        display: "flex",
+        alignItems: "start",
+        justifyContent: "space-between"
+    },
+    cardActionArea: {
+        marginTop: 60,
+        width: 300,
+        height: 300
+    },
+
+//    SinglProduct
+    singlProductSize:{
+        backgroundColor: rgba(0, 0, 0, .50)
     }
 }))
 

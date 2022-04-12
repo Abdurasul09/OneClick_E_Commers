@@ -13,9 +13,9 @@ import {useRouter} from "next/router";
 import Search from "./Header/Search";
 import Burger from "./Header/Burger";
 import IconButton from '@mui/material/IconButton';
-import SubMenuTheme from "./Menu";
 import {useDispatch, useSelector} from "react-redux";
-import Demo from "./Shops/rasul";
+import Rasul from "../components/rasul";
+import SubMenuTheme from "./Menu";
 
 const Layout = ({title, children, description}) => {
 
@@ -183,8 +183,8 @@ const Layout = ({title, children, description}) => {
                     {children}
                 </Container>
                 <Contact/>
-                <SubMenuTheme active={menuActive} setActive={setMenuActive}/>
-                {/*<Demo  active={menuActive} setActive={setMenuActive}/>*/}
+                {/*<SubMenuTheme active={menuActive} setActive={setMenuActive}/>*/}
+                <Rasul  active={menuActive} setActive={setMenuActive}/>
             </ThemeProvider>
         </div>
     );

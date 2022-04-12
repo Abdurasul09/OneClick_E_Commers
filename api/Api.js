@@ -1,5 +1,5 @@
 import axios from "axios"
-export const baseUrl = "https://f1d8-92-62-66-21.ngrok.io/";
+export const baseUrl = "http://ca17-46-251-212-202.ngrok.io";
 const Axios = axios.create({
     baseURL: baseUrl
 });
