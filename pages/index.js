@@ -15,11 +15,13 @@ import NextLink from "next/link";
 import useStyle from "../Utils/styles";
 import Advertising from "../src/components/Advertising/Advertising";
 import Shops from "../src/components/Shops/Shops";
-import data from '../Utils/data'
+// import data from '../Utils/data'
 import {addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {useDispatch} from "react-redux";
-const Home = () => {
+// import api from "../api/globalApi";
+const Home = ({products}) => {
+    console.log(products)
     const dispatch = useDispatch()
     const classes = useStyle();
     return (
@@ -32,14 +34,15 @@ const Home = () => {
                         <strong>Хиты продаж</strong>
                     </Typography>
                     <Grid container spacing={3}>
-                        {data.products.map(product => (
+                        {products.results.map(product => (
                             <Grid item md={3} key={product.id}>
                                 <Card>
                                     <NextLink href={`/product/${product.id}`}>
                                         <CardActionArea>
                                             <CardMedia
                                                 component="img"
-                                                image={product.image}
+                                                className={classes.productImage}
+                                                image={`http://ca17-46-251-212-202.ngrok.io${product.image}`}
                                                 title={product.title}
                                             />
                                         </CardActionArea>
@@ -47,7 +50,7 @@ const Home = () => {
                                     <List>
                                         <ListItem>
                                             <Typography>
-                                                {product.category}
+                                                {product.title}
                                             </Typography>
                                         </ListItem>
                                         <ListItem className={classes.priceFavoriteIcon}>
@@ -86,8 +89,8 @@ const Home = () => {
 
 export default Home;
 
-// export async function getStaticProps() {
-//     const res = await fetch('http://oneclickback.herokuapp.com/products')
-//     const products = await res.json()
-//     return { props: { products } }
-// }
+export async function getStaticProps() {
+    const res = await fetch('http://ca17-46-251-212-202.ngrok.io/products')
+    const products = await res.json()
+    return { props: { products } }
+}
