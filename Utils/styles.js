@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
     card: {
         marginTop: "2rem"
     },
-    cartBtns:{
+    cartBtns: {
         width: "10px"
     },
     cardTitleIcon: {
@@ -47,7 +47,9 @@ const useStyle = makeStyles((theme) => ({
     priceFavoriteIcon: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        paddingTop: 0,
+        paddingBottom: 0
     },
     cartScreen: {
         marginTop: "7rem"
@@ -221,6 +223,7 @@ const useStyle = makeStyles((theme) => ({
     },
     //    GlobalFlex
     flex: {
+        // width: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between"
@@ -241,8 +244,40 @@ const useStyle = makeStyles((theme) => ({
     cardActionArea: {
         marginTop: 60,
         width: 300,
-        height: 300
+        height: 300,
     },
+// ProductDiscount
+    productDiscount: {
+        position: "absolute",
+        backgroundColor: "#b171f3",
+        padding: 5,
+        borderRadius: 4,
+        color: "#ffffff",
+        fontSize: "1.1em",
+        top: 5,
+        left: 5,
+    },
+    //ProductImage
+    productImage: {
+        width: "100%",
+        height: 350,
+    },
+//    SizeProducts
+    sizeProducts: {
+        border: "1px solid #e8e8e8",
+        boxShadow: "inset 0 0 0 1px #fff",
+        textAlign: "center",
+        whiteSpace: "nowrap",
+        textTransform: "uppercase",
+        cursor: "pointer",
+        padding: "6px 14px 8px",
+        borderRadius: 4,
+        transition: ".2s all",
+        marginRight: 5,
+        "&:hover":{
+            backgroundColor: "#e8e8e8",
+        }
+    }
 }))
 
 export default useStyle;

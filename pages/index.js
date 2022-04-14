@@ -15,15 +15,22 @@ import NextLink from "next/link";
 import useStyle from "../Utils/styles";
 import Advertising from "../src/components/Advertising/Advertising";
 import Shops from "../src/components/Shops/Shops";
-// import data from '../Utils/data'
 import {addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {useDispatch} from "react-redux";
-// import api from "../api/globalApi";
+import React from "react";
+import api from "../api/globalApi";
+import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
+
+
+
+
+
 const Home = ({products}) => {
     console.log(products)
     const dispatch = useDispatch()
     const classes = useStyle();
+    const shadowStyles = useSoftRiseShadowStyles();
     return (
         <>
             <Layout>
@@ -33,30 +40,59 @@ const Home = ({products}) => {
                     <Typography component="h1" variant="h1">
                         <strong>Хиты продаж</strong>
                     </Typography>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={5}>
                         {products.results.map(product => (
                             <Grid item md={3} key={product.id}>
-                                <Card>
+                                <Card
+                                    variant={"outlined"}
+                                    style={{border: "none"}}
+                                    className={(shadowStyles.root)}
+                                >
                                     <NextLink href={`/product/${product.id}`}>
                                         <CardActionArea>
                                             <CardMedia
                                                 component="img"
                                                 className={classes.productImage}
-                                                image={`http://ca17-46-251-212-202.ngrok.io${product.image}`}
+                                                image={`http://39ec-46-251-221-21.ngrok.io${product.image}`}
                                                 title={product.title}
                                             />
+                                            {product.discount ? (
+                                                <span
+                                                    className={classes.productDiscount}
+                                                >
+                                                -{product.discount}%
+                                            </span>
+                                            ) : (
+                                                " "
+                                            )}
                                         </CardActionArea>
                                     </NextLink>
-                                    <List>
+                                    <List style={{paddingBottom: 0}}>
                                         <ListItem>
                                             <Typography>
                                                 {product.title}
                                             </Typography>
                                         </ListItem>
                                         <ListItem className={classes.priceFavoriteIcon}>
-                                            <Typography>
-                                                ${product.price}
-                                            </Typography>
+
+                                            {product.discount_price ? (
+                                                    <div className={classes.flex}>
+                                                        <Typography>
+                                                            <strong>{product.discount_price} coм</strong>
+                                                        </Typography>
+                                                        <Typography pl={2}>
+                                                            <del style={{color: "grey"}}>
+                                                                {product.price} coм
+                                                            </del>
+                                                        </Typography>
+                                                    </div>
+                                            ) : (
+                                                <Typography>
+                                                    <strong>
+                                                        {product.price} coм
+                                                    </strong>
+                                                </Typography>
+                                            )}
                                             <Typography className={classes.cardTitleIcon}>
                                                 <IconButton edge="end">
                                                     <FavoriteBorderIcon
@@ -90,7 +126,7 @@ const Home = ({products}) => {
 export default Home;
 
 export async function getStaticProps() {
-    const res = await fetch('http://ca17-46-251-212-202.ngrok.io/products')
-    const products = await res.json()
+    const res = await api('/products')
+    const products = await res.data
     return { props: { products } }
 }

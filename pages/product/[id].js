@@ -1,20 +1,23 @@
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 import NextLink from "next/link";
 import Layout from "../../src/components/Layout";
-import {Button, Card, Grid, List, ListItem, Typography} from "@mui/material";
+import {Button, Card, Grid, IconButton, List, ListItem, Typography} from "@mui/material";
 import useStyle from "../../Utils/styles";
 import {ActionType} from "../../Utils/redux/actions/types";
-import data from '../../Utils/data'
 import axios from "axios";
 import {useSnackbar} from "notistack";
 import {CircularProgress, Link, TextField} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
+import api from "../../api/globalApi";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {addToFavorite} from "../../Utils/redux/actions/FavoriteAction";
 
 const ProductScreen = ({product}) => {
     console.log(product)
     const classes = useStyle();
     const dispatch = useDispatch()
+    const [clickedImg, setClickedImg] = useState(0)
     // const {userInfo} = useSelector(state => state.user)
     // const {enqueueSnackbar} = useSnackbar();
     const addToCartHandler = (data) => {
@@ -57,9 +60,12 @@ const ProductScreen = ({product}) => {
     //     fetchReviews()
     // }, []);
 
-
+    console.log(clickedImg)
     return (
-        <Layout title={product.title} description={product.description}>
+        <Layout
+            title={product.title}
+            description={product.description}
+        >
             <div className={classes.section}>
                 <div className={classes.btns}>
                     <NextLink href="#">
@@ -83,83 +89,136 @@ const ProductScreen = ({product}) => {
                 </div>
                 <List>
                     <ListItem>
-                        <Typography component="h1" variant="h1">{product.title}</Typography>
+                        <Typography
+                            component="h1"
+                            variant="h1"
+                        >
+                            <strong>{product.title}</strong>
+                        </Typography>
                     </ListItem>
                 </List>
                 <Grid container spacing={1}>
                     <Grid item md={6} xs={12}>
-                        {product?.products.map(el => (
-                            <div key={el}>
-                                {el.images.map(item => (
-                                    <>
-                                        <img
-                                            src={`http://ca17-46-251-212-202.ngrok.io${item.image}`}
-                                            alt={product.title}
-                                            width={400}
-                                            height={540}
-                                            layout="responsive"
-                                            style={{objectFit: "cover"}}
-                                        />
-                                    </>
-                                ))}
-                            </div>
+                        {product?.products.slice(0, 1).map(el => (
+                            <List key={el.id}>
+                                <ListItem>
+                                    <Grid item xs={2}>
+                                        <div>
+                                            {el.images.map((item, idx) => (
+                                                <List key={item}>
+                                                    <img
+                                                        src={`http://39ec-46-251-221-21.ngrok.io${item.image}`}
+                                                        width={78}
+                                                        height={100}
+                                                        onClick={() => {
+                                                            console.log(999, clickedImg)
+                                                            setClickedImg(idx)
+                                                        }}
+                                                    />
+                                                </List>
+                                            ))}
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={5}>
+                                        <div>
+                                            <img
+                                                src={`http://39ec-46-251-221-21.ngrok.io${el.images[clickedImg].image}`}
+                                                width={400}
+                                                height={540}
+                                            />
+                                        </div>
+                                    </Grid>
+                                </ListItem>
+                            </List>
                         ))}
-                    </Grid>
-                    <Grid item md={3} xs={12}>
+
                         <List>
                             <ListItem>
-                                <Typography component="h1" variant="h1">$ {product.price}</Typography>
+                                <Typography
+                                    component='h1'
+                                    variant="h1"
+                                >
+                                    <strong>
+                                        Описание
+                                    </strong>
+                                </Typography>
                             </ListItem>
                             <ListItem>
-                                <Typography>Размер:</Typography>
-                            </ListItem>
-                            <ListItem>
-                                {product.products.map(el => (
-                                    <div key={el}>
-                                        {el.sizes.map(item => (
-                                            <div key={item}>
-                                                <Typography
-                                                >
-                                                    {item.size}
-                                                </Typography>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ))}
+                                <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
                             </ListItem>
                         </List>
                     </Grid>
-                    <Grid item md={3} xs={12}>
-                        <Card>
-                            <List>
-                                <ListItem>
-                                    <Grid item xs={6}>
-                                        <Typography>Price:</Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography component="h2" variant="h2">${product.price}</Typography>
-                                    </Grid>
-                                </ListItem>
-                                <ListItem>
-                                    <Grid item xs={6}>
-                                        <Typography>Sale:</Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography>{product.discount} %</Typography>
-                                    </Grid>
-                                </ListItem>
-                                <ListItem>
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => addToCartHandler(product)}
-                                    >
-                                        Add to card
-                                    </Button>
-                                </ListItem>
-                            </List>
-                        </Card>
+                    <Grid item xs={5}>
+                        <List>
+                            <ListItem>
+                                <Typography
+                                    component="h1"
+                                    variant="h1"
+                                    style={{margin: 0}}
+                                >
+                                    <strong>
+                                        {product.price} coм
+                                    </strong>
+                                </Typography>
+                            </ListItem>
+                            <ListItem>
+                                <Grid item xs={1}>
+                                    <Typography>Sale:</Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    {product.discount ? (
+                                        <Typography color={"crimson"}>
+                                            -{product.discount}%
+                                        </Typography>
+                                    ) : (
+                                        " "
+                                    )}
+                                </Grid>
+                            </ListItem>
+                            <Typography pl={2}>Цвет:</Typography>
+                            <ListItem>
+                                    {product.products.map(item => (
+                                        <div key={item.id} style={{margin: 2}}>
+                                            <img
+                                                src={`http://39ec-46-251-221-21.ngrok.io${item.images[0].image}`}
+                                                width={78}
+                                                height={100}
+                                            />
+                                        </div>
+                                    ))}
+                            </ListItem>
+                            <Typography pl={2} pt={1}>Размер:</Typography>
+                            <ListItem style={{paddingLeft: 0, marginBottom: 10}}>
+                                {product.products.slice(0, 1).map(item => (
+                                    <ListItem key={item}>
+                                        {item.sizes.map(itemSize => (
+                                            <span
+                                                key={itemSize}
+                                                className={classes.sizeProducts}
+                                            >
+                                            {itemSize.size}
+                                        </span>
+                                        ))}
+                                    </ListItem>
+                                ))}
+                            </ListItem>
+                            <ListItem>
+                                <Button
+                                    size={"large"}
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => addToCartHandler(product)}
+                                >
+                                    Add to card
+                                </Button>&nbsp;
+                                <IconButton edge="end" size={"medium"}>
+                                    <FavoriteBorderIcon
+                                        onClick={() => dispatch(addToFavorite(product))}
+                                        className={classes.favoriteBorderIconHover}
+                                    />
+                                </IconButton>
+                            </ListItem>
+                        </List>
                     </Grid>
                 </Grid>
             </div>
@@ -233,7 +292,7 @@ const ProductScreen = ({product}) => {
 
 
 export async function getStaticPaths() {
-    const res = await axios('http://ca17-46-251-212-202.ngrok.io/products')
+    const res = await api('/products')
     const posts = await res.data
     const paths = posts.results.map((product) => ({
         params: {id: product.id.toString()},
@@ -242,7 +301,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({params}) {
-    const res = await axios(`http://ca17-46-251-212-202.ngrok.io/products/${params.id}`)
+    const res = await api(`/products/${params.id}`)
     const product = await res.data
 
     return {props: {product}}
