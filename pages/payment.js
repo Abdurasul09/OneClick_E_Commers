@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
-import { Store } from '../Utils/redux/Store';
+import React, {  useEffect, useState } from 'react';
 import Layout from '../src/components/Layout';
 import CheckoutWizard from '../src/components/ChekoutWizard/ChekoutWizard';
 import useStyle from '../Utils/styles';
@@ -18,13 +17,15 @@ import {
 import { useSnackbar } from 'notistack';
 import {ActionType} from "../Utils/redux/actions/types";
 import NextLink from "next/link";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function Payment() {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const classes = useStyle();
     const router = useRouter();
     const [paymentMethod, setPaymentMethod] = useState('');
-    const { state, dispatch } = useContext(Store);
+    const state = useSelector(state => state.payment);
+    const dispatch = useDispatch()
     const {
         shippingAddress
     } = state;

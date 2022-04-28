@@ -37,11 +37,10 @@ const Login = () => {
                 email,
                 password
             })
-            console.log(data)
             dispatch({type: ActionType.USER_LOGIN, payload: data})
             localStorage.setItem("access", JSON.stringify(data.access))
             localStorage.setItem("refresh", JSON.stringify(data.refresh))
-            router.push('/');
+            router.push('/shipping');
         } catch (err) {
             enqueueSnackbar(err.message, {variant: "error"})
         }

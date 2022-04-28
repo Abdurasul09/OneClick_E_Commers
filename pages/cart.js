@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import dynamic from "next/dynamic";
 import Layout from "../src/components/Layout";
 import {
@@ -19,17 +19,22 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import {List} from "@material-ui/core";
 import {useRouter} from "next/router";
-import {AddToCart, decFromCart, removeFromCart} from "../Utils/redux/actions/CartAction";
+import {IncToCart, DecFromCart, DeleteFromCart, getCart, addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {useDispatch, useSelector} from "react-redux";
 import IconButton from "@mui/material/IconButton";
+import {urlImag} from "../api/globalApi";
+
 
 
 const CartScreen = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const {cart} = useSelector(state => state.cart);
+    console.log('dfghvbjkn', cart)
     const classes = useStyle();
-
+    useEffect(() => {
+        dispatch(getCart(JSON.parse(localStorage.getItem('cart'))))
+    }, [])
     const checkoutHandler = () => {
         router.push("/shipping")
     }
@@ -58,7 +63,7 @@ const CartScreen = () => {
                     </NextLink>
                 </div>
                 <Typography component="h1" variant="h1">Shopping Cart</Typography>
-                {cart.length === 0 ? (
+                {cart?.length === 0 ? (
                     <Typography
                         variant="h5"
                         component="h5"
@@ -81,12 +86,12 @@ const CartScreen = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {cart.map((el, id) => (
+                                        {cart?.map((el, idx) => (
                                             <TableRow key={el.id}>
                                                 <TableCell>
                                                     <NextLink href={`/product/${el.id}`} passHref>
                                                         <img
-                                                            src={el.image}
+                                                            src={`${urlImag + el.image}`}
                                                             alt={el.title}
                                                             width={100}
                                                             height={120}
@@ -106,7 +111,7 @@ const CartScreen = () => {
                                                     <IconButton
                                                         color="error"
                                                         aria-label="add an alarm"
-                                                        onClick={() => dispatch(decFromCart(id))}
+                                                        onClick={() => dispatch(DecFromCart(el.id))}
                                                     >
                                                         <RemoveIcon color={"error"}/>
                                                     </IconButton>
@@ -114,7 +119,7 @@ const CartScreen = () => {
                                                     <IconButton
                                                         color="error"
                                                         aria-label="add an alarm"
-                                                        onClick={() => dispatch(AddToCart(el))}
+                                                        onClick={() => dispatch(addToCartHandler(el))}
                                                     >
                                                         <AddIcon color={"error"}/>
                                                     </IconButton>
@@ -126,7 +131,7 @@ const CartScreen = () => {
                                                     <DeleteOutlineIcon
                                                         variant="contained"
                                                         color="secondary"
-                                                        onClick={() => (dispatch(removeFromCart(el)))}
+                                                        onClick={() => (dispatch(DeleteFromCart(el)))}
                                                     />
                                                 </TableCell>
                                             </TableRow>
@@ -141,9 +146,9 @@ const CartScreen = () => {
                                 <List>
                                     <ListItem>
                                         <Typography variant="h2">
-                                            Subtotle ({cart.reduce((a, c)=> a + c.quantity, 0)} {''}
+                                            Subtitle ({cart?.reduce((a, c) => a + c.quantity, 0)} {''}
                                             items) : $ {''}
-                                            {cart.reduce((a, c)=> a + c.quantity * c.price, 0).toFixed(2)}
+                                            {cart?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(2)}
                                         </Typography>
                                     </ListItem>
                                     <ListItem>
@@ -167,4 +172,4 @@ const CartScreen = () => {
     );
 };
 
-export default dynamic(()=> Promise.resolve(CartScreen), {ssr: false});
+export default dynamic(() => Promise.resolve(CartScreen), {ssr: false});

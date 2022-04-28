@@ -4,8 +4,9 @@ import {alpha} from "@mui/material/styles";
 
 const useStyle = makeStyles((theme) => ({
     navbar: {
-        padding: "10px 0",
+        // padding: "10px 0",
     },
+    mt1: { marginTop: '1rem' },
     cardImage: {
         width: "100%",
         height: "210px",
@@ -121,6 +122,7 @@ const useStyle = makeStyles((theme) => ({
         color: '#fff',
     },
     navbarButton: {
+        color: '#ffffff',
         textTransform: 'initial',
     },
     textField: {
@@ -171,6 +173,8 @@ const useStyle = makeStyles((theme) => ({
     cascadingSubmenu: {
         marginRight: "10px",
     },
+    menuButton: { padding: 0 },
+
 
 //    Hero
     hero: {
@@ -277,7 +281,13 @@ const useStyle = makeStyles((theme) => ({
         "&:hover":{
             backgroundColor: "#e8e8e8",
         }
+    },
+
+    // marginTopGlobal
+    marginTopGlobal: {
+        marginTop: '5.4rem'
     }
+
 }))
 
 export default useStyle;

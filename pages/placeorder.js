@@ -19,11 +19,13 @@ import Table from "@mui/material/Table";
 import {List} from "@material-ui/core";
 import {useRouter} from "next/router";
 import CheckoutWizard from "../src/components/ChekoutWizard/ChekoutWizard";
+import {useSelector} from "react-redux";
 
 
 const PlaceOrder = () => {
     const router = useRouter();
-    const { state } = useContext(Store);
+    const { state } = useSelector(state => state);
+    // const {cart} = useSelector(state => state.cart);
     const {
         cart,
         shippingAddress,

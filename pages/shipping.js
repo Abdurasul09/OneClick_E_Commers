@@ -8,6 +8,7 @@ import {useRouter} from "next/router";
 import {Store} from "../Utils/redux/Store";
 import {useForm, Controller} from "react-hook-form";
 import CheckoutWizard from "../src/components/ChekoutWizard/ChekoutWizard";
+import {useDispatch, useSelector} from "react-redux";
 
 const Shipping = () => {
     const {
@@ -19,12 +20,13 @@ const Shipping = () => {
 
 
     const router = useRouter();
-    const { state, dispatch } = useContext(Store);
+    const state  = useSelector(state => state.payment);
+    const dispatch = useDispatch()
     const { userInfo } = state;
 
     useEffect(() => {
         if (!userInfo) {
-            router.push('/login?redirect=/shipping')
+            router.push('/shipping')
         }
 
         const dataFrom = JSON.parse(localStorage.getItem("shippingAddress"))

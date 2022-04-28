@@ -19,12 +19,8 @@ import {addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {useDispatch} from "react-redux";
 import React from "react";
-import api from "../api/globalApi";
+import api, {urlImag} from "../api/globalApi";
 import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
-
-
-
-
 
 const Home = ({products}) => {
     console.log(products)
@@ -53,7 +49,7 @@ const Home = ({products}) => {
                                             <CardMedia
                                                 component="img"
                                                 className={classes.productImage}
-                                                image={`http://39ec-46-251-221-21.ngrok.io${product.image}`}
+                                                image={`${urlImag + product.image}`}
                                                 title={product.title}
                                             />
                                             {product.discount ? (
@@ -105,6 +101,7 @@ const Home = ({products}) => {
                                     </List>
                                     <CardActions>
                                         <Button
+                                            fullWidth
                                             variant="contained"
                                             size="small"
                                             color="primary"

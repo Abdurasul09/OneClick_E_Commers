@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 // import SubMenuTheme from "./Menu";
 import {useDispatch, useSelector} from "react-redux";
 import Categories from "./Categories";
+import Rasul from "./rasul";
 
 const Layout = ({title, children, description}) => {
 
@@ -93,6 +94,7 @@ const Layout = ({title, children, description}) => {
                 >
                     <Toolbar>
                         <Burger active={menuActive} setActive={setMenuActive}/>
+                        {/*<Rasul/>*/}
                         <div className={classes.grow}/>
                         <Search/>
                         <div className={classes.grow}/>
@@ -123,10 +125,10 @@ const Layout = ({title, children, description}) => {
                             </NextLink>
                             <NextLink href="/cart" passHref>
                                 <Link>
-                                    {cart.length > 0 ? (
+                                    {cart?.length > 0 ? (
                                         <Badge
                                             color="secondary"
-                                            badgeContent={cart.length}
+                                            badgeContent={cart?.length}
                                         >
                                             <IconButton size="medium" className={classes.iconSvg}>
                                                 <ShoppingBagOutlinedIcon/>

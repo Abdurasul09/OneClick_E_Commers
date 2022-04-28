@@ -2,33 +2,38 @@ import {ActionType} from "../actions/types";
 
 const defaultState = {
     cart: [],
+    cartLoc: []
 }
 
 
 export const CartReducer = (state = defaultState, action) => {
     switch (action.type){
         case ActionType.ADD_TO_CARD: {
-            const findProduct = state.cart.find(el => el.id === action.payload.id)
-            if (findProduct) {
-                return {
-                    ...state, cart: state.cart.map(el => el.id === action.payload.id ?
-                        {...el, quantity: el.quantity + 1} : el)
+                const findProduct = state.cart.find(el => el.id === action.payload.id)
+                if (findProduct) {
+                    return {
+                        ...state, cart: state.cart.map(el => el.id === action.payload.id ?
+                            {...el, quantity: el.quantity + 1} : el)
+                    }
                 }
-            }
-            return {...state, cart: [...state.cart, {...action.payload, quantity: 1}]};
+                return {...state, cart: [...state.cart, {...action.payload, quantity: 1}]};
+            // return {...state, cart: [{...action.payload, quantity: 1}]}
         }
-        case ActionType.REMOVE_FROM_CARD: {
+        case ActionType.DELETE_FROM_CARD: {
             return {...state, cart: state.cart.filter((el) => el.id !== action.payload)};
         }
-        case ActionType.DEC_FROM_CART: {
-            if (state.cart [action.payload].quantity > 0)
+        case ActionType.DEC_TO_QUANTITY: {
+            const findProduct = state.cart?.find(el => el.id === action.payload)
+            if (findProduct.quantity > 1)
                 return {
-                    ...state, cart: state.cart.map((el, id) => id === action.payload ?
+                    ...state, cart: state.cart.map((el) => el.id === action.payload ?
                         {...el, quantity: el.quantity - 1} : el)
                 }
         }
-
         // eslint-disable-next-line no-fallthrough
+        case ActionType.GET_CART: {
+            return {...state, cart: action.payload};
+        }
         default:
             return state
     }

@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: "http://39ec-46-251-221-21.ngrok.io/"
+ const api = axios.create({
+    baseURL: "http://68.183.182.243/"
 });
-export default api;
+ export default api
+
+export const urlImag = "http://68.183.182.243/"
+
