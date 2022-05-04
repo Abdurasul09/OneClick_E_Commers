@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../src/components/Layout";
 import {Button, Link, List, ListItem, TextField, Typography} from "@mui/material";
 import useStyle from "../Utils/styles";
@@ -8,7 +8,7 @@ import {useForm, Controller} from "react-hook-form";
 import {useSnackbar} from 'notistack';
 import {useDispatch} from "react-redux";
 import api from "../api/globalApi"
-import axios from "axios";
+import Buttons from "../src/components/Buttons/Buttons";
 
 const Register = () => {
     const {
@@ -20,14 +20,8 @@ const Register = () => {
 
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const dispatch = useDispatch();
+    const [dataFormRegister, setDataFormRegister] = useState([])
 
-    useEffect(() => {
-        const dataFormRegister = JSON.parse(localStorage.getItem("register"))
-            setValue("name", dataFormRegister.name),
-            setValue("email", dataFormRegister.email),
-            setValue("password", dataFormRegister.password),
-            setValue("confirmPassword", dataFormRegister.confirmPassword)
-    }, [])
 
     const submitHandler = async ({name, email, password, confirmPassword}) => {
         closeSnackbar();
@@ -43,36 +37,26 @@ const Register = () => {
                 password2: confirmPassword
             })
             enqueueSnackbar(data.username + " url send in email", {variant: "success"})
-            dispatch({type: ActionType.USER_LOGIN, payload: data})
-            localStorage.setItem("register", JSON.stringify({name, email, password, confirmPassword}))
+            dispatch({type: ActionType.USER_INFO, payload: data})
+            console.log(data)
+            localStorage.setItem("userInfo", JSON.stringify({name, email, password, confirmPassword}))
         } catch (err) {
             enqueueSnackbar(err.message, {variant: "error"})
         }
     }
+    // useEffect(() => {
+    //     setDataFormRegister(JSON.parse(localStorage.getItem("register")))
+    //     setValue("name", dataFormRegister.name),
+    //         setValue("email", dataFormRegister.email),
+    //         setValue("password", dataFormRegister.password),
+    //         setValue("confirmPassword", dataFormRegister.confirmPassword)
+    // }, [])
+
     const classes = useStyle()
 
     return (
         <Layout title="Register">
-            <div className={classes.loginBtn}>
-                <NextLink href="#">
-                    <Button
-                        className={classes.btn}
-                        variant="contained"
-                        color="primary"
-                    >
-                        <Typography>Назад</Typography>
-                    </Button>
-                </NextLink>
-                <NextLink href="/">
-                    <Button
-                        className={classes.btn}
-                        variant="contained"
-                        color="primary"
-                    >
-                        <Typography>Главная</Typography>
-                    </Button>
-                </NextLink>
-            </div>
+            <Buttons/>
             <form
                 className={classes.form}
                 onSubmit={handleSubmit(submitHandler)}

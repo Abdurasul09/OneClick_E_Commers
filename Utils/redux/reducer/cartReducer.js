@@ -9,7 +9,7 @@ const defaultState = {
 export const CartReducer = (state = defaultState, action) => {
     switch (action.type){
         case ActionType.ADD_TO_CARD: {
-                const findProduct = state.cart.find(el => el.id === action.payload.id)
+                const findProduct = state?.cart?.find(el => el.id === action.payload.id)
                 if (findProduct) {
                     return {
                         ...state, cart: state.cart.map(el => el.id === action.payload.id ?

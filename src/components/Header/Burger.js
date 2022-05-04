@@ -1,37 +1,38 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+
 import {Link} from "@mui/material";
 import Image from "next/image";
 import logo from "../../../public/images/logo.svg";
 import NextLink from "next/link";
-import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import {GridMenu} from "../../../Utils/svg";
+import useStyle from "../../../Utils/styles";
 
 export default function Burger({active, setActive}) {
+    const classes = useStyle();
+
     return (
         <Box
-            sx={{display: 'flex'}}
+            className={classes.flex}
             position="relative"
+            width={150}
         >
             <IconButton
-                color="inherit"
                 aria-label="open drawer"
                 onClick={() => setActive(!active)}
                 size={"medium"}
-                style={{width: "55px"}}
+                className={classes.gridMenu}
             >
-                <GridViewRoundedIcon
-                    fontSize={"medium"}
-                />
+                <GridMenu/>
             </IconButton>
             <Box
                 sx={{ml: 2, mt: 1}}
-                style={{width: "85px"}}
             >
                 <NextLink href='/' passHref>
                     <Link>
                         <Image
+                            width={85}
                             src={logo} alt="img"
                         />
                     </Link>

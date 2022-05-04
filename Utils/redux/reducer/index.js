@@ -5,12 +5,14 @@ import {ModeReducer} from "./modeReducer";
 import {LoginReducer} from "./loginReducer";
 import {PaymentMethodReducer} from "./paymentReducer";
 import {ChangeUserReducer} from "./changeUserReducer";
+import {fetchPostsReducer} from "./fetchPosts";
 
 export default combineReducers({
-     cart: CartReducer,
-     favorite: FavoriteReducer,
-     mode: ModeReducer,
-     user: LoginReducer,
-     payment: PaymentMethodReducer,
-     changeUser: ChangeUserReducer,
+    cart: CartReducer,
+    favorite: FavoriteReducer,
+    mode: ModeReducer,
+    user: LoginReducer,
+    payment: PaymentMethodReducer,
+    changeUser: ChangeUserReducer,
+    posts: fetchPostsReducer
 })

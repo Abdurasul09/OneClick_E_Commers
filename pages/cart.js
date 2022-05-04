@@ -2,8 +2,7 @@ import React, {useEffect} from 'react';
 import dynamic from "next/dynamic";
 import Layout from "../src/components/Layout";
 import {
-    Button, Card,
-    Grid, Link, ListItem,
+    Grid, Link,
     TableBody,
     TableCell,
     TableContainer,
@@ -17,60 +16,34 @@ import Table from "@mui/material/Table";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import {List} from "@material-ui/core";
-import {useRouter} from "next/router";
-import {IncToCart, DecFromCart, DeleteFromCart, getCart, addToCartHandler} from "../Utils/redux/actions/CartAction";
+import {SnackbarContent} from "@material-ui/core";
+import {DecFromCart, DeleteFromCart, getCart, addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {useDispatch, useSelector} from "react-redux";
 import IconButton from "@mui/material/IconButton";
-import {urlImag} from "../api/globalApi";
-
+import SubTotal from "../src/components/Cart/SubTotal";
+import Buttons from "../src/components/Buttons/Buttons";
 
 
 const CartScreen = () => {
-    const router = useRouter();
     const dispatch = useDispatch();
     const {cart} = useSelector(state => state.cart);
-    console.log('dfghvbjkn', cart)
     const classes = useStyle();
+    console.log(cart)
     useEffect(() => {
         dispatch(getCart(JSON.parse(localStorage.getItem('cart'))))
     }, [])
-    const checkoutHandler = () => {
-        router.push("/shipping")
-    }
-
     return (
         <div className={classes.cartScreen}>
             <Layout title="Shopping cart">
-                <div className={classes.btns}>
-                    <NextLink href="#">
-                        <Button
-                            className={classes.btn}
-                            variant="contained"
-                            color="primary"
-                        >
-                            <Typography>Назад</Typography>
-                        </Button>
-                    </NextLink>
-                    <NextLink href="/">
-                        <Button
-                            className={classes.btn}
-                            variant="contained"
-                            color="primary"
-                        >
-                            <Typography>Главная</Typography>
-                        </Button>
-                    </NextLink>
-                </div>
-                <Typography component="h1" variant="h1">Shopping Cart</Typography>
+                <Buttons/>
+                <Typography component="h1" variant="h1">Корзина</Typography>
                 {cart?.length === 0 ? (
-                    <Typography
-                        variant="h5"
-                        component="h5"
-                    >
-                        Cart is empty &nbsp;
-                        <NextLink href="/"><Link>Go Shopping</Link></NextLink>
-                    </Typography>
+                    <>
+                        <SnackbarContent
+                            message="Корзина пуста!"
+                        />
+                        <NextLink href="/"><Link>Ходить по магазинам</Link></NextLink>
+                    </>
                 ) : (
                     <Grid container spacing={1}>
                         <Grid item md={8} xs={12}>
@@ -86,12 +59,12 @@ const CartScreen = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {cart?.map((el, idx) => (
+                                        {cart?.map(el => (
                                             <TableRow key={el.id}>
                                                 <TableCell>
                                                     <NextLink href={`/product/${el.id}`} passHref>
                                                         <img
-                                                            src={`${urlImag + el.image}`}
+                                                            src={el.image}
                                                             alt={el.title}
                                                             width={100}
                                                             height={120}
@@ -101,7 +74,7 @@ const CartScreen = () => {
                                                 </TableCell>
                                                 <TableCell>
                                                     <NextLink href={`/product/${el.id}`} passHref>
-                                                        <Typography>{el.category}</Typography>
+                                                        <Typography>{el.title}</Typography>
                                                     </NextLink>
                                                 </TableCell>
                                                 <TableCell
@@ -109,19 +82,17 @@ const CartScreen = () => {
                                                     className={classes.cartQuantity}
                                                 >
                                                     <IconButton
-                                                        color="error"
                                                         aria-label="add an alarm"
                                                         onClick={() => dispatch(DecFromCart(el.id))}
                                                     >
-                                                        <RemoveIcon color={"error"}/>
+                                                        <RemoveIcon/>
                                                     </IconButton>
                                                     <span className={classes.cartQuantity}>{el.quantity}</span>
                                                     <IconButton
-                                                        color="error"
                                                         aria-label="add an alarm"
                                                         onClick={() => dispatch(addToCartHandler(el))}
                                                     >
-                                                        <AddIcon color={"error"}/>
+                                                        <AddIcon/>
                                                     </IconButton>
                                                 </TableCell>
                                                 <TableCell align="right">
@@ -142,27 +113,7 @@ const CartScreen = () => {
                         </Grid>
                         <Grid item md={1} xs={12}/>
                         <Grid item md={3} xs={12}>
-                            <Card>
-                                <List>
-                                    <ListItem>
-                                        <Typography variant="h2">
-                                            Subtitle ({cart?.reduce((a, c) => a + c.quantity, 0)} {''}
-                                            items) : $ {''}
-                                            {cart?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(2)}
-                                        </Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            fullWidth
-                                            onClick={checkoutHandler}
-                                        >
-                                            Check Out
-                                        </Button>
-                                    </ListItem>
-                                </List>
-                            </Card>
+                            <SubTotal cart={cart}/>
                         </Grid>
                     </Grid>
                 )}

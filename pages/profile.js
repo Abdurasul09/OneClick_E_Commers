@@ -15,35 +15,26 @@ import api from "../api/globalApi";
 const Profile = () => {
     const classes = useStyle();
     const [user, setUser] = useState({})
-    const [access, setAccess] = useState('')
-    useEffect(() => {
-        let token = localStorage.getItem("access");
-        const parse = JSON.parse(token);
-        api.get("user/" , {
-            headers: {
-                authorization: `Bearer ${parse}`
-            }
-        })
-            .then(res => {
-                setUser(res.data)
-            })
-    }, [access])
 
+    useEffect(() => {
+        const parse = JSON.parse(localStorage.getItem("access"));
+        api.get("user/" , {
+            headers: {authorization: `Bearer ${parse}`}
+        })
+            .then(res => {setUser(res.data)})
+    }, [])
 
     const sendUser = () => {
-        let token = localStorage.getItem("access");
-        const parse = JSON.parse(token);
+        const parse = JSON.parse(localStorage.getItem("access"));
         api.patch("user/", {user}, {
-            headers: {
-                authorization: `Bearer ${parse}`
-            }
+            headers: {authorization: `Bearer ${parse}`}
         })
             .then(({data}) => setUser(data) )
     }
+
     const handleChange = (e) => {
         setUser({...user, [e.target.name]: e.target.value})
     }
-
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

@@ -9,6 +9,7 @@ import {useForm, Controller} from "react-hook-form";
 import {useSnackbar} from 'notistack';
 import {useDispatch} from "react-redux";
 import api from "../api/globalApi";
+import Buttons from "../src/components/Buttons/Buttons";
 
 const Login = () => {
     const {
@@ -31,16 +32,18 @@ const Login = () => {
     }, [token])
 
     const submitHandler = async ({email, password}) => {
+        const login = {email, password}
         closeSnackbar();
         try {
             const {data} = await api.post('token/', {
                 email,
                 password
             })
+            console.log(login)
             dispatch({type: ActionType.USER_LOGIN, payload: data})
             localStorage.setItem("access", JSON.stringify(data.access))
             localStorage.setItem("refresh", JSON.stringify(data.refresh))
-            router.push('/shipping');
+            router.push('/');
         } catch (err) {
             enqueueSnackbar(err.message, {variant: "error"})
         }
@@ -48,27 +51,7 @@ const Login = () => {
     const classes = useStyle()
     return (
         <Layout title="Login">
-            <div className={classes.loginBtn}>
-                <NextLink href="#">
-                    <Button
-                        className={classes.btn}
-                        variant="contained"
-                        color="primary"
-                    >
-                        <Typography>Назад</Typography>
-                    </Button>
-                </NextLink>
-                <NextLink href="/">
-                    <Button
-                        className={classes.btn}
-                        variant="contained"
-                        color="primary"
-                    >
-                        <Typography>Главная</Typography>
-                    </Button>
-                </NextLink>
-            </div>
-
+            <Buttons/>
             <form
                 className={classes.form}
                 onSubmit={handleSubmit(submitHandler)}
@@ -119,7 +102,7 @@ const Login = () => {
                             render={({field}) =>
                                 <TextField
                                     className={classes.textField}
-                                    label="Password"
+                                    label="пароль"
                                     variant="outlined"
                                     fullWidth
                                     id="password"

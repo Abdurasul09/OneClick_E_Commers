@@ -1,6 +1,7 @@
+$backgroundFooter: #303f9f;
 .footer{
   padding: 20px 0;
-  background: #1384E2;
+  background: $backgroundFooter;
   color: white;
 
   span {

@@ -4,7 +4,6 @@ import {AppBar, Badge, Button, Container, Link, ThemeProvider, Switch, Toolbar, 
 import Head from 'next/head'
 import NextLink from "next/link";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import useStyle from "../../Utils/styles";
 import {createTheme, Menu, MenuItem,} from "@material-ui/core";
@@ -13,20 +12,25 @@ import {useRouter} from "next/router";
 import Search from "./Header/Search";
 import Burger from "./Header/Burger";
 import IconButton from '@mui/material/IconButton';
-// import SubMenuTheme from "./Menu";
+import SubMenuTheme from "./Menu";
 import {useDispatch, useSelector} from "react-redux";
 import Categories from "./Categories";
 import Rasul from "./rasul";
+import {Basket} from "../../Utils/svg";
+import api from "../../api/globalApi";
+import {Axios} from "../../api/Api";
 
 const Layout = ({title, children, description}) => {
 
     const router = useRouter();
     const dispatch = useDispatch();
-    const { darkMode } = useSelector(state => state.mode)
-    const {  cart } = useSelector(state => state.cart)
-    const { favorite } = useSelector(state => state.favorite)
-    const {userInfo} = useSelector(state => state.user)
+    const {darkMode} = useSelector(state => state.mode)
+    const {cart} = useSelector(state => state.cart)
+    const {favorite} = useSelector(state => state.favorite)
+    const [anchorEl, setAnchorEl] = useState(null)
 
+    // const {userInfo} = useSelector(state => state.user)
+    const [user, setUser]=useState('')
     const theme = createTheme({
         typography: {
             h1: {
@@ -43,10 +47,10 @@ const Layout = ({title, children, description}) => {
         palette: {
             type: darkMode ? 'dark' : 'light',
             primary: {
-                main: '#1384E2',
+                main: '#303f9f',
             },
             secondary: {
-                main: '#208080',
+                main: '#880e4f',
             },
         },
     });
@@ -56,13 +60,14 @@ const Layout = ({title, children, description}) => {
         dispatch({type: !mode ? ActionType.DARK_MODE_OF : ActionType.DARK_MODE_ON});
     }, [])
 
+
+
     const darkModeChangeHandler = () => {
         dispatch({type: darkMode ? ActionType.DARK_MODE_OF : ActionType.DARK_MODE_ON});
         const newDarkMode = !darkMode;
         localStorage.setItem("mode", newDarkMode);
     };
 
-    const [anchorEl, setAnchorEl] = useState(null)
     const loginClickHandler = (e) => {
         setAnchorEl(e.currentTarget);
     };
@@ -72,11 +77,28 @@ const Layout = ({title, children, description}) => {
     const logoutClickHandler = () => {
         setAnchorEl(null);
         dispatch({type: ActionType.USER_LOGOUT});
-        router.push('/')
-    }
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('shippingAddress');
+        localStorage.removeItem('ally-supports-cache');
+        router.push('/');
+    };
     const classes = useStyle();
     const [menuActive, setMenuActive] = useState(false)
+    console.log(user)
+    useEffect(async () => {
+        try {
+            const parse = JSON.parse(localStorage.getItem("access"));
+          const res= await api.get("user/" , {
+                headers: {authorization: `Bearer ${parse}`}
+            })
+         setUser(res.data)
+        }catch (e){
+            setUser('')
+        }
 
+    }, [anchorEl])
     return (
         <div>
             <Head>
@@ -86,7 +108,7 @@ const Layout = ({title, children, description}) => {
             </Head>
 
             <ThemeProvider theme={theme}>
-                <CssBaseline />
+                <CssBaseline/>
                 <AppBar
                     color={"primary"}
                     position="fixed"
@@ -95,6 +117,7 @@ const Layout = ({title, children, description}) => {
                     <Toolbar>
                         <Burger active={menuActive} setActive={setMenuActive}/>
                         {/*<Rasul/>*/}
+
                         <div className={classes.grow}/>
                         <Search/>
                         <div className={classes.grow}/>
@@ -112,13 +135,14 @@ const Layout = ({title, children, description}) => {
                                             color={"secondary"}
                                             badgeContent={favorite.length}
                                         >
-                                            <IconButton  size="medium" aria-label="add an alarm" className={classes.badge}>
+                                            <IconButton size="small" aria-label="add an alarm"
+                                                        className={classes.badge}>
                                                 <FavoriteBorderIcon/>
                                             </IconButton>
                                         </Badge>
                                     ) : (
-                                        <IconButton size="medium" className={classes.iconSvg}>
-                                            <FavoriteBorderIcon fontSize={"medium"}/>
+                                        <IconButton size="small" className={classes.iconSvg}>
+                                            <FavoriteBorderIcon/>
                                         </IconButton>
                                     )}
                                 </Link>
@@ -130,18 +154,18 @@ const Layout = ({title, children, description}) => {
                                             color="secondary"
                                             badgeContent={cart?.length}
                                         >
-                                            <IconButton size="medium" className={classes.iconSvg}>
-                                                <ShoppingBagOutlinedIcon/>
+                                            <IconButton size="small" className={classes.iconSvg}>
+                                                <Basket/>
                                             </IconButton>
                                         </Badge>
                                     ) : (
-                                        <IconButton size="medium" className={classes.iconSvg}>
-                                            <ShoppingBagOutlinedIcon/>
+                                        <IconButton size="small" className={classes.iconSvg}>
+                                            <Basket/>
                                         </IconButton>
                                     )}
                                 </Link>
                             </NextLink>
-                            {userInfo ? (
+                            {user ? (
                                 <>
                                     <Button
                                         className={classes.navbarBtn}
@@ -149,8 +173,7 @@ const Layout = ({title, children, description}) => {
                                         aria-haspopup="true"
                                         onClick={loginClickHandler}
                                     >
-                                        {/*{userInfo.username}*/}
-                                        <PersonOutlineOutlinedIcon/>
+                                        {user.username}
                                     </Button>
                                     <Menu
                                         id="basic-menu"
@@ -169,12 +192,10 @@ const Layout = ({title, children, description}) => {
                                         <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                                     </Menu>
                                 </>
-                                ):(
+                            ) : (
                                 <NextLink href="/login" passHref>
                                     <Link>
-                                        <IconButton size="medium" className={classes.iconSvg}>
-                                            <PersonOutlineOutlinedIcon style={{fontSize: "x-large"}}/>
-                                        </IconButton>
+                                        <PersonOutlineOutlinedIcon style={{fontSize: "x-large"}}/>
                                     </Link>
                                 </NextLink>
                             )}

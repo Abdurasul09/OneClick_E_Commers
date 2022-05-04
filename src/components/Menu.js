@@ -1,55 +1,77 @@
-import React, {useState} from 'react';
-import 'antd/dist/antd.css';
-import { Menu } from 'antd';
-import { MailOutlined } from '@ant-design/icons';
-import categories from "../components/Header/Data"
+import React, {useEffect, useState} from 'react';
+import {Divider, Drawer, IconButton, List, ListItem, ListItemText, Typography} from "@material-ui/core";
+import Box from "@mui/material/Box";
+import api from "../../api/globalApi";
+import {useSnackbar} from "notistack";
+import NextLink from 'next/link'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-const { SubMenu } = Menu;
-
-const SubMenuTheme = ({active, setActive}) => {
-    const [current, setCurrent] = useState('0');
-    const handleClick = e => {
-        setCurrent(e.key);
+const SubMenuTheme = () => {
+    const [sidbarVisible, setSidebarVisible] = useState(false);
+    const sidebarOpenHandler = () => {
+        setSidebarVisible(true);
+    };
+    const sidebarCloseHandler = () => {
+        setSidebarVisible(false);
     };
 
+    const [categories, setCategories] = useState([]);
+    const { enqueueSnackbar } = useSnackbar();
+    console.log(categories)
+
+    const fetchCategories = async () => {
+        try {
+            const { data } = await api.get(`/categories`);
+            setCategories(data);
+        } catch (err) {
+            enqueueSnackbar('not category', { variant: 'error' });
+        }
+    };
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+
     return (
-        <div
-            className={active ? "menu active" : "menu"}
-            onClick={() => setActive(false)}
+        <Drawer
+            anchor="left"
+            open={sidbarVisible}
+            onClose={sidebarCloseHandler}
         >
-            {categories.map(el => (
-                <div key={el.id}>
-                    <Menu
-                        onClick={handleClick}
-                        style={{ width: 256, }}
-                        defaultOpenKeys={[null]}
-                        selectedKeys={[current]}
-                        mode="vertical"
+            <List>
+                <ListItem>
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
                     >
-                        <SubMenu
-                            key={el.sub}
-                            icon={<MailOutlined />}
-                            title={el.name}
+                        <Typography>Shopping by category</Typography>
+                        <IconButton
+                            aria-label="close"
+                            onClick={sidebarCloseHandler}
                         >
-                            <Menu.Item
-                                key={el.id}
-                                style={{
-                                    height: 400,
-                                }}
-                            >
-                                {el.desc}
-                                <img
-                                    width={300}
-                                    height={250}
-                                    src={el.image}
-                                    alt=""
-                                />
-                            </Menu.Item>
-                        </SubMenu>
-                    </Menu>
-                </div>
-            ))}
-        </div>
+                            <CloseRoundedIcon/>
+                        </IconButton>
+                    </Box>
+                </ListItem>
+                <Divider light />
+                {categories.results?.map( category => (
+                    <NextLink
+                        key={category}
+                        href={`/search?category=${category}`}
+                        passHref
+                    >
+                        <ListItem
+                            button
+                            component="a"
+                            onClick={sidebarCloseHandler}
+                        >
+                            <ListItemText primary={category.womens}/>
+                        </ListItem>
+                    </NextLink>
+                ))}
+            </List>
+        </Drawer>
     );
 };
 

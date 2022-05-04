@@ -1,61 +1,27 @@
-import Layout from "../src/components/Layout";
-import {
-    Button,
-    CardActionArea,
-    CardActions,
-    CardMedia,
-    Grid,
-    List,
-    ListItem,
-    Typography
-} from "@mui/material";
-import Card from "@mui/material/Card";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import NextLink from "next/link";
-import useStyle from "../Utils/styles";
-import Advertising from "../src/components/Advertising/Advertising";
-import {Recommend} from "../src/components/Recommend/Recommend";
-import {addToCartHandler} from "../Utils/redux/actions/CartAction";
-import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
-import {useDispatch, useSelector} from "react-redux";
-import React, {useEffect, useState} from "react";
+import React from 'react';
 import api from "../api/globalApi";
-import {useSoftRiseShadowStyles} from '@mui-treasury/styles/shadow/softRise';
-import {Link} from "@material-ui/core";
-import Newcollection from "./newcollection";
+import {Grid, Link, List, ListItem} from "@material-ui/core";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import {Button, CardActionArea, CardActions} from "@mui/material";
+import CardMedia from "@mui/material/CardMedia";
+import useStyle from "../Utils/styles";
+import NextLink from "next/link";
 import {grey} from "@material-ui/core/colors";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
+import {addToCartHandler} from "../Utils/redux/actions/CartAction";
+import {useDispatch} from "react-redux";
 
-
-const Home = ({products}) => {
-    const [allProducts, setAllProducts] = useState(products)
-    const dispatch = useDispatch()
-    const {posts} = useSelector(state => state.posts)
+const Rec = ({products}) => {
     const classes = useStyle();
-    const shadowStyles = useSoftRiseShadowStyles();
-    useEffect(() => {
-        if (posts[0]) {
-            setAllProducts(posts)
-        }
-    }, [posts])
-
+    const dispatch = useDispatch()
     return (
-        <>
-            <Layout>
-                <Advertising/>
-                <Recommend/>
-                <div className={classes.card}>
-                    <NextLink href="#" passHref>
-                        <Link>
-                            <Typography
-                                py={2}
-                                className={classes.brand}
-                            >
-                                Хиты продаж
-                            </Typography>
-                        </Link>
-                    </NextLink>
-                    <Grid container spacing={5}>
-                        {allProducts.map(product => (
+        <div>
+            <Grid container spacing={5}>
+                {products.results.map(product => (
+                    <>
+                        {product.products.map(product => (
                             <Grid item md={3} key={product.id}>
                                 <Card>
                                     <NextLink href={`/product/${product.id}`}>
@@ -120,17 +86,17 @@ const Home = ({products}) => {
                                 </Card>
                             </Grid>
                         ))}
-                    </Grid>
-                </div>
-                <Newcollection/>
-            </Layout>
-        </>
-    )
-}
+                    </>
+                ))}
+            </Grid>
+        </div>
+    );
+};
 
-export default Home;
+export default Rec;
+
 export async function getServerSideProps() {
-    const res = await api(`/products`)
-    const products = await res.data.results
+    const res = await api.get(`/collections/`)
+    const products = await res.data
     return {props: {products}}
 }

@@ -16,7 +16,7 @@ const ProfilePages = () => {
                     <Typography pr={2}>
                         <NextLink href="">
                             <a className={classes.profileItems}>
-                                <HomeIcon fontSize={"small"}/> Главная
+                                <HomeIcon fontSize={"small"}/>Главная
                             </a>
                         </NextLink>
                     </Typography>

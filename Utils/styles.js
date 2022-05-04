@@ -4,9 +4,21 @@ import {alpha} from "@mui/material/styles";
 
 const useStyle = makeStyles((theme) => ({
     navbar: {
-        // padding: "10px 0",
+        // backgroundColor: '#203040',
+        '& a': {
+            color: '#ffffff',
+            marginLeft: 10,
+        },
     },
-    mt1: { marginTop: '1rem' },
+    brand: {
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        color: '#203040'
+    },
+    gridMenu: {
+        color: '#ffffff',
+    },
+    mt1: {marginTop: '1rem'},
     cardImage: {
         width: "100%",
         height: "210px",
@@ -33,7 +45,7 @@ const useStyle = makeStyles((theme) => ({
         marginTop: "6rem"
     },
     btns: {
-        margin: "10px 0 3rem 0"
+        margin: "7rem 0 3rem 0"
     },
     btn: {
         margin: "5px"
@@ -49,7 +61,6 @@ const useStyle = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingTop: 0,
         paddingBottom: 0
     },
     cartScreen: {
@@ -63,11 +74,9 @@ const useStyle = makeStyles((theme) => ({
         width: '100%',
         maxWidth: "500px",
         margin: "0 auto",
-        height: "70vh"
+        // height: "8"
     },
-    loginBtn: {
-        marginTop: "7rem",
-    },
+
     navbarBtn: {
         color: "#fff",
         textTransform: "initial",
@@ -143,6 +152,34 @@ const useStyle = makeStyles((theme) => ({
         paddingRight: '1rem',
     },
 
+    //GlobalColor
+    globalColor: {
+        color: '#203040'
+    },
+    globalColorYellow: {
+        background: '#f0c000'
+    },
+    // advertising
+    advertisingH1: {
+        fontSize: "3rem",
+        fontWeight: "bold",
+        color: '#203040'
+    },
+
+    //ShopTitle
+    shopTitle: {
+        color: '#203040',
+        fontSize: 16,
+        fontWeight: 400
+    },
+
+    //TypographyH1
+    typographyh1: {
+        fontSize: '2.2rem',
+        color: '#203040'
+    },
+
+
     // Burger menu Ul
     menu: {
         borderRadius: "50px",
@@ -173,7 +210,7 @@ const useStyle = makeStyles((theme) => ({
     cascadingSubmenu: {
         marginRight: "10px",
     },
-    menuButton: { padding: 0 },
+    menuButton: {padding: 0},
 
 
 //    Hero
@@ -181,7 +218,7 @@ const useStyle = makeStyles((theme) => ({
         height: "80vh"
     },
 
-//    Adversitings
+//    Advertising
     adversitings: {
         display: "flex",
         alignItems: "center",
@@ -216,8 +253,11 @@ const useStyle = makeStyles((theme) => ({
     },
 //    FavoriteBorderIcon
     favoriteBorderIconHover: {
+        color: '#203040',
+        cursor: 'pointer',
+        transition: ".2s all",
         '&:hover': {
-            color: "#DC143C"
+            color: "#DC143C",
         }
     },
 //    SubMenu
@@ -227,10 +267,14 @@ const useStyle = makeStyles((theme) => ({
     },
     //    GlobalFlex
     flex: {
-        // width: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between"
+    },
+    flexCenter: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     },
     flex1: {
         display: "flex",
@@ -253,13 +297,12 @@ const useStyle = makeStyles((theme) => ({
 // ProductDiscount
     productDiscount: {
         position: "absolute",
-        backgroundColor: "#b171f3",
+        backgroundColor: "#f0c000",
         padding: 5,
-        borderRadius: 4,
         color: "#ffffff",
-        fontSize: "1.1em",
-        top: 5,
-        left: 5,
+        fontSize: "1em",
+        top: 10,
+        left: 0,
     },
     //ProductImage
     productImage: {
@@ -278,7 +321,7 @@ const useStyle = makeStyles((theme) => ({
         borderRadius: 4,
         transition: ".2s all",
         marginRight: 5,
-        "&:hover":{
+        "&:hover": {
             backgroundColor: "#e8e8e8",
         }
     },

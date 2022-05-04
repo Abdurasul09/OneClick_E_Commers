@@ -1,17 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {useRouter} from "next/router";
 import NextLink from "next/link";
 import Layout from "../../src/components/Layout";
-import {Button, Card, Grid, IconButton, List, ListItem, Typography} from "@mui/material";
+import {Button, Grid, List, ListItem, Typography} from "@mui/material";
 import useStyle from "../../Utils/styles";
 import {ActionType} from "../../Utils/redux/actions/types";
-import axios from "axios";
-import {useSnackbar} from "notistack";
-import {CircularProgress, Link, TextField} from "@material-ui/core";
-import {useDispatch, useSelector} from "react-redux";
+import {Avatar} from "@material-ui/core";
+import {useDispatch} from "react-redux";
 import api, {urlImag} from "../../api/globalApi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {addToFavorite} from "../../Utils/redux/actions/FavoriteAction";
+import Comment from "../../src/components/Comment/Comment";
 
 const ProductScreen = ({product}) => {
     console.log(product)
@@ -26,48 +24,9 @@ const ProductScreen = ({product}) => {
         })
     }, [product])
     console.log(currentProduct)
-    // const {userInfo} = useSelector(state => state.user)
-    // const {enqueueSnackbar} = useSnackbar();
     const addToCartHandler = (data) => {
         dispatch({type: ActionType.ADD_TO_CARD, payload: data})
     }
-    // const [comment, setComment] = useState('')
-    // const [reviews, setReviews] = useState([]);
-    // const [loading, setLoading] = useState(false);
-
-    // const submitHandler = async (e) => {
-    //     e.preventDefault();
-    //     setLoading(true);
-    //     try {
-    //         await axios.post("https://oneclickback.herokuapp.com/comments", {
-    //             id: 1,
-    //             parent: 1,
-    //             description: comment,
-    //             user: 2,
-    //             product: 1
-    //         },)
-    //         setLoading(false);
-    //         enqueueSnackbar('Review submitted successfully', {variant: 'success'});
-    //         fetchReviews();
-    //     } catch (err) {
-    //         setLoading(false);
-    //         enqueueSnackbar("Error", {variant: 'error'});
-    //     }
-    // };
-
-    // const fetchReviews = async () => {
-    //     try {
-    //         const {data} = await axios.get("https://oneclickback.herokuapp.com/comments")
-    //         setReviews(data);
-    //         console.log(data)
-    //     } catch (err) {
-    //         enqueueSnackbar("Error", {variant: 'error'});
-    //     }
-    // };
-    // useEffect(() => {
-    //     fetchReviews()
-    // }, []);
-
     return (
         <Layout
             title={product.title}
@@ -113,7 +72,7 @@ const ProductScreen = ({product}) => {
                                         {currentProduct?.images.map((item, idx) => (
                                             <List key={item}>
                                                 <img
-                                                    src={`${urlImag + item.image}`}
+                                                    src={item.image}
                                                     width={78}
                                                     height={100}
                                                     onClick={() => {
@@ -127,7 +86,7 @@ const ProductScreen = ({product}) => {
                                 <Grid item xs={5}>
                                     <div>
                                         <img
-                                            src={`${urlImag + currentProduct?.images[clickedImg].image}`}
+                                            src={currentProduct?.images[clickedImg].image}
                                             width={400}
                                             height={540}
                                         />
@@ -136,19 +95,15 @@ const ProductScreen = ({product}) => {
                             </ListItem>
                         </List>
                         <List>
-                            <ListItem>
-                                <Typography
-                                    component='h1'
-                                    variant="h1"
-                                >
-                                    <strong>
-                                        Описание
-                                    </strong>
-                                </Typography>
-                            </ListItem>
-                            <ListItem>
-                                <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
-                            </ListItem>
+                            <Typography
+                                component='h1'
+                                variant="h1"
+                            >
+                                <strong>
+                                    Описание
+                                </strong>
+                            </Typography>
+                            <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
                         </List>
                     </Grid>
                     <Grid item xs={5}>
@@ -170,9 +125,13 @@ const ProductScreen = ({product}) => {
                                 </Grid>
                                 <Grid item xs={1}>
                                     {product.discount ? (
-                                        <Typography color={"crimson"}>
-                                            -{product.discount}%
-                                        </Typography>
+                                        <Avatar
+                                            className={classes.globalColorYellow}
+                                        >
+                                            <Typography>
+                                                -{product.discount}%
+                                            </Typography>
+                                        </Avatar>
                                     ) : (
                                         " "
                                     )}
@@ -187,7 +146,7 @@ const ProductScreen = ({product}) => {
                                         style={{margin: 2}}
                                     >
                                         <img
-                                            src={`${urlImag + item.images[0].image}`}
+                                            src={item.images[0].image}
                                             width={78}
                                             height={100}
                                         />
@@ -218,81 +177,18 @@ const ProductScreen = ({product}) => {
                                 >
                                     Add to card
                                 </Button>&nbsp;
-                                <IconButton edge="end" size={"medium"}>
+                                <Avatar>
                                     <FavoriteBorderIcon
                                         onClick={() => dispatch(addToFavorite(product))}
                                         className={classes.favoriteBorderIconHover}
                                     />
-                                </IconButton>
+                                </Avatar>
                             </ListItem>
                         </List>
                     </Grid>
                 </Grid>
             </div>
-            {/*<List>*/}
-            {/*    <ListItem>*/}
-            {/*        <Typography name="reviews" id="reviews" variant="h2">*/}
-            {/*            Customer Reviews*/}
-            {/*        </Typography>*/}
-            {/*    </ListItem>*/}
-            {/*    {reviews.length === 0 && <ListItem>No review</ListItem>}*/}
-            {/*    {reviews.map((review) => (*/}
-            {/*        <ListItem key={review.id}>*/}
-            {/*            <Grid container>*/}
-            {/*                <Grid item className={classes.reviewItem}>*/}
-            {/*                    <Typography>*/}
-            {/*                        <strong>{review.name}</strong>*/}
-            {/*                    </Typography>*/}
-            {/*                </Grid>*/}
-            {/*                <Grid item>*/}
-            {/*                    <Typography>{review.description}</Typography>*/}
-            {/*                </Grid>*/}
-            {/*            </Grid>*/}
-            {/*        </ListItem>*/}
-            {/*    ))}*/}
-            {/*    <ListItem>*/}
-            {/*        {userInfo ? (*/}
-            {/*            <form onSubmit={submitHandler} className={classes.reviewForm}>*/}
-            {/*                <List>*/}
-            {/*                    <ListItem>*/}
-            {/*                        <Typography variant="h2">Leave your review</Typography>*/}
-            {/*                    </ListItem>*/}
-            {/*                    <ListItem>*/}
-            {/*                        <TextField*/}
-            {/*                            multiline*/}
-            {/*                            variant="outlined"*/}
-            {/*                            fullWidth*/}
-            {/*                            name="review"*/}
-            {/*                            label="Enter comment"*/}
-            {/*                            value={comment}*/}
-            {/*                            onChange={(e) => setComment(e.target.value)}*/}
-            {/*                        />*/}
-            {/*                    </ListItem>*/}
-            {/*                    <ListItem>*/}
-            {/*                        <Button*/}
-            {/*                            type="submit"*/}
-            {/*                            fullWidth*/}
-            {/*                            variant="contained"*/}
-            {/*                            color="primary"*/}
-            {/*                        >*/}
-            {/*                            Submit*/}
-            {/*                        </Button>*/}
-            {/*                        {loading && <CircularProgress/>}*/}
-            {/*                    </ListItem>*/}
-            {/*                </List>*/}
-            {/*            </form>*/}
-            {/*        ) : (*/}
-            {/*            <Typography variant="h2">*/}
-            {/*                Please{' '}*/}
-            {/*                <Link href="/login">*/}
-            {/*                    login*/}
-            {/*                </Link>{' '}*/}
-            {/*                to write a review*/}
-            {/*            </Typography>*/}
-            {/*        )}*/}
-            {/*    </ListItem>*/}
-            {/*</List>*/}
-
+            <Comment item={product}/>
         </Layout>
     );
 };

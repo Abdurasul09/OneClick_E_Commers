@@ -28,7 +28,6 @@ const Shipping = () => {
         if (!userInfo) {
             router.push('/shipping')
         }
-
         const dataFrom = JSON.parse(localStorage.getItem("shippingAddress"))
         // setValue("fullName", dataFrom.fullName)
         // setValue("address", dataFrom.address)
@@ -38,13 +37,7 @@ const Shipping = () => {
 
     }, [])
 
-    const submitHandler = ({
-                               fullName,
-                               address,
-                               city,
-                               postalCode,
-                               country
-    }) => {
+    const submitHandler = ({fullName, address, city, postalCode, country}) => {
         dispatch({
             type: ActionType.SAVE_SHIPPING_ADDRESS,
             payload: {
@@ -55,16 +48,7 @@ const Shipping = () => {
                 country
             }
         })
-        localStorage.setItem("shippingAddress", JSON.stringify(
-                {
-                    fullName,
-                    address,
-                    city,
-                    postalCode,
-                    country
-                }
-            )
-        )
+        localStorage.setItem("shippingAddress", JSON.stringify({fullName, address, city, postalCode, country}))
         router.push("/payment")
     }
 

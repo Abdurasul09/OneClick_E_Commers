@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Divider, Drawer, IconButton, Link, List, ListItem, ListItemText, Typography} from "@material-ui/core";
+import {
+    Divider,
+    Drawer,
+    Grid,
+    IconButton,
+    Link,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Typography
+} from "@material-ui/core";
 import Box from "@mui/material/Box";
 import {useSnackbar} from "notistack";
 import api from "../../api/globalApi";
@@ -7,6 +18,12 @@ import NextLink from "next/link";
 import useStyle from "../../Utils/styles";
 import MenuIcon from '@mui/icons-material/Menu';
 import CancelIcon from '@mui/icons-material/Cancel';
+import {GridMenu} from "../../Utils/svg";
+import Image from "next/image";
+import logo from "../../public/images/logo.svg";
+import Tooltip from '@mui/material/Tooltip';
+import {CardActionArea, CardMedia} from "@mui/material";
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 
 const Rasul = () => {
 
@@ -20,40 +37,47 @@ const Rasul = () => {
 
 
     const [categories, setCategories] = useState([]);
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
 
     console.log(categories)
     const fetchCategories = async () => {
         try {
-            const { data } = await api.get("categories/");
+            const {data} = await api.get("categories/");
             setCategories(data);
         } catch (err) {
-            enqueueSnackbar('no categories', { variant: 'error' });
+            enqueueSnackbar('no categories', {variant: 'error'});
         }
     };
 
     useEffect(() => {
         fetchCategories();
-    },[])
-
+    }, [])
 
 
     const classes = useStyle();
 
     return (
         <div>
-            <Box display="flex" alignItems="center">
+            <Box
+                className={classes.flex}
+                position="relative"
+                width={150}
+            >
                 <IconButton
                     edge="start"
                     aria-label="open drawer"
                     onClick={sidebarOpenHandler}
-                    className={classes.menuButton}
+                    size={"medium"}
+                    className={classes.gridMenu}
                 >
-                    <MenuIcon className={classes.navbarButton} />
+                    <GridMenu/>
                 </IconButton>
-                <NextLink href="/" passHref>
+                <NextLink href='/' passHref>
                     <Link>
-                        <Typography className={classes.brand}>OneClick</Typography>
+                        <Image
+                            width={85}
+                            src={logo} alt="img"
+                        />
                     </Link>
                 </NextLink>
             </Box>
@@ -74,30 +98,73 @@ const Rasul = () => {
                                 aria-label="close"
                                 onClick={sidebarCloseHandler}
                             >
-                                <CancelIcon />
+                                <CancelIcon/>
                             </IconButton>
                         </Box>
                     </ListItem>
-                    <Divider light />
-                    <div>
-                        <div>
-                            {categories.results?.map((category) => (
-                                <NextLink
-                                    key={category}
-                                    href={`/search?category=${category}`}
-                                    passHref
-                                >
-                                    <ListItem
-                                        button
-                                        component="a"
-                                        onClick={sidebarCloseHandler}
-                                    >
-                                        <ListItemText primary={category.name}/>
-                                    </ListItem>
-                                </NextLink>
+                    <Divider light/>
+                    <div
+                        className="menu"
+                    >
+                        <div className="menu__blur"/>
+                        <div className="menu__content">
+                            {categories.results?.map((item, index) => (
+                                <ul className="side" key={item.id}>
+                                    <li className="menu__list">
+                                        <ListItem
+                                            button key={item}
+                                            className={classes.flex}
+                                        >
+                                            <div className={classes.flex}>
+                                                <ListItemIcon>
+                                                    {index % 2 === 0 ? (
+                                                        <img
+                                                            src={item.icon}
+                                                            alt="icon"
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            src={item.icon}
+                                                            alt="icon"
+                                                        />
+                                                    )}
+                                                </ListItemIcon>
+                                                <NextLink href={`/catalog/${item.name}`}>
+                                                    <a>{item.name}</a>
+                                                </NextLink>
+                                            </div>
+                                            <ul className="menu__drop">
+                                                <div className={classes.categoryChildren}>
+                                                    <div>
+                                                        {item.children.map(el => (
+                                                            <li className={classes.flex1} key={el.id}>
+                                                                <NextLink  href="">
+                                                                    <a>{el.name}</a>
+                                                                </NextLink>
+                                                            </li>
+                                                        ))}
+                                                    </div>
+                                                    <CardActionArea className={classes.cardActionArea}>
+                                                        <CardMedia
+                                                            className={classes.cardActionArea}
+                                                            component="img"
+                                                            image={item.photo}
+                                                            title={item.name}
+                                                        />
+                                                    </CardActionArea>
+                                                </div>
+                                            </ul>
+                                            <ArrowForwardIosRoundedIcon
+                                                fontSize={"inherit"}
+                                                color={"secondary"}
+                                            />
+                                        </ListItem>
+                                    </li>
+                                </ul>
                             ))}
                         </div>
                     </div>
+
                 </List>
             </Drawer>
 
