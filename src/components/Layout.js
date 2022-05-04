@@ -18,20 +18,18 @@ import Categories from "./Categories";
 import Rasul from "./rasul";
 import {Basket} from "../../Utils/svg";
 import api from "../../api/globalApi";
-import {Axios} from "../../api/Api";
+
 
 const Layout = ({title, children, description}) => {
-
     const router = useRouter();
     const dispatch = useDispatch();
     const {darkMode} = useSelector(state => state.mode)
     const {cart} = useSelector(state => state.cart)
     const {favorite} = useSelector(state => state.favorite)
     const [anchorEl, setAnchorEl] = useState(null)
-
-    // const {userInfo} = useSelector(state => state.user)
-    const [user, setUser]=useState('')
+    const [user, setUser] = useState('')
     const theme = createTheme({
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
         typography: {
             h1: {
                 fontSize: '1.6rem',
@@ -47,10 +45,10 @@ const Layout = ({title, children, description}) => {
         palette: {
             type: darkMode ? 'dark' : 'light',
             primary: {
-                main: '#303f9f',
+                main: '#009688',
             },
             secondary: {
-                main: '#880e4f',
+                main: '#ffd54f',
             },
         },
     });
@@ -59,7 +57,6 @@ const Layout = ({title, children, description}) => {
         const mode = JSON.parse(localStorage.getItem("mode"));
         dispatch({type: !mode ? ActionType.DARK_MODE_OF : ActionType.DARK_MODE_ON});
     }, [])
-
 
 
     const darkModeChangeHandler = () => {
@@ -90,11 +87,11 @@ const Layout = ({title, children, description}) => {
     useEffect(async () => {
         try {
             const parse = JSON.parse(localStorage.getItem("access"));
-          const res= await api.get("user/" , {
+            const res = await api.get("user/", {
                 headers: {authorization: `Bearer ${parse}`}
             })
-         setUser(res.data)
-        }catch (e){
+            setUser(res.data)
+        } catch (e) {
             setUser('')
         }
 
@@ -110,7 +107,6 @@ const Layout = ({title, children, description}) => {
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
                 <AppBar
-                    color={"primary"}
                     position="fixed"
                     className={classes.navbar}
                 >

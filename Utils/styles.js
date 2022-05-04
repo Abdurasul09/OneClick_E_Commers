@@ -4,7 +4,7 @@ import {alpha} from "@mui/material/styles";
 
 const useStyle = makeStyles((theme) => ({
     navbar: {
-        // backgroundColor: '#203040',
+        background: 'linear-gradient(45deg, #1cb5e0 30%, #021b79 90%)',
         '& a': {
             color: '#ffffff',
             marginLeft: 10,
