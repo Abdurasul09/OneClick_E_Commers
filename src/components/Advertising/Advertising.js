@@ -1,11 +1,7 @@
 import {useEffect, useState} from 'react';
 import Slider from "react-slick";
 import api from "../../../api/globalApi";
-import Card from "@mui/material/Card";
-import NextLink from "next/link";
-import {CardActionArea} from "@mui/material";
-import CardMedia from "@mui/material/CardMedia";
-import * as React from "react";
+import React from "react";
 
 const Advertising = () => {
     const settings = {
@@ -28,12 +24,14 @@ const Advertising = () => {
                 <div className="advertising__content">
                     <Slider {...settings}>
                         {abc.results?.map(el => (
-                            // <div key={el.id}>
-                            //     <img src={el.photo} alt="img" className='bannerImg'/>
-                            // </div>
-                            <div className="hover12 column">
+                            <div className="hover12 column" key={el.id}>
                                 <div>
-                                    <figure><img src={el.photo}/></figure>
+                                    <figure>
+                                        <img
+                                            alt='banner image'
+                                            src={el.photo}
+                                        />
+                                    </figure>
                                 </div>
                             </div>
 

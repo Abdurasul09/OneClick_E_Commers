@@ -2,20 +2,15 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import {Button, CardActionArea, CardActions} from '@mui/material';
+import {CardActionArea} from '@mui/material';
 import {Grid, Link, List, ListItem} from "@material-ui/core";
 import useStyle from "../../../Utils/styles";
 import NextLink from "next/link";
 import api from "../../../api/globalApi";
 import {useEffect, useState} from "react";
 import {grey} from "@material-ui/core/colors";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import {addToFavorite} from "../../../Utils/redux/actions/FavoriteAction";
-import {addToCartHandler} from "../../../Utils/redux/actions/CartAction";
-import {useDispatch} from "react-redux";
 
 export const Recommend = () => {
-    const dispatch = useDispatch()
     const [products, setProducts] = useState([])
     useEffect(() => {
         api('/collections')

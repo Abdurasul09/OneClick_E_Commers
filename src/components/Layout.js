@@ -12,10 +12,8 @@ import {useRouter} from "next/router";
 import Search from "./Header/Search";
 import Burger from "./Header/Burger";
 import IconButton from '@mui/material/IconButton';
-import SubMenuTheme from "./Menu";
 import {useDispatch, useSelector} from "react-redux";
 import Categories from "./Categories";
-import Rasul from "./rasul";
 import {Basket} from "../../Utils/svg";
 import api from "../../api/globalApi";
 
@@ -28,8 +26,9 @@ const Layout = ({title, children, description}) => {
     const {favorite} = useSelector(state => state.favorite)
     const [anchorEl, setAnchorEl] = useState(null)
     const [user, setUser] = useState('')
+
+
     const theme = createTheme({
-        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
         typography: {
             h1: {
                 fontSize: '1.6rem',
@@ -48,7 +47,7 @@ const Layout = ({title, children, description}) => {
                 main: '#009688',
             },
             secondary: {
-                main: '#ffd54f',
+                main: '#021b79',
             },
         },
     });
@@ -56,7 +55,7 @@ const Layout = ({title, children, description}) => {
     useEffect(() => {
         const mode = JSON.parse(localStorage.getItem("mode"));
         dispatch({type: !mode ? ActionType.DARK_MODE_OF : ActionType.DARK_MODE_ON});
-    }, [])
+    },[])
 
 
     const darkModeChangeHandler = () => {
@@ -78,23 +77,24 @@ const Layout = ({title, children, description}) => {
         localStorage.removeItem('refresh');
         localStorage.removeItem('userInfo');
         localStorage.removeItem('shippingAddress');
-        localStorage.removeItem('ally-supports-cache');
         router.push('/');
     };
     const classes = useStyle();
     const [menuActive, setMenuActive] = useState(false)
-    console.log(user)
-    useEffect(async () => {
+    const getUser = async () => {
         try {
             const parse = JSON.parse(localStorage.getItem("access"));
             const res = await api.get("user/", {
                 headers: {authorization: `Bearer ${parse}`}
             })
             setUser(res.data)
+            dispatch({type: ActionType.USER_INFO, payload: res.data})
         } catch (e) {
             setUser('')
         }
-
+    }
+    useEffect(() => {
+         getUser()
     }, [anchorEl])
     return (
         <div>
@@ -202,7 +202,6 @@ const Layout = ({title, children, description}) => {
                     {children}
                 </Container>
                 <Contact/>
-                {/*<SubMenuTheme active={menuActive} setActive={setMenuActive}/>*/}
                 <Categories active={menuActive} setActive={setMenuActive}/>
             </ThemeProvider>
         </div>

@@ -1,6 +1,5 @@
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import React, {  useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import Layout from '../src/components/Layout';
 import CheckoutWizard from '../src/components/ChekoutWizard/ChekoutWizard';
 import useStyle from '../Utils/styles';
@@ -17,25 +16,15 @@ import {
 import { useSnackbar } from 'notistack';
 import {ActionType} from "../Utils/redux/actions/types";
 import NextLink from "next/link";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
 export default function Payment() {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const classes = useStyle();
     const router = useRouter();
     const [paymentMethod, setPaymentMethod] = useState('');
-    const state = useSelector(state => state.payment);
     const dispatch = useDispatch()
-    const {
-        shippingAddress
-    } = state;
-    useEffect(() => {
-        if (!shippingAddress.address) {
-            router.push('/payment');
-        } else {
-            setPaymentMethod(Cookies.get('paymentMethod') || '');
-        }
-    }, []);
+
     const submitHandler = (e) => {
         closeSnackbar();
         e.preventDefault();
@@ -43,7 +32,7 @@ export default function Payment() {
             enqueueSnackbar('Payment method is required', { variant: 'error' });
         } else {
             dispatch({ type: ActionType.SAVE_PAYMENT_METHOD, payload: paymentMethod });
-            Cookies.set('paymentMethod', paymentMethod);
+            localStorage.setItem('paymentMethod', JSON.stringify(paymentMethod));
             router.push('/placeorder');
         }
     };

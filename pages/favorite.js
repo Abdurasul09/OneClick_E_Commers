@@ -1,4 +1,4 @@
-import React, from 'react';
+import React from 'react';
 import Layout from "../src/components/Layout";
 import useStyle from "../Utils/styles";
 import {Button, CardActionArea, CardActions, CardMedia, Grid, List, ListItem, Typography} from "@mui/material";

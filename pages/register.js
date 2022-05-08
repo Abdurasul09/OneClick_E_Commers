@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Layout from "../src/components/Layout";
 import {Button, Link, List, ListItem, TextField, Typography} from "@mui/material";
 import useStyle from "../Utils/styles";
@@ -15,14 +15,10 @@ const Register = () => {
         handleSubmit,
         control,
         formState: {errors},
-        setValue
     } = useForm();
 
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const dispatch = useDispatch();
-    const [dataFormRegister, setDataFormRegister] = useState([])
-
-
     const submitHandler = async ({name, email, password, confirmPassword}) => {
         closeSnackbar();
         if (password !== confirmPassword) {
@@ -44,14 +40,6 @@ const Register = () => {
             enqueueSnackbar(err.message, {variant: "error"})
         }
     }
-    // useEffect(() => {
-    //     setDataFormRegister(JSON.parse(localStorage.getItem("register")))
-    //     setValue("name", dataFormRegister.name),
-    //         setValue("email", dataFormRegister.email),
-    //         setValue("password", dataFormRegister.password),
-    //         setValue("confirmPassword", dataFormRegister.confirmPassword)
-    // }, [])
-
     const classes = useStyle()
 
     return (

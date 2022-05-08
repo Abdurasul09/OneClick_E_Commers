@@ -25,8 +25,6 @@ export const ChangeUserReducer = (state = initialState, action) => {
                 ...state,
                 singleUser: action.payload
             }
-
-
         default:
             return state
     }

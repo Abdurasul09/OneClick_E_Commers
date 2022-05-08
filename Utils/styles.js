@@ -148,7 +148,6 @@ const useStyle = makeStyles((theme) => ({
     },
     reviewItem: {
         marginRight: '1rem',
-        borderRight: '1px #808080 solid',
         paddingRight: '1rem',
     },
 
@@ -157,7 +156,7 @@ const useStyle = makeStyles((theme) => ({
         color: '#203040'
     },
     globalColorYellow: {
-        background: '#f0c000'
+        background: '#eeeeee'
     },
     // advertising
     advertisingH1: {
@@ -311,6 +310,8 @@ const useStyle = makeStyles((theme) => ({
     },
 //    SizeProducts
     sizeProducts: {
+        display: "flex",
+        justifyContent: "space-between",
         border: "1px solid #e8e8e8",
         boxShadow: "inset 0 0 0 1px #fff",
         textAlign: "center",
@@ -329,8 +330,34 @@ const useStyle = makeStyles((theme) => ({
     // marginTopGlobal
     marginTopGlobal: {
         marginTop: '5.4rem'
-    }
+    },
 
+    // CommentDataYear
+    dataYear: {
+        fontSize: 12,
+        color: "gray",
+        paddingLeft: 5
+    },
+
+    // globalColorStyle
+
+    globalColorStyle: {
+        color: "#bdbdbd",
+        cursor: "pointer",
+        fontSize: 31,
+        transition: '.4 all',
+        "&:hover": {
+            color: 'crimson'
+        }
+    },
+
+// childComment
+
+    childComment: {
+        padding: "0 10px",
+        marginLeft: "3rem",
+        borderRadius: 5
+    }
 }))
 
 export default useStyle;

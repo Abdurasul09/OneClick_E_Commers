@@ -1,32 +1,41 @@
 import React, {useEffect, useState} from 'react';
 import NextLink from "next/link";
 import Layout from "../../src/components/Layout";
-import {Button, Grid, List, ListItem, Typography} from "@mui/material";
+import {Button, Grid, List, ListItem, ToggleButton, ToggleButtonGroup, Typography} from "@mui/material";
 import useStyle from "../../Utils/styles";
 import {ActionType} from "../../Utils/redux/actions/types";
 import {Avatar} from "@material-ui/core";
 import {useDispatch} from "react-redux";
-import api, {urlImag} from "../../api/globalApi";
+import api from "../../api/globalApi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {addToFavorite} from "../../Utils/redux/actions/FavoriteAction";
 import Comment from "../../src/components/Comment/Comment";
+import Image from 'next/image';
+import {addToCartHandler} from "../../Utils/redux/actions/CartAction";
+
 
 const ProductScreen = ({product}) => {
-    console.log(product)
     const classes = useStyle();
     const dispatch = useDispatch()
     const [clickedImg, setClickedImg] = useState(0)
     const [currentProduct, setCurrentProduct] = useState()
-
     useEffect(() => {
         product?.products.slice(0, 1).map((item) => {
             setCurrentProduct(item)
         })
     }, [product])
-    console.log(currentProduct)
-    const addToCartHandler = (data) => {
-        dispatch({type: ActionType.ADD_TO_CARD, payload: data})
+
+    const [size, setSize] = useState("")
+    const [sizes, setSizes] = useState("")
+    console.log(sizes)
+    const onChangeValue = (event) => {
+        setSize(event.target.value)
+        localStorage.setItem('productsSize', size)
     }
+    useEffect(()=>{
+        setSizes(localStorage.getItem('productsSize'))
+    },[size])
+
     return (
         <Layout
             title={product.title}
@@ -71,9 +80,10 @@ const ProductScreen = ({product}) => {
                                     <div>
                                         {currentProduct?.images.map((item, idx) => (
                                             <List key={item}>
-                                                <img
+                                                <Image
                                                     src={item.image}
                                                     width={78}
+                                                    alt={item.title}
                                                     height={100}
                                                     onClick={() => {
                                                         setClickedImg(idx)
@@ -86,6 +96,7 @@ const ProductScreen = ({product}) => {
                                 <Grid item xs={5}>
                                     <div>
                                         <img
+                                            alt={currentProduct?.images[clickedImg].title}
                                             src={currentProduct?.images[clickedImg].image}
                                             width={400}
                                             height={540}
@@ -115,20 +126,25 @@ const ProductScreen = ({product}) => {
                                     style={{margin: 0}}
                                 >
                                     <strong>
-                                        {currentProduct?.price} coм
+                                        {product.price} coм
                                     </strong>
+                                </Typography>
+                                <Typography pl={2}>
+                                    <del style={{color: "grey", fontSize: '18px'}}>
+                                        {product.price} coм
+                                    </del>
                                 </Typography>
                             </ListItem>
                             <ListItem>
-                                <Grid item xs={1}>
-                                    <Typography>Sale:</Typography>
+                                <Grid item xs={2}>
+                                    <Typography>Скидка:</Typography>
                                 </Grid>
                                 <Grid item xs={1}>
                                     {product.discount ? (
                                         <Avatar
                                             className={classes.globalColorYellow}
                                         >
-                                            <Typography>
+                                            <Typography style={{color: "gray"}}>
                                                 -{product.discount}%
                                             </Typography>
                                         </Avatar>
@@ -137,7 +153,20 @@ const ProductScreen = ({product}) => {
                                     )}
                                 </Grid>
                             </ListItem>
-                            <Typography pl={2}>Цвет:</Typography>
+                            <ListItem>
+                                <Grid item xs={1}>
+                                    <Typography>Цвет:</Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    {/*{currentProduct.color ? (*/}
+                                    {/*    <Typography*/}
+                                    {/*        pl={2}*/}
+                                    {/*        color='#009688'>*/}
+                                    {/*        {currentProduct.color}*/}
+                                    {/*    </Typography>*/}
+                                    {/*) : (" ")}*/}
+                                </Grid>
+                            </ListItem>
                             <ListItem>
                                 {product.products.map(item => (
                                     <div
@@ -145,7 +174,8 @@ const ProductScreen = ({product}) => {
                                         key={item.id}
                                         style={{margin: 2}}
                                     >
-                                        <img
+                                        <Image
+                                            alt={item.images[0].title}
                                             src={item.images[0].image}
                                             width={78}
                                             height={100}
@@ -153,31 +183,48 @@ const ProductScreen = ({product}) => {
                                     </div>
                                 ))}
                             </ListItem>
-                            <Typography pl={2} pt={1}>Размер:</Typography>
-                            <ListItem style={{paddingLeft: 0, marginBottom: 10}}>
-                                {product.products.slice(0, 1).map(item => (
-                                    <ListItem key={item}>
-                                        {item.sizes.map(itemSize => (
-                                            <span
-                                                key={itemSize}
-                                                className={classes.sizeProducts}
-                                            >
-                                            {itemSize.size}
-                                        </span>
-                                        ))}
-                                    </ListItem>
-                                ))}
+                            <Typography pl={2} pt={1}>Размер: {sizes} </Typography>
+                            <ListItem style={{marginBottom: 10}}>
+                                <form  className={classes.flex}>
+                                    {currentProduct?.sizes.map(itemSize => (
+                                            <div key={itemSize} className='form_radio_btn'>
+                                                <label
+                                                    key={itemSize.size}
+                                                    htmlFor={`${itemSize.size}`}
+                                                    style={{
+                                                        borderColor: sizes === itemSize.size ? "red" : null,
+                                                        color: sizes === itemSize.size ? "red": null
+                                                    }}
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        onChange={onChangeValue}
+                                                        id={`${itemSize.size}`}
+                                                        name="inputRadios"
+                                                        value={`${itemSize.size}`}
+                                                    />
+                                                    {itemSize.size}
+                                                </label>
+                                            </div>
+                                    ))}
+                                </form>
                             </ListItem>
                             <ListItem>
                                 <Button
                                     size={"large"}
                                     variant="contained"
-                                    color="primary"
-                                    onClick={() => addToCartHandler(product)}
+                                    color={"primary"}
+                                    onClick={() => {
+                                        product.size = size
+                                        dispatch(addToCartHandler(product))
+                                    }
+                                    }
                                 >
-                                    Add to card
+                                    Добавить в корзину
                                 </Button>&nbsp;
-                                <Avatar>
+                                <Avatar
+                                    className={classes.globalColorYellow}
+                                >
                                     <FavoriteBorderIcon
                                         onClick={() => dispatch(addToFavorite(product))}
                                         className={classes.favoriteBorderIconHover}

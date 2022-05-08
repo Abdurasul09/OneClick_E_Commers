@@ -5,7 +5,6 @@ export const addToCartHandler = (product) => {
     return async dispatch => {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         const foundProduct = cart?.find(el => el.id === product.id)
-        console.log(foundProduct, "found")
         if(foundProduct){
             cart = cart.map(el => el.id === product.id ?
                     {...el, quantity: el.quantity + 1} : el)
@@ -14,7 +13,6 @@ export const addToCartHandler = (product) => {
         }
         window.localStorage.setItem('cart', JSON.stringify(cart));
         dispatch({type: ActionType.ADD_TO_CARD, payload: product})
-        console.log('cartProduct', cart)
     }
 }
 
@@ -25,7 +23,6 @@ export const DecFromCart = (id) => {
     if (findProduct.quantity > 1)
         cart = cart.map(el => el.id === id ?
             {...el, quantity: el.quantity - 1} : el)
-
     window.localStorage.setItem('cart', JSON.stringify(cart));
     return {type: ActionType.DEC_TO_QUANTITY, payload: id}
 }
@@ -33,10 +30,6 @@ export const DecFromCart = (id) => {
 export const DeleteFromCart = (el) => {
     localStorage.removeItem('cart')
     return {type: ActionType.DELETE_FROM_CARD, payload: el.id}
-}
-
-export const IncToCart = (el) => {
-    return {type: ActionType.ADD_TO_CARD, payload: el}
 }
 
 export const getCart = (cart) => {

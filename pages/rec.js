@@ -1,6 +1,6 @@
 import React from 'react';
 import api from "../api/globalApi";
-import {Grid, Link, List, ListItem} from "@material-ui/core";
+import {Grid, List, ListItem} from "@material-ui/core";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import {Button, CardActionArea, CardActions} from "@mui/material";
@@ -16,6 +16,14 @@ import {useDispatch} from "react-redux";
 const Rec = ({products}) => {
     const classes = useStyle();
     const dispatch = useDispatch()
+
+
+
+
+
+
+
+
     return (
         <div>
             <Grid container spacing={5}>

@@ -20,7 +20,6 @@ import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import api from "../api/globalApi";
-import {useSoftRiseShadowStyles} from '@mui-treasury/styles/shadow/softRise';
 import {Link} from "@material-ui/core";
 import Newcollection from "./newcollection";
 import {grey} from "@material-ui/core/colors";
@@ -31,7 +30,6 @@ const Home = ({products}) => {
     const dispatch = useDispatch()
     const {posts} = useSelector(state => state.posts)
     const classes = useStyle();
-    const shadowStyles = useSoftRiseShadowStyles();
     useEffect(() => {
         if (posts[0]) {
             setAllProducts(posts)

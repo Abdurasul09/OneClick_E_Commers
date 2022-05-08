@@ -1,5 +1,4 @@
-import React, {useContext, useEffect} from 'react';
-import {Store} from "../Utils/redux/Store";
+import React, {useEffect} from 'react';
 import dynamic from "next/dynamic";
 import Layout from "../src/components/Layout";
 import {
@@ -15,17 +14,16 @@ import {
 import NextLink from "next/link";
 import useStyle from "../Utils/styles";
 import Table from "@mui/material/Table";
-
 import {List} from "@material-ui/core";
 import {useRouter} from "next/router";
 import CheckoutWizard from "../src/components/ChekoutWizard/ChekoutWizard";
 import {useSelector} from "react-redux";
+import Image from 'next/image'
 
 
 const PlaceOrder = () => {
     const router = useRouter();
     const { state } = useSelector(state => state);
-    // const {cart} = useSelector(state => state.cart);
     const {
         cart,
         shippingAddress,
@@ -41,7 +39,7 @@ const PlaceOrder = () => {
         if (!paymentMethod) {
             router.push('/payment')
         }
-    }, []);
+    }, );
 
     return (
         <div className={classes.cartScreen}>
@@ -123,7 +121,7 @@ const PlaceOrder = () => {
                                                     <TableRow key={el.id}>
                                                         <TableCell>
                                                             <NextLink href={`/product/${el.id}`} passHref>
-                                                                <img
+                                                                <Image
                                                                     src={el.image}
                                                                     alt={el.title}
                                                                     width={100}

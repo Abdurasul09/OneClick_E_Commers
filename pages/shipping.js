@@ -1,11 +1,10 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Layout from "../src/components/Layout";
 import {Button, List, ListItem, TextField, Typography} from "@mui/material";
 import useStyle from "../Utils/styles";
 import NextLink from 'next/link'
 import {ActionType} from "../Utils/redux/actions/types";
 import {useRouter} from "next/router";
-import {Store} from "../Utils/redux/Store";
 import {useForm, Controller} from "react-hook-form";
 import CheckoutWizard from "../src/components/ChekoutWizard/ChekoutWizard";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,7 +14,6 @@ const Shipping = () => {
         handleSubmit,
         control,
         formState: {errors},
-        setValue
     } = useForm();
 
 
@@ -28,14 +26,8 @@ const Shipping = () => {
         if (!userInfo) {
             router.push('/shipping')
         }
-        const dataFrom = JSON.parse(localStorage.getItem("shippingAddress"))
-        // setValue("fullName", dataFrom.fullName)
-        // setValue("address", dataFrom.address)
-        // setValue("city", dataFrom.city)
-        // setValue("postalCode", dataFrom.postalCode)
-        // setValue("country", dataFrom.country)
 
-    }, [])
+    },)
 
     const submitHandler = ({fullName, address, city, postalCode, country}) => {
         dispatch({

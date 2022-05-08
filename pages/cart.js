@@ -10,6 +10,7 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
+import Image from "next/image";
 import NextLink from "next/link";
 import useStyle from "../Utils/styles";
 import Table from "@mui/material/Table";
@@ -40,6 +41,7 @@ const CartScreen = () => {
                 {cart?.length === 0 ? (
                     <>
                         <SnackbarContent
+                            variant={'outlined'}
                             message="Корзина пуста!"
                         />
                         <NextLink href="/"><Link>Ходить по магазинам</Link></NextLink>
@@ -51,7 +53,7 @@ const CartScreen = () => {
                                 <Table>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell>Image</TableCell>
+                                            <TableCell>Изображение</TableCell>
                                             <TableCell>Name</TableCell>
                                             <TableCell align="center">Quantity</TableCell>
                                             <TableCell align="right">Price</TableCell>
@@ -74,8 +76,13 @@ const CartScreen = () => {
                                                 </TableCell>
                                                 <TableCell>
                                                     <NextLink href={`/product/${el.id}`} passHref>
-                                                        <Typography>{el.title}</Typography>
+                                                        <Typography>
+                                                            {el.title}
+                                                        </Typography>
                                                     </NextLink>
+                                                    <Typography fontSize={'small'}>
+                                                        size: {el.size}
+                                                    </Typography>
                                                 </TableCell>
                                                 <TableCell
                                                     align="center"
