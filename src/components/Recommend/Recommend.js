@@ -9,19 +9,39 @@ import NextLink from "next/link";
 import api from "../../../api/globalApi";
 import {useEffect, useState} from "react";
 import {grey} from "@material-ui/core/colors";
+import Modal from "../Ocno";
+import SingleProduct from "../SingleProduct/SingleProduct";
+import {addToFavorite} from "../../../Utils/redux/actions/FavoriteAction";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {useDispatch} from "react-redux";
 
 export const Recommend = () => {
-    const [products, setProducts] = useState([])
+    const [productsItem, setProductsItem] = useState([])
+    const [modalActive, setModalActive] = useState(false)
+    const [singleProduct, setSingleProduct] = useState({})
+    const dispatch = useDispatch()
     useEffect(() => {
-        api('/collections')
-            .then(res => setProducts(res.data))
+        productsItem.results?.map(item => (
+            item.products.slice(0, 1).map((item) => {
+                setSingleProduct(item)
+            })
+        ))
+    },[productsItem])
+
+    useEffect(() => {
+        try {
+            api('/collections')
+                .then(res => setProductsItem(res.data))
+        } catch (e) {
+            console.log(e)
+        }
     },[])
     const classes = useStyle();
     return (
         <div>
             <NextLink href="/rec" passHref>
                 <Link>
-                    {products.results?.map(el => (
+                    {productsItem.results?.map(el => (
                         <Typography
                             key={el.id}
                             py={2}
@@ -33,13 +53,13 @@ export const Recommend = () => {
                 </Link>
             </NextLink>
             <Grid container spacing={5}>
-                {products.results?.map(productItem => (
+                {productsItem.results?.map(productItem => (
                     <>
                         {productItem.products.map(product => (
                             <Grid item md={3} key={product.id}>
-                                <Card variant="outlined" style={{border: "none"}}>
+                                <Card>
                                     <NextLink href={`/product/${product.id}`}>
-                                        <CardActionArea>
+                                        <CardActionArea className='productImage'>
                                             <CardMedia
                                                 component="img"
                                                 className={classes.productImage}
@@ -55,45 +75,57 @@ export const Recommend = () => {
                                             ) : (
                                                 " "
                                             )}
+                                            <span className='willLook'>
+                                                Посмотреть
+                                            </span>
                                         </CardActionArea>
                                     </NextLink>
-                                </Card>
-                                <List style={{paddingBottom: 0}}>
-                                    <ListItem
-                                        style={{padding:0}}
+                                    <List
+                                        onClick={() => setSingleProduct(product)}
+                                        style={{paddingBottom: 0}}
                                     >
-                                        <Typography sx={{ color: grey[600] }}>
-                                            {product.title}
-                                        </Typography>
-                                    </ListItem>
-                                    <ListItem
-                                        style={{padding:0}}
-                                    >
-                                        {product.discount_price ? (
-                                            <div className={classes.flex}>
-                                                <Typography>
-                                                    <strong>{product.discount_price} coм</strong>
-                                                </Typography>
-                                                <Typography pl={2}>
-                                                    <del style={{color: "grey", fontSize: '13px'}}>
-                                                        {product.price} coм
-                                                    </del>
-                                                </Typography>
-                                            </div>
-                                        ) : (
-                                            <Typography>
-                                                <strong>
-                                                    {product.price} coм
-                                                </strong>
+                                        <ListItem className={classes.priceFavoriteIcon}>
+                                            <Typography
+                                                onClick={() => setModalActive(true)}
+                                                sx={{ color: grey[600] }}
+                                            >
+                                                {product.title}
                                             </Typography>
-                                        )}
-                                    </ListItem>
-                                </List>
+                                            <FavoriteBorderIcon
+                                                onClick={() => dispatch(addToFavorite(product))}
+                                                className={classes.favoriteBorderIconHover}
+                                            />
+                                        </ListItem>
+                                        <ListItem>
+                                            {product.discount_price ? (
+                                                <div className={classes.flex}>
+                                                    <Typography>
+                                                        <strong>{product.discount_price} coм</strong>
+                                                    </Typography>
+                                                    <Typography pl={2}>
+                                                        <del style={{color: "grey", fontSize: '13px'}}>
+                                                            {product.price} coм
+                                                        </del>
+                                                    </Typography>
+                                                </div>
+                                            ) : (
+                                                <Typography>
+                                                    <strong>
+                                                        {product.price} coм
+                                                    </strong>
+                                                </Typography>
+                                            )}
+                                        </ListItem>
+                                    </List>
+                                </Card>
                             </Grid>
                         ))}
                     </>
                 ))}
             </Grid>
+            <Modal active={modalActive} setActive={setModalActive}>
+                <SingleProduct singleProduct={singleProduct}/>
+            </Modal>
         </div>
     );
 }

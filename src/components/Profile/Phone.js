@@ -6,7 +6,7 @@ import {Button, Modal, TextField} from "@material-ui/core";
 import Box from "@mui/material/Box";
 import useStyle from "../../../Utils/styles";
 
-const Phone  = ({user,handleChange}) => {
+const Phone  = ({user,handleChange, sendUser}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -52,7 +52,12 @@ const Phone  = ({user,handleChange}) => {
                             />
 
                             <Typography pt={3}>
-                                <Button variant={"outlined"}>Сохранить</Button>&nbsp;
+                                <Button
+                                    variant={"outlined"}
+                                    onClick={sendUser ? handleClose : ''}
+                                >
+                                    Сохранить
+                                </Button>&nbsp;
                                 <Button variant={"outlined"}>Отменить</Button>
                             </Typography>
                         </form>

@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import dynamic from "next/dynamic";
 import Layout from "../src/components/Layout";
 import {
     Grid, Link,
@@ -10,7 +9,6 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
-import Image from "next/image";
 import NextLink from "next/link";
 import useStyle from "../Utils/styles";
 import Table from "@mui/material/Table";
@@ -29,10 +27,11 @@ const CartScreen = () => {
     const dispatch = useDispatch();
     const {cart} = useSelector(state => state.cart);
     const classes = useStyle();
-    console.log(cart)
+
     useEffect(() => {
         dispatch(getCart(JSON.parse(localStorage.getItem('cart'))))
     }, [])
+
     return (
         <div className={classes.cartScreen}>
             <Layout title="Shopping cart">
@@ -64,15 +63,22 @@ const CartScreen = () => {
                                         {cart?.map(el => (
                                             <TableRow key={el.id}>
                                                 <TableCell>
-                                                    <NextLink href={`/product/${el.id}`} passHref>
-                                                        <img
-                                                            src={el.image}
-                                                            alt={el.title}
-                                                            width={100}
-                                                            height={120}
-                                                            style={{objectFit: "contain"}}
-                                                        />
-                                                    </NextLink>
+                                                    {el.photo.images.map(item => (
+                                                        <div key={item.id}>
+                                                            <NextLink
+                                                                href={`/product/${el.id}`}
+                                                                passHref
+                                                            >
+                                                                <img
+                                                                    src={item.image}
+                                                                    alt='Хлопковая футболка-поло с короткими рукавами для мальчика'
+                                                                    width={100}
+                                                                    height={120}
+                                                                    style={{objectFit: "contain"}}
+                                                                />
+                                                            </NextLink>
+                                                        </div>
+                                                    ))}
                                                 </TableCell>
                                                 <TableCell>
                                                     <NextLink href={`/product/${el.id}`} passHref>
@@ -81,7 +87,7 @@ const CartScreen = () => {
                                                         </Typography>
                                                     </NextLink>
                                                     <Typography fontSize={'small'}>
-                                                        size: {el.size}
+                                                        <span>Размер:</span>{el.size}
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell
@@ -130,4 +136,5 @@ const CartScreen = () => {
     );
 };
 
-export default dynamic(() => Promise.resolve(CartScreen), {ssr: false});
+// export default dynamic(() => Promise.resolve(CartScreen), {ssr: false});
+export default CartScreen;

@@ -1,20 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Typography} from "@mui/material";
+import React from 'react';
+import {ListItem, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import {Button, Modal, TextField} from "@material-ui/core";
 import Box from "@mui/material/Box";
 import useStyle from "../../../Utils/styles";
 
-
-const Email = ({user, handleChange, sendUser}) => {
+const Name = ({user, handleChange, sendUser}) => {
     const [open, setOpen] = React.useState(false);
-    const [chengEmail, setChengEmail] = useState({})
-    useEffect(() => {
-        setChengEmail(JSON.parse(localStorage.getItem('chengUser')))
-    },[])
-
-
 
     const classes = useStyle();
     const handleOpen = () => setOpen(true);
@@ -22,15 +15,18 @@ const Email = ({user, handleChange, sendUser}) => {
     return (
         <div>
             <Typography>
-                <Typography> <strong>E-mail</strong></Typography>
-                {user ? user.email : chengEmail.email}&nbsp;
-                <IconButton size={"medium"}>
-                    <EditIcon
-                        color={"primary"}
-                        fontSize={"small"}
-                        onClick={handleOpen}
-                    />
-                </IconButton>
+                <ListItem>
+                    <Typography pr={1}>
+                        {user.username}
+                    </Typography>
+                    <IconButton size={"medium"}>
+                        <EditIcon
+                            color={"primary"}
+                            fontSize={"small"}
+                            onClick={handleOpen}
+                        />
+                    </IconButton>
+                </ListItem>
                 <Modal
                     keepMounted
                     open={open}
@@ -45,17 +41,15 @@ const Email = ({user, handleChange, sendUser}) => {
                                 variant="h6" component="h2"
                                 pb={2}
                             >
-                                Изменение e-mail
+                                Изменение name
                             </Typography>
                             <TextField
                                 onChange={handleChange}
                                 fullWidth
-                                value={user.email}
-                                name="email"
-                                label="E-mail"
-                                id="outlined-size-small"
+                                value={user.username}
+                                name="name"
                                 size="small"
-                                inputProps={{type: "email"}}
+                                inputProps={{type: "text"}}
                             />
 
                             <Typography pt={3}>
@@ -80,4 +74,4 @@ const Email = ({user, handleChange, sendUser}) => {
     );
 };
 
-export default Email;
+export default Name;

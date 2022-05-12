@@ -96,6 +96,9 @@ const Layout = ({title, children, description}) => {
     useEffect(() => {
          getUser()
     }, [anchorEl])
+
+
+
     return (
         <div>
             <Head>

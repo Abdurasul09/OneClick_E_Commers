@@ -303,10 +303,17 @@ const useStyle = makeStyles((theme) => ({
         top: 10,
         left: 0,
     },
+
+
     //ProductImage
     productImage: {
         width: "100%",
         height: 350,
+        "&:hover": {
+            willLook:{
+                opacity: 1
+            }
+        }
     },
 //    SizeProducts
     sizeProducts: {
@@ -352,12 +359,36 @@ const useStyle = makeStyles((theme) => ({
     },
 
 // childComment
-
     childComment: {
         padding: "0 10px",
         marginLeft: "3rem",
         borderRadius: 5
+    },
+    //globalStyleImage
+
+    globalStyleImage: {
+        width: "100%",
+        borderRadius: 5
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }))
 
 export default useStyle;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -6,24 +6,17 @@ import {Button, Modal, TextField} from "@material-ui/core";
 import Box from "@mui/material/Box";
 import useStyle from "../../../Utils/styles";
 
-
-const Email = ({user, handleChange, sendUser}) => {
+const Born  = ({user,handleChange, sendUser}) => {
     const [open, setOpen] = React.useState(false);
-    const [chengEmail, setChengEmail] = useState({})
-    useEffect(() => {
-        setChengEmail(JSON.parse(localStorage.getItem('chengUser')))
-    },[])
-
-
-
-    const classes = useStyle();
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const classes = useStyle();
+
     return (
         <div>
             <Typography>
-                <Typography> <strong>E-mail</strong></Typography>
-                {user ? user.email : chengEmail.email}&nbsp;
+                <Typography> <strong>Телефон</strong></Typography>
+                {user.birth_day}&nbsp;
                 <IconButton size={"medium"}>
                     <EditIcon
                         color={"primary"}
@@ -45,32 +38,26 @@ const Email = ({user, handleChange, sendUser}) => {
                                 variant="h6" component="h2"
                                 pb={2}
                             >
-                                Изменение e-mail
+                                Изменение номера телефона
                             </Typography>
                             <TextField
                                 onChange={handleChange}
                                 fullWidth
-                                value={user.email}
-                                name="email"
-                                label="E-mail"
+                                value={user.birth_day}
+                                name="birth_day"
                                 id="outlined-size-small"
                                 size="small"
-                                inputProps={{type: "email"}}
+                                inputProps={{type: "text"}}
                             />
 
                             <Typography pt={3}>
                                 <Button
-                                    onClick={sendUser ? handleClose : ''}
                                     variant={"outlined"}
+                                    onClick={sendUser ? handleClose : ''}
                                 >
                                     Сохранить
                                 </Button>&nbsp;
-                                <Button
-                                    variant={"outlined"}
-                                    onClick={handleClose}
-                                >
-                                    Отменить
-                                </Button>
+                                <Button variant={"outlined"}>Отменить</Button>
                             </Typography>
                         </form>
                     </Box>
@@ -80,4 +67,4 @@ const Email = ({user, handleChange, sendUser}) => {
     );
 };
 
-export default Email;
+export default Born;

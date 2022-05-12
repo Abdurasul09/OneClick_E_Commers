@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Layout from "../src/components/Layout";
 import {Button, List, ListItem, TextField, Typography} from "@mui/material";
 import useStyle from "../Utils/styles";
-import NextLink from 'next/link'
 import {ActionType} from "../Utils/redux/actions/types";
 import {useRouter} from "next/router";
 import {useForm, Controller} from "react-hook-form";
 import CheckoutWizard from "../src/components/ChekoutWizard/ChekoutWizard";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import Buttons from "../src/components/Buttons/Buttons";
 
 const Shipping = () => {
     const {
@@ -18,16 +18,7 @@ const Shipping = () => {
 
 
     const router = useRouter();
-    const state  = useSelector(state => state.payment);
     const dispatch = useDispatch()
-    const { userInfo } = state;
-
-    useEffect(() => {
-        if (!userInfo) {
-            router.push('/shipping')
-        }
-
-    },)
 
     const submitHandler = ({fullName, address, city, postalCode, country}) => {
         dispatch({
@@ -49,26 +40,7 @@ const Shipping = () => {
 
     return (
         <Layout title="Shipping">
-            <div className={classes.loginBtn}>
-                <NextLink href="#">
-                    <Button
-                        className={classes.btn}
-                        variant="contained"
-                        color="primary"
-                    >
-                        <Typography>Назад</Typography>
-                    </Button>
-                </NextLink>
-                <NextLink href="/">
-                    <Button
-                        className={classes.btn}
-                        variant="contained"
-                        color="primary"
-                    >
-                        <Typography>Главная</Typography>
-                    </Button>
-                </NextLink>
-            </div>
+           <Buttons/>
             <CheckoutWizard activeStep={1}/>
             <form
                 className={classes.form}

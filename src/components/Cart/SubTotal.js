@@ -5,12 +5,11 @@ import {useSelector} from "react-redux";
 import {useRouter} from "next/router";
 
 const SubTotal = ({cart}) => {
-    const {userInfo} = useSelector(state => state.user)
+    const userInfo = useSelector(state => state.user.userInfo)
     const router = useRouter();
-
     const checkoutHandler = () => {
-        if(!userInfo) {
-            router.push("/shipping")
+        if(userInfo) {
+            router.push("/checkout")
         } else {
             router.push("/login")
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import api from "../api/globalApi";
 import {Grid, List, ListItem} from "@material-ui/core";
 import Typography from "@mui/material/Typography";
@@ -8,21 +8,12 @@ import CardMedia from "@mui/material/CardMedia";
 import useStyle from "../Utils/styles";
 import NextLink from "next/link";
 import {grey} from "@material-ui/core/colors";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {useDispatch} from "react-redux";
 
 const Rec = ({products}) => {
     const classes = useStyle();
     const dispatch = useDispatch()
-
-
-
-
-
-
-
 
     return (
         <div>
@@ -51,15 +42,14 @@ const Rec = ({products}) => {
                                             )}
                                         </CardActionArea>
                                     </NextLink>
-                                    <List style={{paddingBottom: 0}}>
+                                    <List
+                                        style={{paddingBottom: 0}}
+                                    >
+                                        <button>ijokml;,</button>
                                         <ListItem className={classes.priceFavoriteIcon}>
                                             <Typography sx={{ color: grey[600] }}>
                                                 {product.title}
                                             </Typography>
-                                            <FavoriteBorderIcon
-                                                onClick={() => dispatch(addToFavorite(product))}
-                                                className={classes.favoriteBorderIconHover}
-                                            />
                                         </ListItem>
                                         <ListItem>
                                             {product.discount_price ? (
@@ -97,6 +87,7 @@ const Rec = ({products}) => {
                     </>
                 ))}
             </Grid>
+
         </div>
     );
 };

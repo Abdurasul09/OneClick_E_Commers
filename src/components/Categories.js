@@ -33,12 +33,12 @@ const Categories = ({active, setActive}) => {
                                 <div className={classes.flex}>
                                     <ListItemIcon>
                                         {index % 2 === 0 ? (
-                                            <Image
+                                            <img
                                                 src={item.icon}
                                                 alt="icon"
                                             />
                                         ) : (
-                                            <Image
+                                            <img
                                                 src={item.icon}
                                                 alt="icon"
                                             />

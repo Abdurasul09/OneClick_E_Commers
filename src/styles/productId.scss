@@ -11,14 +11,51 @@
     border-radius: 6px;
     user-select: none;
     color: #666;
-
-    &:hover {
-      color: red;
-      border-color: red;
-    }
   }
 }
 
 .form_radio_btn input[type=radio] {
   display: none;
+}
+
+
+
+.willLook{
+  position: absolute;
+  background-color: rgba(238, 238, 238, 0.82);
+  padding: 10px;
+  color: #333333;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  border-radius: 3px;
+  transition: .2s ease;
+}
+.productImage{
+  width: 100%;
+  height: 350px
+}
+
+.productImage:hover .willLook{
+  opacity: 1;
+}
+
+
+.hover figure {
+  height: 219px;
+  border-radius: 10px;
+  background: #000000;
+}
+.hover figure img {
+  width: 100%;
+  border-radius: 10px;
+  opacity: 1;
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+.hover figure:hover img {
+  border-radius: 10px;
+  opacity: .7;
 }

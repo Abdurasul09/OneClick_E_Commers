@@ -11,25 +11,31 @@ import Email from "../src/components/Profile/Email";
 import Phone from "../src/components/Profile/Phone";
 import ProfilePages from "../src/components/Profile/ProfilePage/ProfilePages";
 import api from "../api/globalApi";
+import Axios from "../api/Api";
+import Born from "../src/components/Profile/born";
+import Name from "../src/components/Profile/name";
 
 const Profile = () => {
     const classes = useStyle();
     const [user, setUser] = useState({})
+    const [changeAvatar, setChangeAvatar] = useState({})
+    console.log(changeAvatar)
 
     useEffect(() => {
         const parse = JSON.parse(localStorage.getItem("access"));
-        api.get("user/" , {
+        api.get("user/", {
             headers: {authorization: `Bearer ${parse}`}
         })
-            .then(res => {setUser(res.data)})
+            .then(res => setUser(res.data))
     }, [])
 
-    const sendUser = () => {
-        const parse = JSON.parse(localStorage.getItem("access"));
-        api.patch("user/", {user}, {
-            headers: {authorization: `Bearer ${parse}`}
-        })
-            .then(({data}) => setUser(data) )
+    const sendUser = async () => {
+        try {
+            await Axios.patch("user/", {user})
+                .then((data) => setUser(data))
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     const handleChange = (e) => {
@@ -50,20 +56,21 @@ const Profile = () => {
                     <Card item md={3} xs={12}>
                         <List>
                             <ListItem>
-                                <Typography>
-                                    <IconButton sx={{p: 0}}>
-                                        <Badge
-                                            overlap="circular"
-                                            anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-                                            badgeContent={
-                                                <CameraAltIcon style={{width: "20px", height: "20px"}} color="primary"/>
-                                            }
-                                        >
-                                            <Avatar alt="Travis Howard" src=""/>
-                                        </Badge>
-                                    </IconButton>&nbsp;
-                                    {user.username}
-                                </Typography>
+                                <Grid item xl={12} md={1}>
+                                    <Avatar alt="Travis Howard" src=""/>
+                                    <input
+                                        type="file"
+                                        onChange={(e) => setChangeAvatar(e)}
+                                    />
+                                </Grid>
+                                <Grid item xl={12} md={1}>
+                                    <Name
+                                        sendUser={sendUser}
+                                        handleChange={handleChange}
+                                        name="name"
+                                        user={user}
+                                    />
+                                </Grid>
                             </ListItem>
                             <ListItem className={classes.profileItems}>
                                 <Email
@@ -73,19 +80,21 @@ const Profile = () => {
                                     user={user}
                                 />
                                 <Phone
+                                    sendUser={sendUser}
+                                    handleChange={handleChange}
+                                    name="phone"
+                                    user={user}
+                                />
+                                <Born
+                                    sendUser={sendUser}
                                     handleChange={handleChange}
                                     name="phone"
                                     user={user}
                                 />
                                 <Typography>
-                                    <Typography><strong>Дата рождения</strong></Typography>
-                                    {user.birth_day}&nbsp;
-                                    <IconButton size={"medium"}>
-                                        <EditIcon color={"primary"} fontSize={"small"}/>
-                                    </IconButton>
-                                </Typography>
-                                <Typography>
-                                    <Typography><strong>Пароль</strong></Typography>
+                                    <Typography>
+                                        <strong>Пароль</strong>
+                                    </Typography>
                                     <IconButton size={"medium"}>
                                         <EditIcon color={"primary"} fontSize={"small"}/>
                                     </IconButton>
@@ -101,13 +110,13 @@ const Profile = () => {
                                             row
                                         >
                                             <FormControlLabel
-                                                label="Муж"
-                                                value="Муж"
+                                                label={user.gender}
+                                                value={user.gender ? user.gender : ''}
                                                 control={<Radio/>}
                                             />
                                             <FormControlLabel
-                                                label="Жен"
-                                                value="Жен"
+                                                label={user.gender}
+                                                value={user.gender}
                                                 control={<Radio/>}
                                             />
                                         </RadioGroup>
@@ -123,7 +132,9 @@ const Profile = () => {
                                 <Typography><strong>Удаление личного кабинета</strong></Typography>
                             </ListItem>
                             <ListItem>
-                                <Typography className={classes.profileTypography}>Как только ваш личный кабинет будет удален, Вы автоматически выйдете из системы и больше не сможете войти в этот аккаунт.</Typography>
+                                <Typography className={classes.profileTypography}>Как только ваш личный кабинет будет
+                                    удален, Вы автоматически выйдете из системы и больше не сможете войти в этот
+                                    аккаунт.</Typography>
                             </ListItem>
                             <ListItem>
                                 <Button
@@ -142,7 +153,7 @@ const Profile = () => {
                                     aria-describedby="keep-mounted-modal-description"
                                 >
                                     <Box className={classes.modal}>
-                                        <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
+                                        <Typography id="keep-mounted-modal-description" sx={{mt: 2}}>
                                             Действительно хотите удалить аккаунт или нет?
                                         </Typography>
                                         <Typography pt={3}>
