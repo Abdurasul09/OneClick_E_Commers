@@ -146,11 +146,6 @@ const useStyle = makeStyles((theme) => ({
         maxWidth: 800,
         width: '100%',
     },
-    reviewItem: {
-        marginRight: '1rem',
-        paddingRight: '1rem',
-    },
-
     //GlobalColor
     globalColor: {
         color: '#203040'
@@ -273,7 +268,7 @@ const useStyle = makeStyles((theme) => ({
     flexCenter: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "start"
     },
     flex1: {
         display: "flex",
@@ -309,11 +304,6 @@ const useStyle = makeStyles((theme) => ({
     productImage: {
         width: "100%",
         height: 350,
-        "&:hover": {
-            willLook:{
-                opacity: 1
-            }
-        }
     },
 //    SizeProducts
     sizeProducts: {
@@ -369,25 +359,39 @@ const useStyle = makeStyles((theme) => ({
     globalStyleImage: {
         width: "100%",
         borderRadius: 5
+    },
+    // Address Location
+
+    address: {
+        border: "1px solid blue",
+        padding: '10px',
+        borderRadius: 5
+    },
+    reviewItem: {
+        marginRight: '4rem',
+        borderRight: '1px #808080 solid',
+    },
+    delivery: {
+        fontSize: 16,
+        fontWeight: 500,
+        marginTop: 10,
+        border: '1px solid rgba(0,150,136,0.56)',
+        color: 'rgba(0,150,136,0.95)',
+        padding: "5px 10px",
+        borderRadius: 5,
+        cursor: 'pointer',
+    },
+    exclamatory: {
+        fontSize: "14px",
+        border: '1px solid red',
+        textAlign: 'center',
+        color: "red",
+        padding: '4px 10px',
+        borderRadius: "50%"
+    },
+    payCartTitle: {
+        fontSize: '.7rem'
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }))
 

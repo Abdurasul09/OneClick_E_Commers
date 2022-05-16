@@ -26,6 +26,7 @@ import Buttons from "../src/components/Buttons/Buttons";
 const CartScreen = () => {
     const dispatch = useDispatch();
     const {cart} = useSelector(state => state.cart);
+    console.log(cart)
     const classes = useStyle();
 
     useEffect(() => {
@@ -63,7 +64,7 @@ const CartScreen = () => {
                                         {cart?.map(el => (
                                             <TableRow key={el.id}>
                                                 <TableCell>
-                                                    {el.photo.images.map(item => (
+                                                    {el.images.map(item => (
                                                         <div key={item.id}>
                                                             <NextLink
                                                                 href={`/product/${el.id}`}
@@ -87,7 +88,10 @@ const CartScreen = () => {
                                                         </Typography>
                                                     </NextLink>
                                                     <Typography fontSize={'small'}>
-                                                        <span>Размер:</span>{el.size}
+                                                        <span>Размер:</span>&nbsp;{el.sizes}
+                                                    </Typography>
+                                                    <Typography fontSize={'small'}>
+                                                        <span>Цвет:</span>&nbsp;{el.color}
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell

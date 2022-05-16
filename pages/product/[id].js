@@ -17,23 +17,36 @@ const ProductScreen = ({product}) => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const [clickedImg, setClickedImg] = useState(0)
-
     const [currentProduct, setCurrentProduct] = useState()
+    const [cartProduct, setCartProduct]=useState(currentProduct)
+    const [size, setSize] = useState("")
+
+    useEffect(()=>{
+        if(!currentProduct) return
+        setCartProduct(currentProduct)
+    },[size])
+    console.log(cartProduct)
+
     useEffect(() => {
         product?.products.slice(0, 1).map((item) => {
             setCurrentProduct(item)
         })
     }, [product])
 
-    const [size, setSize] = useState("")
-    const [sizes, setSizes] = useState("")
-    const onChangeValue = (event) => {
-        setSize(event.target.value)
-        localStorage.setItem('productsSize', size)
+    const buy=()=>{
+        if(!size){
+            alert('vyberi razmer dalbash')
+            return
+        }
+        try{
+
+            cartProduct.sizes=size
+
+            dispatch(addToCartHandler(cartProduct))
+        }catch (e){
+            console.log(e)
+        }
     }
-    useEffect(() => {
-        setSizes(localStorage.getItem('productsSize'))
-    }, [size])
 
     return (
         <Layout
@@ -184,7 +197,7 @@ const ProductScreen = ({product}) => {
                                             </div>
                                         ))}
                                     </ListItem>
-                                    <Typography pl={2} pt={1}>Размер: {sizes} </Typography>
+                                    <Typography pl={2} pt={1}>Размер: {size ? size : 'ne vybrano'} </Typography>
                                     <ListItem style={{marginBottom: 10}}>
                                         <form className={classes.flex}>
                                             {currentProduct?.sizes.map(itemSize => (
@@ -193,13 +206,13 @@ const ProductScreen = ({product}) => {
                                                         key={itemSize.size}
                                                         htmlFor={`${itemSize.size}`}
                                                         style={{
-                                                            borderColor: sizes === itemSize.size ? "red" : null,
-                                                            color: sizes === itemSize.size ? "red" : null
+                                                            borderColor: size === itemSize.size ? "red" : null,
+                                                            color: size === itemSize.size ? "red" : null
                                                         }}
                                                     >
                                                         <input
                                                             type="radio"
-                                                            onChange={onChangeValue}
+                                                            onChange={(e)=>setSize(e.target.value)}
                                                             id={`${itemSize.size}`}
                                                             name="inputRadios"
                                                             value={`${itemSize.size}`}
@@ -216,9 +229,9 @@ const ProductScreen = ({product}) => {
                                             variant="contained"
                                             color={"primary"}
                                             onClick={() => {
-                                                product.photo = currentProduct
-                                                product.size = size
-                                                dispatch(addToCartHandler(product))
+
+                                                buy()
+
                                             }
                                             }
                                         >

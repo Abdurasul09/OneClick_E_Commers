@@ -1,0 +1,41 @@
+.location{
+  div{
+    width: 300px;
+    .ymaps-2-1-79-map{
+      width: 300px;
+      .ymaps-2-1-79-i-ua_js_yes{
+        width: 450px !important;
+        height: 400px !important;
+      }
+    }
+  }
+}
+
+.payWithCart{
+  border: 1px solid #666666;
+  padding: 10px;
+  transition: .2s all;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover{
+    background: rgba(153, 153, 153, 0.35);
+  }
+}
+.payWithCart input[type=radio] {
+  display: none;
+}
+
+.none{
+  display: none;
+}
+.block{
+  display: block;
+}
+
+.free input[type=radio] {
+  display: none;
+}
+.paid input[type=radio] {
+  display: none;
+}

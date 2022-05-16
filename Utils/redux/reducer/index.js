@@ -7,6 +7,7 @@ import {PaymentMethodReducer} from "./paymentReducer";
 import {ChangeUserReducer} from "./changeUserReducer";
 import {fetchPostsReducer} from "./fetchPosts";
 import {Comments} from "./comments";
+import {Location} from './location'
 
 export default combineReducers({
     cart: CartReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
     payment: PaymentMethodReducer,
     changeUser: ChangeUserReducer,
     posts: fetchPostsReducer,
-    com: Comments
+    com: Comments,
+    address: Location
 })

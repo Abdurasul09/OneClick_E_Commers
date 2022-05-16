@@ -1,8 +1,6 @@
 import Layout from "../src/components/Layout";
 import {
-    Button,
     CardActionArea,
-    CardActions,
     CardMedia,
     Grid,
     List,
@@ -15,7 +13,6 @@ import NextLink from "next/link";
 import useStyle from "../Utils/styles";
 import Advertising from "../src/components/Advertising/Advertising";
 import {Recommend} from "../src/components/Recommend/Recommend";
-import {addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
@@ -25,6 +22,7 @@ import Newcollection from "./newcollection";
 import {grey} from "@material-ui/core/colors";
 import Banners from "../src/components/Banners/Banners";
 import {CircularProgress} from "@material-ui/core";
+
 
 const Home = ({products}) => {
     const [allProducts, setAllProducts] = useState(products)
