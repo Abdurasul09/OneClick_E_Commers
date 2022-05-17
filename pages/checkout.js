@@ -3,39 +3,38 @@ import Layout from "../src/components/Layout";
 import Buttons from "../src/components/Buttons/Buttons";
 import {Grid, List, TextField} from "@material-ui/core";
 import {Button, Card, ListItem, Typography} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import NextLink from 'next/link'
 import useStyle from "../Utils/styles";
 import {Controller, useForm} from "react-hook-form";
 import Axios from "../api/Api";
+import {Order} from "../Utils/redux/actions/order";
 
 const Checkout = () => {
     const {handleSubmit, control, formState: {errors},} = useForm();
     const {cart} = useSelector(state => state.cart)
-    const {location} = useSelector(state => state.address)
+    const {orderProduct} = useSelector(state => state.order)
+    const dispatch = useDispatch()
     const [address, setAddress] = useState({})
     const [cashPaymentActive, setCashPaymentActive] = useState(false)
     const [active, setActive] = useState(false)
-    const [formActive, setFormActive] = useState(false)
     const [delivery, setDelivery] = useState('')
     const [phonee, setPhonee] = useState('')
     const [payment, setPayment] = useState('')
+    const [pay, setPay] = useState('платный')
     const classes = useStyle();
-    console.log(delivery)
-
 
     useEffect(() => {
         setAddress(JSON.parse(localStorage.getItem('address')))
     }, [])
 
-    const submitHandler = async ({name, address, phone, entrance, floor, intercom}) => {
+    const submitHandler = async (data) => {
         try {
-            const sendInfo = {name, address, phone, entrance, floor, intercom}
-            Axios.post('/orders', {
+            await Axios.post('/orders/', {
                 delivery: delivery,
                 payment: payment,
-                address: location,
-                phone: phonee,
+                address: data,
+                phone: data.phone,
                 products: [{
                     product: 1,
                     qt: cart.quantity,
@@ -43,9 +42,14 @@ const Checkout = () => {
                     color: cart.color
                 }]
             })
-        }catch (e) {
+        } catch (e) {
             console.log(e)
         }
+    }
+
+
+    const payHandler = () => {
+        dispatch(Order('courier'))
     }
 
     return (
@@ -73,9 +77,11 @@ const Checkout = () => {
                                     </Typography>
                                     <Typography className={classes.delivery}>
                                         <div className='paid'>
-                                            <label key="Курьером">
+                                            <label  onClick={()=>dispatch(Order('courier'))} key="Курьером">
                                                 <input
-                                                    onClick={() => formActive ? setFormActive(false) : setFormActive(true)}
+                                                    onClick={() =>   setPay(" платный ")
+                                                    }
+                                                    // onClick={() => formActive ? setFormActive(false) : setFormActive(true)}
                                                     type="radio"
                                                     onChange={(e) => setDelivery(e.target.value)}
                                                     name="inputRadios"
@@ -92,7 +98,7 @@ const Checkout = () => {
                                     <Typography variant='h2' component='h2'>Бесплатный</Typography>
                                     <NextLink href='/issuepoint'>
                                         <a style={{textDecoration: 'none'}}>
-                                            <Button variant='outlined'>Пунк выдачи</Button>
+                                            <Button variant='outlined' onClick={()=>dispatch(Order('notCourier'))}>Пунк выдачи</Button>
                                         </a>
                                     </NextLink>
                                     <Typography
@@ -102,9 +108,10 @@ const Checkout = () => {
                                         className={classes.delivery}
                                     >
                                         <div className='free'>
-                                            <label key="Курьером Только по городу Бишкек">
+                                            <label onClick={()=> dispatch(Order('courier'))} key="Курьером Только по городу Бишкек">
                                                 <input
-                                                    onClick={() => formActive ? setFormActive(false) : setFormActive(true)}
+                                                    onClick={()=>setPay(' бесплатный ')}
+                                                    // onClick={() => formActive ? setFormActive(false) : setFormActive(true)}
                                                     type="radio"
                                                     onChange={(e) => setDelivery(e.target.value)}
                                                     name="inputRadios"
@@ -118,11 +125,11 @@ const Checkout = () => {
                                 </Grid>
                             </Grid>
                         </ListItem>
-                        {location ? (
-                            <List className={formActive ? "block" : 'none'}>
+                        {orderProduct ==="courier" ? (
+                            <List >
                                 <ListItem>
                                     <form onSubmit={handleSubmit(submitHandler)}>
-                                        <Typography variant='h1' component='h1'>Мои адреса</Typography>
+                                        <Typography variant='h1' component='h1'>Мои адреса:({pay})</Typography>
                                         <ListItem>
                                             <Typography pr={3}>Ф.И.О</Typography>
                                             <Controller
@@ -285,16 +292,16 @@ const Checkout = () => {
                                         <ListItem>
                                             <Button
                                                 variant="contained"
-                                                type="submit"
+                                                type="button"
                                                 fullWidth
                                                 color="primary"
                                             >
-                                                Сохранить
+                                                Далee
                                             </Button>&nbsp;
                                             <Button
                                                 fullWidth
                                                 variant="contained"
-                                                type="submit"
+                                                type="button"
                                                 color="primary"
                                             >
                                                 Отмена
@@ -303,17 +310,23 @@ const Checkout = () => {
                                     </form>
                                 </ListItem>
                             </List>
-                        ) : (<h1>net</h1>)}
-                        {location ? (
-                            <List>
-                                <Typography variant='h1' component='h1'>Мои адреса</Typography>
-                                <p className={classes.address}>
-                                    {address.name}
-                                </p>
-                            </List>
-                        ) : (<h2>Выберите адрес!</h2>)}
+                        ) : (<List>
+                            <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>
+                            <p className={classes.address}>
+                                {address.name}
+                            </p>
+                        </List>)}
+
+                        {/*{orderProduct !=="courier" ? (*/}
+                        {/*    <List>*/}
+                        {/*        <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>*/}
+                        {/*        <p className={classes.address}>*/}
+                        {/*            {address.name}*/}
+                        {/*        </p>*/}
+                        {/*    </List>*/}
+                        {/*) : (null)}*/}
                         <List>
-                            <Typography component='h1' variant='h2'>
+                            <Typography component='h1' variant='h2' id='#chek'>
                                 Способ оплаты
                             </Typography>
                             <ListItem>
@@ -521,6 +534,7 @@ const Checkout = () => {
                     </List>
                 </Grid>
                 <Grid xs={12} md={2}/>
+
                 <Grid item xs={12} md={3}>
                     <Card>
                         <List>
@@ -565,7 +579,7 @@ const Checkout = () => {
                                     variant="contained"
                                     color="secondary"
                                     fullWidth
-                                    // onClick={checkoutHandler}
+                                    onClick={()=>submitHandler()}
                                 >
                                     Заказать
                                 </Button>

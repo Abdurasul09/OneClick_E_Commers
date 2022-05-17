@@ -8,6 +8,7 @@ import {ChangeUserReducer} from "./changeUserReducer";
 import {fetchPostsReducer} from "./fetchPosts";
 import {Comments} from "./comments";
 import {Location} from './location'
+import {orderReducer} from "./order";
 
 export default combineReducers({
     cart: CartReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
     changeUser: ChangeUserReducer,
     posts: fetchPostsReducer,
     com: Comments,
-    address: Location
+    address: Location,
+    order: orderReducer,
 })

@@ -22,6 +22,7 @@ import Newcollection from "./newcollection";
 import {grey} from "@material-ui/core/colors";
 import Banners from "../src/components/Banners/Banners";
 import {CircularProgress} from "@material-ui/core";
+import {New} from "../src/components/New/New";
 
 
 const Home = ({products}) => {
@@ -116,7 +117,7 @@ const Home = ({products}) => {
                             </Grid>
                         </div>
                         <Banners/>
-                        <Newcollection/>
+                        <New/>
                     </>
                 ) : (
                     <CircularProgress/>

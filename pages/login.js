@@ -32,14 +32,9 @@ const Login = () => {
     }, [token])
 
     const submitHandler = async ({email, password}) => {
-        const login = {email, password}
         closeSnackbar();
         try {
-            const {data} = await api.post('token/', {
-                email,
-                password
-            })
-            console.log(login)
+            const {data} = await api.post('token/', {email, password})
             dispatch({type: ActionType.USER_LOGIN, payload: data})
             localStorage.setItem("access", JSON.stringify(data.access))
             localStorage.setItem("refresh", JSON.stringify(data.refresh))
