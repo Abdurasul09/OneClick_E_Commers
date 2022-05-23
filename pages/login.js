@@ -116,14 +116,11 @@ const Login = () => {
                         />
                     </ListItem>
                     <ListItem>
-                        <Button
-                            variant="contained"
-                            type="submit"
-                            fullWidth
-                            color="primary"
-                        >
+                        <button
+                            className='globalBtn'
+                            type="submit">
                             Login
-                        </Button>
+                        </button>
                     </ListItem>
                     <ListItem>
                         <Typography>Dont have an account ?</Typography>&nbsp;

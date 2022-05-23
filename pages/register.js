@@ -43,16 +43,18 @@ const Register = () => {
     const classes = useStyle()
 
     return (
-        <Layout title="Register">
+        <Layout title="Регистраця">
             <Buttons/>
             <form
                 className={classes.form}
                 onSubmit={handleSubmit(submitHandler)}
             >
-                <Typography component="h1" variant='h1'>
-                    Register
-                </Typography>
                 <List>
+                    <ListItem>
+                        <Typography component="h1" variant='h1'>
+                            Регистраця
+                        </Typography>
+                    </ListItem>
                     <ListItem>
                         <Controller
                             name="name"
@@ -172,19 +174,17 @@ const Register = () => {
                         />
                     </ListItem>
                     <ListItem>
-                        <Button
-                            variant="contained"
+                        <button
+                            className='globalBtn'
                             type="submit"
-                            fullWidth
-                            color="primary"
                         >
-                            Register
-                        </Button>
+                            Регистраця
+                        </button>
                     </ListItem>
                     <ListItem>
-                        <Typography>Already hav an account?</Typography> &nbsp;
+                        <Typography pr={1}>У вас уже есть аккаунт?</Typography>
                         <NextLink href="/login" passHref>
-                            <Link>Register</Link>
+                            <Link>Login</Link>
                         </NextLink>
                     </ListItem>
                 </List>
