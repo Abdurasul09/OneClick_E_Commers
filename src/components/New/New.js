@@ -26,7 +26,7 @@ export const New = () => {
                 setSingleProduct(item)
             })
         ))
-    },[productsItem])
+    }, [productsItem])
 
     useEffect(() => {
         try {
@@ -35,23 +35,23 @@ export const New = () => {
         } catch (e) {
             console.log(e)
         }
-    },[])
+    }, [])
     const classes = useStyle();
     return (
         <div>
             <NextLink href="/" passHref>
-                <Link>
+                <a>
                     {productsItem.results?.map(el => (
                         <Typography
                             key={el.id}
                             py={2}
-                            className={classes.brand}
+                            className={classes.globalText}
                         >
                             {/*{el.name}*/}
-                            Новинки
+                            Новинки . . .
                         </Typography>
                     ))}
-                </Link>
+                </a>
             </NextLink>
             <Grid container spacing={5}>
                 {productsItem.results?.map(productItem => (
@@ -88,7 +88,7 @@ export const New = () => {
                                         <ListItem className={classes.priceFavoriteIcon}>
                                             <Typography
                                                 onClick={() => setModalActive(true)}
-                                                sx={{ color: grey[600] }}
+                                                sx={{color: grey[600]}}
                                             >
                                                 {product.title}
                                             </Typography>

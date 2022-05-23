@@ -26,8 +26,9 @@ import Buttons from "../src/components/Buttons/Buttons";
 const CartScreen = () => {
     const dispatch = useDispatch();
     const {cart} = useSelector(state => state.cart);
-    console.log(cart)
+    const {productPrice} = useSelector(state => state.cart)
     const classes = useStyle();
+    console.log(cart.price)
 
     useEffect(() => {
         dispatch(getCart(JSON.parse(localStorage.getItem('cart'))))
@@ -113,7 +114,7 @@ const CartScreen = () => {
                                                     </IconButton>
                                                 </TableCell>
                                                 <TableCell align="right">
-                                                    $ {el.price}
+                                                     {cart.price} сом
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <DeleteOutlineIcon

@@ -4,16 +4,24 @@ import {alpha} from "@mui/material/styles";
 
 const useStyle = makeStyles((theme) => ({
     navbar: {
-        background: 'linear-gradient(45deg, #1cb5e0 30%, #021b79 90%)',
+        // background: 'linear-gradient(45deg, #1cb5e0 30%, #021b79 90%)',
+        backgroundColor: "#111827FF",
         '& a': {
             color: '#ffffff',
             marginLeft: 10,
         },
     },
+    globalText:{
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        color: '#111827FF'
+    },
     brand: {
         fontWeight: 'bold',
         fontSize: '2rem',
-        color: '#203040'
+    },
+    brandR: {
+        color: '#faaf00'
     },
     gridMenu: {
         color: '#ffffff',
@@ -45,14 +53,13 @@ const useStyle = makeStyles((theme) => ({
         marginTop: "6rem"
     },
     btns: {
-        margin: "7rem 0 3rem 0"
+        margin: "5rem 0 1rem 0"
     },
     btn: {
         margin: "5px"
     },
     iconSvg: {
         color: "#F6F9FC",
-        marginRight: "5px",
     },
     badge: {
         color: "#F6F9FC",
@@ -111,7 +118,6 @@ const useStyle = makeStyles((theme) => ({
         width: "400px",
         border: 'none',
         backgroundColor: alpha(theme.palette.common.white, 0.20),
-        borderRadius: "5px",
     },
     searchInput: {
         border: "none",
@@ -247,7 +253,7 @@ const useStyle = makeStyles((theme) => ({
     },
 //    FavoriteBorderIcon
     favoriteBorderIconHover: {
-        color: '#203040',
+        color: '#919EAB',
         cursor: 'pointer',
         transition: ".2s all",
         '&:hover': {
@@ -368,6 +374,7 @@ const useStyle = makeStyles((theme) => ({
         borderRadius: 5
     },
     reviewItem: {
+        marginTop: '1.5rem',
         marginRight: '4rem',
         borderRight: '1px #808080 solid',
     },

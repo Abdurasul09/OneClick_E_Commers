@@ -26,14 +26,13 @@ const SubTotal = ({cart}) => {
                         </Typography>
                     </ListItem>
                     <ListItem>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            fullWidth
+                        <button
+                            style={{width: '100%'}}
+                            className='btnCart'
                             onClick={checkoutHandler}
                         >
                             Проверить
-                        </Button>
+                        </button>
                     </ListItem>
                 </List>
             </Card>

@@ -8,22 +8,14 @@ const Buttons = () => {
     return (
         <div className={classes.btns}>
             <NextLink href="#">
-                <Button
-                    className={classes.btn}
-                    variant="contained"
-                    color="primary"
-                >
-                    <Typography>Назад</Typography>
-                </Button>
+                <button className='btnCart'>
+                  Назад
+                </button>
             </NextLink>
             <NextLink href="/">
-                <Button
-                    className={classes.btn}
-                    variant="contained"
-                    color="primary"
-                >
-                    <Typography>Главная</Typography>
-                </Button>
+                <button className='btnCart'>
+                    Главная
+                </button>
             </NextLink>
         </div>
     );

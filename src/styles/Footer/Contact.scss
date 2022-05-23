@@ -1,7 +1,7 @@
-$white: #ffff;
-$textColor: #203040;
-$background: #155FA3;
-.contact{
+$white: rgb(160, 174, 192);
+$background: #111827FF;
+$hoverColor: #ffffff;
+.contact {
   margin-top: 2rem;
   background: $background;
   display: flex;
@@ -11,29 +11,35 @@ $background: #155FA3;
   border-bottom: 1px solid #ffffff;
   color: $white;
 
+
   &__content {
     display: flex;
     align-items: start;
     justify-content: space-between;
 
-    &__logo{
+    &__logo {
       flex: 1;
 
-      &__text{
+      &__text {
         flex: 1;
         padding-top: 15px;
         font-size: 12px;
         line-height: 19px;
         color: $white;
+        &:hover {
+          color: $hoverColor;
+          cursor: pointer;
+        }
       }
     }
 
-    &__buyers{
+    &__buyers {
       padding: 0 20px;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
+
       h3 {
         padding-bottom: 15px;
         font-weight: 500;
@@ -46,10 +52,14 @@ $background: #155FA3;
         padding: 3px 0;
         font-weight: 300;
         color: $white;
+        &:hover {
+          color: $hoverColor;
+          cursor: pointer;
+        }
       }
     }
 
-    &__shop{
+    &__shop {
       flex: .8;
       display: flex;
       flex-direction: column;
@@ -66,10 +76,14 @@ $background: #155FA3;
         padding: 3px 0;
         font-weight: 300;
         color: $white;
+        &:hover {
+          color: $hoverColor;
+          cursor: pointer;
+        }
       }
     }
 
-    &__sotSet{
+    &__sotSet {
       flex: 1;
 
       h3 {
@@ -83,14 +97,19 @@ $background: #155FA3;
         margin: 5px;
         display: flex;
         align-items: center;
+        &:hover {
+          color: $hoverColor;
+          cursor: pointer;
+        }
       }
-      &__sets{
+
+      &__sets {
         display: flex;
         align-items: center;
       }
     }
 
-    &__addressSection{
+    &__addressSection {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -101,7 +120,7 @@ $background: #155FA3;
         color: $white;
       }
 
-      &__address{
+      &__address {
         display: flex;
         align-items: center;
         margin-bottom: 15px;
@@ -109,10 +128,14 @@ $background: #155FA3;
         p {
           font-size: 12px;
           padding: 10px 0 0 10px;
+          &:hover {
+            color: $hoverColor;
+            cursor: pointer;
+          }
         }
       }
 
-      &__phone{
+      &__phone {
         margin-top: 10px;
         display: flex;
         align-items: center;
@@ -125,7 +148,11 @@ $background: #155FA3;
 
         p {
           font-size: 14px;
-          color:$white;
+          color: $white;
+          &:hover {
+            color: $hoverColor;
+            cursor: pointer;
+          }
         }
       }
     }

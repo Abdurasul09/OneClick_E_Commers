@@ -1,6 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import Contact from "./Footer/Contact";
-import {AppBar, Badge, Button, Container, Link, ThemeProvider, Switch, Toolbar, CssBaseline} from '@material-ui/core';
+import {
+    AppBar,
+    Badge,
+    Button,
+    Container,
+    Link,
+    ThemeProvider,
+    Switch,
+    Toolbar,
+    CssBaseline,
+} from '@material-ui/core';
 import Head from 'next/head'
 import NextLink from "next/link";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -16,6 +26,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Categories from "./Categories";
 import {Basket} from "../../Utils/svg";
 import api from "../../api/globalApi";
+import PhoneIcon from '@mui/icons-material/Phone';
 
 
 const Layout = ({title, children, description}) => {
@@ -44,10 +55,10 @@ const Layout = ({title, children, description}) => {
         palette: {
             type: darkMode ? 'dark' : 'light',
             primary: {
-                main: '#009688',
+                main: '#7582EBFF',
             },
             secondary: {
-                main: '#021b79',
+                main: '#faaf00',
             },
         },
     });
@@ -55,7 +66,7 @@ const Layout = ({title, children, description}) => {
     useEffect(() => {
         const mode = JSON.parse(localStorage.getItem("mode"));
         dispatch({type: !mode ? ActionType.DARK_MODE_OF : ActionType.DARK_MODE_ON});
-    },[])
+    }, [])
 
 
     const darkModeChangeHandler = () => {
@@ -94,9 +105,8 @@ const Layout = ({title, children, description}) => {
         }
     }
     useEffect(() => {
-         getUser()
+        getUser()
     }, [anchorEl])
-
 
 
     return (
@@ -115,8 +125,6 @@ const Layout = ({title, children, description}) => {
                 >
                     <Toolbar>
                         <Burger active={menuActive} setActive={setMenuActive}/>
-                        {/*<Rasul/>*/}
-
                         <div className={classes.grow}/>
                         <Search/>
                         <div className={classes.grow}/>
@@ -127,42 +135,45 @@ const Layout = ({title, children, description}) => {
                                 checked={darkMode}
                                 onChange={darkModeChangeHandler}
                             />
+                            <NextLink href="#" passHref>
+                                <a>
+                                    <IconButton className={classes.iconSvg}>
+                                        <PhoneIcon/>
+                                    </IconButton>
+                                </a>
+                            </NextLink>
                             <NextLink href="/favorite" passHref>
-                                <Link>
+                                <a>
                                     {favorite.length > 0 ? (
-                                        <Badge
-                                            color={"secondary"}
-                                            badgeContent={favorite.length}
-                                        >
-                                            <IconButton size="small" aria-label="add an alarm"
-                                                        className={classes.badge}>
-                                                <FavoriteBorderIcon/>
-                                            </IconButton>
-                                        </Badge>
+                                        <IconButton>
+                                            <Badge
+                                                color={"secondary"}
+                                                badgeContent={favorite.length}
+                                            >
+                                                <FavoriteBorderIcon className={classes.iconSvg}/>
+                                            </Badge>
+                                        </IconButton>
                                     ) : (
-                                        <IconButton size="small" className={classes.iconSvg}>
-                                            <FavoriteBorderIcon/>
+                                        <IconButton>
+                                            <FavoriteBorderIcon className={classes.iconSvg}/>
                                         </IconButton>
                                     )}
-                                </Link>
+                                </a>
                             </NextLink>
                             <NextLink href="/cart" passHref>
-                                <Link>
+                                <a>
                                     {cart?.length > 0 ? (
-                                        <Badge
-                                            color="secondary"
-                                            badgeContent={cart?.length}
-                                        >
-                                            <IconButton size="small" className={classes.iconSvg}>
+                                        <IconButton className={classes.iconSvg}>
+                                            <Badge color="secondary" badgeContent={cart?.length}>
                                                 <Basket/>
-                                            </IconButton>
-                                        </Badge>
+                                            </Badge>
+                                        </IconButton>
                                     ) : (
-                                        <IconButton size="small" className={classes.iconSvg}>
+                                        <IconButton className={classes.iconSvg}>
                                             <Basket/>
                                         </IconButton>
                                     )}
-                                </Link>
+                                </a>
                             </NextLink>
                             {user ? (
                                 <>

@@ -8,6 +8,7 @@ import logo from "../../../public/images/logo.svg";
 import NextLink from "next/link";
 import {GridMenu} from "../../../Utils/svg";
 import useStyle from "../../../Utils/styles";
+import {Typography} from "@material-ui/core";
 
 export default function Burger({active, setActive}) {
     const classes = useStyle();
@@ -26,18 +27,11 @@ export default function Burger({active, setActive}) {
             >
                 <GridMenu/>
             </IconButton>
-            <Box
-                sx={{ml: 2, mt: 1}}
-            >
-                <NextLink href='/' passHref>
-                    <Link>
-                        <Image
-                            width={85}
-                            src={logo} alt="img"
-                        />
-                    </Link>
-                </NextLink>
-            </Box>
+            <NextLink href="/" passHref>
+                <Typography className={classes.brand}>
+                    <span className={classes.brandR}>r</span>izon
+                </Typography>
+            </NextLink>
         </Box>
     );
 }

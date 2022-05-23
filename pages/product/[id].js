@@ -1,49 +1,61 @@
 import React, {useEffect, useState} from 'react';
 import NextLink from "next/link";
 import Layout from "../../src/components/Layout";
-import {Button, Grid, List, ListItem,Typography} from "@mui/material";
+import {Button, Grid, List, ListItem, Typography} from "@mui/material";
 import useStyle from "../../Utils/styles";
-import {Avatar, CircularProgress} from "@material-ui/core";
+import {Avatar, CircularProgress, IconButton, TextField} from "@material-ui/core";
 import {useDispatch} from "react-redux";
 import api from "../../api/globalApi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {addToFavorite} from "../../Utils/redux/actions/FavoriteAction";
 import Comment from "../../src/components/Comment/Comment";
 import Image from 'next/image';
-import {addToCartHandler} from "../../Utils/redux/actions/CartAction";
-
+import {addToCartHandler, addToCartProductPrice} from "../../Utils/redux/actions/CartAction";
+import ShareIcon from '@mui/icons-material/Share';
+import {useSnackbar} from "notistack";
+import Modal from "../../src/components/Ocno";
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Buttons from "../../src/components/Buttons/Buttons";
 
 const ProductScreen = ({product}) => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const [clickedImg, setClickedImg] = useState(0)
     const [currentProduct, setCurrentProduct] = useState()
-    const [cartProduct, setCartProduct]=useState(currentProduct)
+    const [cartProduct, setCartProduct] = useState(currentProduct)
     const [size, setSize] = useState("")
+    const [modalActive, setModalActive] = useState(false)
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
-    useEffect(()=>{
-        if(!currentProduct) return
+    const sendUrl = `https://mui.com/store/previews/onepirate/`
+
+    console.log(product)
+    useEffect(() => {
+        if (!currentProduct) return
         setCartProduct(currentProduct)
-    },[size])
-    console.log(cartProduct)
+    }, [size])
 
     useEffect(() => {
         product?.products.slice(0, 1).map((item) => {
+            item.quantity = 0
+            item.price = product.price
             setCurrentProduct(item)
         })
+        dispatch(addToCartProductPrice(product))
     }, [product])
 
-    const buy=()=>{
-        if(!size){
-            alert('vyberi razmer dalbash')
+    const buy = () => {
+        if (!size) {
+            enqueueSnackbar("Выберите размер !!!", {variant: 'error'})
             return
         }
-        try{
-
-            cartProduct.sizes=size
-
-            dispatch(addToCartHandler(cartProduct))
-        }catch (e){
+        try {
+            cartProduct.sizes = size
+            return dispatch(addToCartHandler(cartProduct))
+        } catch (e) {
             console.log(e)
         }
     }
@@ -56,26 +68,7 @@ const ProductScreen = ({product}) => {
             {product ? (
                 <>
                     <div className={classes.section}>
-                        <div className={classes.btns}>
-                            <NextLink href="#">
-                                <Button
-                                    className={classes.btn}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    <Typography>Назад</Typography>
-                                </Button>
-                            </NextLink>
-                            <NextLink href="/">
-                                <Button
-                                    className={classes.btn}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    <Typography>Главная</Typography>
-                                </Button>
-                            </NextLink>
-                        </div>
+                        <Buttons/>
                         <List>
                             <ListItem>
                                 <Typography
@@ -172,13 +165,13 @@ const ProductScreen = ({product}) => {
                                             <Typography>Цвет:</Typography>
                                         </Grid>
                                         <Grid item xs={1}>
-                                            {/*{currentProduct.color ? (*/}
-                                            {/*    <Typography*/}
-                                            {/*        pl={2}*/}
-                                            {/*        color='#009688'>*/}
-                                            {/*        {currentProduct.color}*/}
-                                            {/*    </Typography>*/}
-                                            {/*) : (" ")}*/}
+                                            {currentProduct?.color ? (
+                                                <Typography
+                                                    pl={2}
+                                                    color='#009688'>
+                                                    {currentProduct.color}
+                                                </Typography>
+                                            ) : (" ")}
                                         </Grid>
                                     </ListItem>
                                     <ListItem>
@@ -206,13 +199,13 @@ const ProductScreen = ({product}) => {
                                                         key={itemSize.size}
                                                         htmlFor={`${itemSize.size}`}
                                                         style={{
-                                                            borderColor: size === itemSize.size ? "red" : null,
-                                                            color: size === itemSize.size ? "red" : null
+                                                            backgroundColor: size === itemSize.size ? "#0a0c0c" : null,
+                                                            color: size === itemSize.size ? "#ffffff" : null
                                                         }}
                                                     >
                                                         <input
                                                             type="radio"
-                                                            onChange={(e)=>setSize(e.target.value)}
+                                                            onChange={(e) => setSize(e.target.value)}
                                                             id={`${itemSize.size}`}
                                                             name="inputRadios"
                                                             value={`${itemSize.size}`}
@@ -224,37 +217,110 @@ const ProductScreen = ({product}) => {
                                         </form>
                                     </ListItem>
                                     <ListItem>
-                                        <Button
-                                            size={"large"}
-                                            variant="contained"
-                                            color={"primary"}
+                                        <button
+                                            className='btnCart'
                                             onClick={() => {
-
                                                 buy()
-
-                                            }
-                                            }
+                                            }}
                                         >
                                             Добавить в корзину
-                                        </Button>&nbsp;
-                                        <Avatar
-                                            className={classes.globalColorYellow}
+                                        </button>
+                                        <button
+                                            className='btnFav'
+                                            onClick={() => dispatch(addToFavorite(product))}
                                         >
-                                            <FavoriteBorderIcon
-                                                onClick={() => dispatch(addToFavorite(product))}
-                                                className={classes.favoriteBorderIconHover}
-                                            />
-                                        </Avatar>
+                                            <FavoriteBorderIcon fontSize={"small"}/>&nbsp; Избранное
+                                        </button>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>
+                                            Артикул: 65634576527
+                                        </Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>
+                                            Продавец: Алиса Анарбаева
+                                        </Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <NextLink href={`/stores/${product.id}`}>
+                                            <a>
+                                                <button className='btnFav'>
+                                                    Перейти в магазине
+                                                </button>
+                                            </a>
+                                        </NextLink>&nbsp;
+                                        <IconButton
+                                            onClick={() => setModalActive(true)}
+                                        >
+                                            <ShareIcon/>
+                                        </IconButton>
                                     </ListItem>
                                 </List>
                             </Grid>
                         </Grid>
+                        <List>
+                            <ListItem>
+                                <Typography component='h1' variant='h1'>С товаром рекомендуют</Typography>
+                            </ListItem>
+                        </List>
                     </div>
                     <Comment item={product}/>
+                    <Modal active={modalActive} setActive={setModalActive}>
+                        <List>
+                            <Typography component='h1' variant='h1'>Поделиться</Typography>
+                            <ListItem>
+                                <NextLink href='https://www.youtube.com/'>
+                                    <a>
+                                        <YouTubeIcon
+                                            style={{fontSize: '100px'}}
+                                            fontSize={"large"}
+                                        />
+                                    </a>
+                                </NextLink>&nbsp;
+                                <NextLink href='https://www.instagram.com/'>
+                                    <a>
+                                        <InstagramIcon
+                                            style={{fontSize: '70px'}}
+                                            fontSize={"large"}
+                                        />
+                                    </a>
+                                </NextLink>&nbsp;
+                                <NextLink href='https://www.facebook.com/'>
+                                    <a>
+                                        <FacebookIcon
+                                            style={{fontSize: '80px'}}
+                                            fontSize={"large"}
+                                        />
+                                    </a>
+                                </NextLink>&nbsp;
+                                <NextLink href='https://www.whatsapp.com/'>
+                                    <a>
+                                        <WhatsAppIcon
+                                            style={{fontSize: '70px'}}
+                                            fontSize={"large"}
+                                        />
+                                    </a>
+                                </NextLink>
+                            </ListItem>
+                            <ListItem>
+                                <input
+                                    type="text"
+                                    className='url'
+                                    value={sendUrl}
+                                />
+                                <button className='btnCart'
+                                    onClick={ async (event) => await navigator.clipboard.writeText(sendUrl)}
+                                >
+                                    Копировать
+                                </button>
+                            </ListItem>
+                        </List>
+                    </Modal>
                 </>
             ) : (
-                 <CircularProgress/>
-                )}
+                <CircularProgress/>
+            )}
         </Layout>
     );
 };

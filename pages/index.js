@@ -18,8 +18,6 @@ import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import api from "../api/globalApi";
 import {Link} from "@material-ui/core";
-import Newcollection from "./newcollection";
-import {grey} from "@material-ui/core/colors";
 import Banners from "../src/components/Banners/Banners";
 import {CircularProgress} from "@material-ui/core";
 import {New} from "../src/components/New/New";
@@ -45,14 +43,14 @@ const Home = ({products}) => {
                         <Recommend/>
                         <div className={classes.card}>
                             <NextLink href="#" passHref>
-                                <Link>
+                                <a>
                                     <Typography
                                         py={2}
-                                        className={classes.brand}
+                                        className={classes.globalText}
                                     >
-                                        Хиты продаж
+                                        Хиты продаж . . .
                                     </Typography>
-                                </Link>
+                                </a>
                             </NextLink>
                             <Grid container spacing={5}>
                                 {allProducts.map(product => (
@@ -82,7 +80,7 @@ const Home = ({products}) => {
                                             </NextLink>
                                             <List style={{paddingBottom: 0}}>
                                                 <ListItem className={classes.priceFavoriteIcon}>
-                                                    <Typography sx={{ color: grey[600] }}>
+                                                    <Typography style={{color: '#919EAB'}}>
                                                         {product.title}
                                                     </Typography>
                                                     <FavoriteBorderIcon

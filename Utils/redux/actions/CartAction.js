@@ -37,3 +37,8 @@ export const getCart = (cart) => {
         dispatch({type: ActionType.GET_CART, payload: cart});
     }
 };
+
+
+export const addToCartProductPrice = (el) => {
+    return {type: ActionType.ADD_TO_CART_PRODUCT_PRICE, payload: el}
+}

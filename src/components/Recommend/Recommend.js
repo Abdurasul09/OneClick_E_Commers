@@ -40,17 +40,17 @@ export const Recommend = () => {
     return (
         <div>
             <NextLink href="/rec" passHref>
-                <Link>
+                <a>
                     {productsItem.results?.map(el => (
                         <Typography
                             key={el.id}
                             py={2}
-                            className={classes.brand}
+                            className={classes.globalText}
                         >
-                            {el.name}
+                            {el.name} . . .
                         </Typography>
                     ))}
-                </Link>
+                </a>
             </NextLink>
             <Grid container spacing={5}>
                 {productsItem.results?.map(productItem => (

@@ -1,8 +1,9 @@
-$backgroundFooter: #155FA3;
+$backgroundFooter: #111827FF;
+$textColor: rgb(160, 174, 192);
 .footer{
   padding: 20px 0;
   background: $backgroundFooter;
-  color: white;
+  color: $textColor;
 
   span {
     display: flex;

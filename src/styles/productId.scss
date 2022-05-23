@@ -1,3 +1,4 @@
+$btnColor: #7582EBFF;
 .form_radio_btn {
   display: inline-block;
   margin-right: 10px;
@@ -5,12 +6,11 @@
   label {
     display: inline-block;
     cursor: pointer;
-    padding: 0px 15px;
+    padding: 5px 20px;
     line-height: 34px;
-    border: 2px solid #999;
-    border-radius: 6px;
+    border: 1px solid #0a0c0c;
     user-select: none;
-    color: #666;
+    color: #0a0c0c;
   }
 }
 
@@ -58,4 +58,40 @@
 .hover figure:hover img {
   border-radius: 10px;
   opacity: .7;
+}
+
+
+.url{
+  width: 100%;
+  outline: none;
+  border-radius: 5px;
+  background: #eeeeee;
+  padding: 10px;
+  color: #2B3445;
+  border: none;
+  min-height: 60px;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.btnCart{
+  border: none;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 400;
+  background: $btnColor;
+  color: white;
+  cursor: pointer;
+  margin: 5px;
+}
+.btnFav {
+  display: flex;
+  align-items: center;
+  border: 1px solid #0A0C0CFF;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 400;
+  background: none;
+  color: #0a0c0c;
+  cursor: pointer;
 }

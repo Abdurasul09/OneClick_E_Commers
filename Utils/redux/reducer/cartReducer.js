@@ -2,12 +2,14 @@ import {ActionType} from "../actions/types";
 
 const defaultState = {
     cart: [],
-    cartLoc: []
+    cartLoc: [],
+    productPrice: []
 }
 
 export const CartReducer = (state = defaultState, action) => {
     switch (action.type){
         case ActionType.ADD_TO_CARD: {
+            console.log("cart-payload:",action.payload)
                 const findProduct = state?.cart?.find(el => el.id === action.payload.id)
                 if (findProduct) {
                     return {
@@ -31,6 +33,9 @@ export const CartReducer = (state = defaultState, action) => {
         // eslint-disable-next-line no-fallthrough
         case ActionType.GET_CART: {
             return {...state, cart: action.payload};
+        }
+        case ActionType.ADD_TO_CART_PRODUCT_PRICE: {
+            return {...state, productPrice: action.payload}
         }
         default:
             return state

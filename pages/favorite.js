@@ -6,6 +6,7 @@ import NextLink from "next/link";
 import Card from "@mui/material/Card";
 import {addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {useDispatch, useSelector} from "react-redux";
+import Buttons from "../src/components/Buttons/Buttons";
 
 const Favorite = () => {
     const dispatch = useDispatch;
@@ -15,26 +16,7 @@ const Favorite = () => {
     return (
         <Layout>
             <div className={classes.card}>
-                <div className={classes.btns}>
-                    <NextLink href="#">
-                        <Button
-                            className={classes.btn}
-                            variant="contained"
-                            color="primary"
-                        >
-                            <Typography>Назад</Typography>
-                        </Button>
-                    </NextLink>
-                    <NextLink href="/">
-                        <Button
-                            className={classes.btn}
-                            variant="contained"
-                            color="primary"
-                        >
-                            <Typography>Главная</Typography>
-                        </Button>
-                    </NextLink>
-                </div>
+                <Buttons/>
                 <Typography component="h2" variant="h2">Favorite</Typography>
                 {favorite.length === 0 ? (
                     <Typography

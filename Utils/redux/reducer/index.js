@@ -9,6 +9,7 @@ import {fetchPostsReducer} from "./fetchPosts";
 import {Comments} from "./comments";
 import {Location} from './location'
 import {orderReducer} from "./order";
+import {checkoutAddress} from "./checkoutAddress";
 
 export default combineReducers({
     cart: CartReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
     com: Comments,
     address: Location,
     order: orderReducer,
+    addressForm: checkoutAddress,
 })

@@ -5,13 +5,14 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import Image from "next/image";
-import logo from '../../../public/images/logo.svg'
 import Footer from "./Footer";
 import {Container} from "@mui/material";
+import {Typography} from "@material-ui/core";
+import useStyle from "../../../Utils/styles";
 
 
 const Contact = () => {
+    const classes = useStyle();
     return (
         <>
             <section className='contact'>
@@ -19,7 +20,9 @@ const Contact = () => {
                     <div className='contact__content'>
 
                         <div className='contact__content__logo'>
-                            <Image src={logo} alt="img"/>
+                            <Typography className={classes.brand}>
+                                <span className={classes.brandR}>r</span>izon
+                            </Typography>
                             <div className='contact__content__logo__text'>
                                 ONE CLICK - международный интернет-магазин одежды, обуви, электроники, детских товаров,
                                 товаров для дома и других товаров.

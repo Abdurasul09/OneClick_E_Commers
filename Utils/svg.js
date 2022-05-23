@@ -1,12 +1,11 @@
-import useStyle from "./styles";
 
 export const Basket = () => {
     return (
         <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-basket3"
-                 viewBox="0 0 16 16">
+            <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall nav-icon css-aq94sq" focusable="false"
+                 width="25" height="20" fill="currentColor" viewBox="0 0 24 24" data-testid="ShoppingCartIcon">
                 <path
-                    d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
+                    d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
             </svg>
         </div>
     )
@@ -24,7 +23,7 @@ export const Cart = () => {
     )
 }
 
-export const Like = ({id}) => {
+export const Like = () => {
     return (
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"

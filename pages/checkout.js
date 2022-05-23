@@ -6,593 +6,482 @@ import {Button, Card, ListItem, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import NextLink from 'next/link'
 import useStyle from "../Utils/styles";
-import {Controller, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import Axios from "../api/Api";
-import {Order} from "../Utils/redux/actions/order";
+import {ActionType} from "../Utils/redux/actions/types";
+import {useRouter} from "next/router";
 
 const Checkout = () => {
-    const {handleSubmit, control, formState: {errors},} = useForm();
-    const {cart} = useSelector(state => state.cart)
-    const {orderProduct} = useSelector(state => state.order)
+    const {handleSubmit} = useForm();
+    const {orderProduct} = useSelector(state => state.order);
+    const {userInfo} = useSelector(state => state.user);
     const dispatch = useDispatch()
     const [address, setAddress] = useState({})
     const [cashPaymentActive, setCashPaymentActive] = useState(false)
     const [active, setActive] = useState(false)
     const [delivery, setDelivery] = useState('')
-    const [phonee, setPhonee] = useState('')
+    const [phone, setPhone] = useState('')
     const [payment, setPayment] = useState('')
-    const [pay, setPay] = useState('платный')
+    // const [pay, setPay] = useState('платный')
+    const [sendProduct, setSendProduct] = useState({})
+    const [totalPrice, setTotalPrice] = useState('')
+    const [product, setProduct] = useState([])
+    const [formAddress, setFormAdderss] = useState({})
+    const router = useRouter()
     const classes = useStyle();
+
 
     useEffect(() => {
         setAddress(JSON.parse(localStorage.getItem('address')))
+        setProduct(JSON.parse(localStorage.getItem('cart')))
+        setFormAdderss(JSON.parse(localStorage.getItem('formAddress')))
+        setDelivery(JSON.parse(localStorage.getItem('delivery')))
+        // setPay(JSON.parse(localStorage.getItem('pay')))
     }, [])
 
-    const submitHandler = async (data) => {
+    useEffect(() => {
+        product.map(el => (
+            setSendProduct(el)
+        ))
+        setTotalPrice(product?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(1))
+    }, [product])
+
+    const submitHandler = async () => {
         try {
-            await Axios.post('/orders/', {
+            await Axios.post('/orders', {
                 delivery: delivery,
                 payment: payment,
-                address: data,
-                phone: data.phone,
+                address: formAddress.address,
+                phone: phone,
                 products: [{
-                    product: 1,
-                    qt: cart.quantity,
-                    size: cart.sizes,
-                    color: cart.color
-                }]
+                    product: sendProduct.id,
+                    qt: sendProduct.quantity,
+                    size: sendProduct.sizes,
+                    color: sendProduct.color
+                }],
+                total: totalPrice,
+                username: userInfo.username,
+                floor: formAddress.flor,
+                intercom: formAddress.intercom,
+                entrance: formAddress.entrance
             })
         } catch (e) {
             console.log(e)
         }
     }
 
-
-    const payHandler = () => {
-        dispatch(Order('courier'))
+    const Order = (data) => {
+        try {
+            dispatch({type: ActionType.ORDER_TRUE, payload: data})
+            localStorage.setItem('delivery', JSON.stringify(delivery))
+            // setPay(' бесплатный ')
+            router.push('/form')
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (
         <Layout>
             <Buttons/>
-            <Grid container spacing={1}>
-                <Grid item xs={12} md={7}>
-                    <List>
-                        <Typography component='h1' variant='h1'>
-                            <strong>
-                                Оформление заказа
-                            </strong>
-                        </Typography>
-                        <Typography component='h2' variant='h2'>
-                            Cпособ доставки
-                        </Typography>
-                        <ListItem>
-                            <Grid container>
-                                <Grid item xs={12} md={2}>
-                                    <Typography
-                                        variant='h2'
-                                        component='h2'
-                                    >
-                                        Платный
-                                    </Typography>
-                                    <Typography className={classes.delivery}>
-                                        <div className='paid'>
-                                            <label  onClick={()=>dispatch(Order('courier'))} key="Курьером">
-                                                <input
-                                                    onClick={() =>   setPay(" платный ")
-                                                    }
-                                                    // onClick={() => formActive ? setFormActive(false) : setFormActive(true)}
-                                                    type="radio"
-                                                    onChange={(e) => setDelivery(e.target.value)}
-                                                    name="inputRadios"
-                                                    value='paid'
-                                                />
-                                                КУРЬЕРОМ
-                                            </label>
-                                        </div>
-                                    </Typography>
-
-                                </Grid>
-                                <Grid item cs={12} md={1} className={classes.reviewItem}/>
-                                <Grid item xs={12} md={5}>
-                                    <Typography variant='h2' component='h2'>Бесплатный</Typography>
-                                    <NextLink href='/issuepoint'>
-                                        <a style={{textDecoration: 'none'}}>
-                                            <Button variant='outlined' onClick={()=>dispatch(Order('notCourier'))}>Пунк выдачи</Button>
-                                        </a>
-                                    </NextLink>
-                                    <Typography
-                                        pl={2}
-                                        textAlign="center"
-                                        width={120}
-                                        className={classes.delivery}
-                                    >
-                                        <div className='free'>
-                                            <label onClick={()=> dispatch(Order('courier'))} key="Курьером Только по городу Бишкек">
-                                                <input
-                                                    onClick={()=>setPay(' бесплатный ')}
-                                                    // onClick={() => formActive ? setFormActive(false) : setFormActive(true)}
-                                                    type="radio"
-                                                    onChange={(e) => setDelivery(e.target.value)}
-                                                    name="inputRadios"
-                                                    value='free'
-                                                />
-                                                КУРЬЕРОМ
-                                                <p style={{fontSize: '0.4rem'}}>Только по городу Бишкек</p>
-                                            </label>
-                                        </div>
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </ListItem>
-                        {orderProduct ==="courier" ? (
-                            <List >
-                                <ListItem>
-                                    <form onSubmit={handleSubmit(submitHandler)}>
-                                        <Typography variant='h1' component='h1'>Мои адреса:({pay})</Typography>
-                                        <ListItem>
-                                            <Typography pr={3}>Ф.И.О</Typography>
-                                            <Controller
-                                                name="name"
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                }}
-                                                render={({field}) =>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        id="name"
-                                                        inputProps={{type: "name"}}
-                                                        error={Boolean(errors.name)}
-                                                        helperText={
-                                                            errors.name
-                                                                ? errors.name.type === 'minLength'
-                                                                    ? 'zapolnite pole'
-                                                                    : 'FIO is required'
-                                                                : ''
-                                                        }
-                                                        {...field}
-                                                    />
-                                                }
-                                            />
-                                        </ListItem>
-                                        <ListItem>
-                                            <Typography pr={3}>Телефон</Typography>
-                                            <Controller
-                                                name="phone"
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                }}
-                                                render={({field}) =>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        id="phone"
-                                                        inputProps={{type: "phone"}}
-                                                        error={Boolean(errors.phone)}
-                                                        helperText={
-                                                            errors.phone
-                                                                ? errors.phone.type === 'minLength'
-                                                                    ? 'zapolnite pole'
-                                                                    : 'FIO is required'
-                                                                : ''
-                                                        }
-                                                        {...field}
-                                                    />
-                                                }
-                                            />
-                                        </ListItem>
-                                        <ListItem>
-                                            <Typography pr={3}>Адрес</Typography>
-                                            <Controller
-                                                name="address"
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                }}
-                                                render={({field}) =>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        id="address"
-                                                        inputProps={{type: "address"}}
-                                                        error={Boolean(errors.address)}
-                                                        helperText={
-                                                            errors.address
-                                                                ? errors.address.type === 'minLength'
-                                                                    ? 'zapolnite pole'
-                                                                    : 'FIO is required'
-                                                                : ''
-                                                        }
-                                                        {...field}
-                                                    />
-                                                }
-                                            />
-                                        </ListItem>
-                                        <ListItem>
-                                            <Controller
-                                                name="entrance"
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                }}
-                                                render={({field}) =>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        label='Подьезд'
-                                                        id="entrance"
-                                                        inputProps={{type: "entrance"}}
-                                                        error={Boolean(errors.entrance)}
-                                                        helperText={
-                                                            errors.entrance
-                                                                ? errors.entrance.type === 'minLength'
-                                                                    ? 'zapolnite pole'
-                                                                    : 'FIO is required'
-                                                                : ''
-                                                        }
-                                                        {...field}
-                                                    />
-                                                }
-                                            />
-                                            <Controller
-                                                name="floor"
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                }}
-                                                render={({field}) =>
-                                                    <TextField
-                                                        style={{margin: 5}}
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        id="floor"
-                                                        label='Этаж'
-                                                        inputProps={{type: "floor"}}
-                                                        error={Boolean(errors.floor)}
-                                                        helperText={
-                                                            errors.floor
-                                                                ? errors.floor.type === 'minLength'
-                                                                    ? 'zapolnite pole'
-                                                                    : 'FIO is required'
-                                                                : ''
-                                                        }
-                                                        {...field}
-                                                    />
-                                                }
-                                            />
-                                            <Controller
-                                                name="intercom"
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                }}
-                                                render={({field}) =>
-                                                    <TextField
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        label='Домофон'
-                                                        id="intercom"
-                                                        inputProps={{type: "intercom"}}
-                                                        error={Boolean(errors.intercom)}
-                                                        helperText={
-                                                            errors.intercom
-                                                                ? errors.intercom.type === 'minLength'
-                                                                    ? 'zapolnite pole'
-                                                                    : 'FIO is required'
-                                                                : ''
-                                                        }
-                                                        {...field}
-                                                    />
-                                                }
-                                            />
-                                        </ListItem>
-                                        <ListItem>
-                                            <Button
-                                                variant="contained"
-                                                type="button"
-                                                fullWidth
-                                                color="primary"
-                                            >
-                                                Далee
-                                            </Button>&nbsp;
-                                            <Button
-                                                fullWidth
-                                                variant="contained"
-                                                type="button"
-                                                color="primary"
-                                            >
-                                                Отмена
-                                            </Button>
-                                        </ListItem>
-                                    </form>
-                                </ListItem>
-                            </List>
-                        ) : (<List>
-                            <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>
-                            <p className={classes.address}>
-                                {address.name}
-                            </p>
-                        </List>)}
-
-                        {/*{orderProduct !=="courier" ? (*/}
-                        {/*    <List>*/}
-                        {/*        <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>*/}
-                        {/*        <p className={classes.address}>*/}
-                        {/*            {address.name}*/}
-                        {/*        </p>*/}
-                        {/*    </List>*/}
-                        {/*) : (null)}*/}
+            <form onSubmit={handleSubmit(submitHandler)}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12} md={7}>
                         <List>
-                            <Typography component='h1' variant='h2' id='#chek'>
-                                Способ оплаты
-                            </Typography>
                             <ListItem>
-                                <div
-                                    className='payWithCart'
-                                    onClick={() => cashPaymentActive ? setCashPaymentActive(false) : setCashPaymentActive(true)}
-                                >
-                                    <label
-                                        key="Оплата наличными"
+                                <Typography component='h1' variant='h1'>
+                                    <strong>
+                                        Оформление заказа
+                                    </strong>
+                                </Typography>
+                            </ListItem>
+                            <ListItem>
+                                <Typography component='h2' variant='h2'>
+                                    Cпособ доставки
+                                </Typography>
+                            </ListItem>
+                            <ListItem>
+                                <Grid container>
+                                    <Grid item xs={12} md={2}>
+                                        <Typography
+                                            variant='h2'
+                                            component='h2'
+                                        >
+                                            Платный
+                                        </Typography>
+                                        <Button variant={"outlined"}>
+                                            <span className='free'>
+                                                <label onClick={() => Order('courier')} key="Курьером">
+                                                    <input
+                                                        // onClick={() => setPay(" платный ")}
+                                                        type="radio"
+                                                        onChange={(e) => setDelivery(e.target.value)}
+                                                        name="inputRadios"
+                                                        value='paid'
+                                                    />
+                                                    КУРЬЕРОМ
+                                                </label>
+                                            </span>
+                                        </Button>
+                                    </Grid>
+                                    <Grid item cs={12} md={1} className={classes.reviewItem}/>
+                                    <Grid item xs={12} md={5}>
+                                        <Typography variant='h2' component='h2'>Бесплатный</Typography>
+                                        <div className={classes.flex1}>
+                                            <NextLink href='/issuepoint'>
+                                                <a style={{textDecoration: 'none'}}>
+                                                    <Button variant='outlined'>
+                                                        Пунк выдачи
+                                                    </Button>
+                                                </a>
+                                            </NextLink>
+                                            <span className='free deliverFree'>
+                                                <label key="Курьером Только по городу Бишкек">
+                                                    <input
+                                                        onClick={() => Order('courier')}
+                                                        type="radio"
+                                                        onChange={(e) => setDelivery(e.target.value)}
+                                                        name="inputRadios"
+                                                        value='free'
+                                                    />
+                                                        КУРЬЕРОМ
+                                                    <p style={{fontSize: '0.4rem'}}>Только по городу Бишкек</p>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            </ListItem>
+                            {orderProduct === "courier" ? (
+                                <List>
+                                    <ListItem>
+                                        <Typography variant='h1' component='h1'>Мои адреса</Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>Ф.И.О:</Typography>
+                                        <Typography pl={2}>{formAddress.name}</Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>Телефон:</Typography>
+                                        <Typography pl={2}>{formAddress.phone}</Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>Адрес:</Typography>
+                                        <Typography pl={2}>{formAddress.address}</Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>Подьезд:</Typography>
+                                        <Typography pl={2}>{formAddress.flor}</Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>Этаж:</Typography>
+                                        <Typography pl={2}>{formAddress.entrance}</Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography>Домофон:</Typography>
+                                        <Typography pl={2}>{formAddress.intercom}</Typography>
+                                    </ListItem>
+                                </List>
+                            ) : (
+                                <List>
+                                    <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>
+                                    <p className={classes.address}>
+                                        {address.name}
+                                    </p>
+                                </List>
+                            )}
+                            <List>
+                                <ListItem>
+                                    <Typography component='h1' variant='h2' id='#chek'>
+                                        Способ оплаты
+                                    </Typography>
+                                </ListItem>
+                                <ListItem>
+                                    <div
+                                        className='payWithCart'
+                                        onClick={() => cashPaymentActive ? setCashPaymentActive(false) : setCashPaymentActive(true)}
                                     >
-                                        💵
-                                        <input
-                                            type="radio"
-                                            onChange={(e) => setPayment(e.target.value)}
-                                            name="inputRadios"
-                                            value={'Оплата наличными'}
-                                        />
-                                        <span style={{fontSize: "12px"}}>
+                                        <label
+                                            key="Оплата наличными"
+                                        >
+                                            💵
+                                            <input
+                                                type="radio"
+                                                onChange={(e) => setPayment(e.target.value)}
+                                                name="inputRadios"
+                                                value='cash'
+                                            />
+                                            <span style={{fontSize: "12px"}}>
                                           Оплата
                                         наличными
                                         </span>
-                                    </label>
-                                </div>
-                                <div
-                                    className='payWithCart'
-                                    onClick={() => active ? setActive(false) : setActive(true)}
-                                >
-                                    <label
-                                        key="Mbank"
+                                        </label>
+                                    </div>
+                                    <div
+                                        className='payWithCart'
+                                        onClick={() => active ? setActive(false) : setActive(true)}
                                     >
-                                        <img
-                                            src='https://play-lh.googleusercontent.com/dsfiyTKElmAxtD0QhvuXdfHGhWsbnDW7vTC_dYdeN9yKTv9xs8_HyHz1O8c9f6uvrQ'
-                                            alt="mbank"
-                                            width={12}
-                                        />
-                                        <input
-                                            type="radio"
-                                            onChange={(e) => setPayment(e.target.value)}
-                                            name="inputRadios"
-                                            value={'mbank'}
+                                        <label
+                                            key="Mbank"
+                                        >
+                                            <img
+                                                src='https://play-lh.googleusercontent.com/dsfiyTKElmAxtD0QhvuXdfHGhWsbnDW7vTC_dYdeN9yKTv9xs8_HyHz1O8c9f6uvrQ'
+                                                alt="mbank"
+                                                width={12}
+                                            />
+                                            <input
+                                                type="radio"
+                                                onChange={(e) => setPayment(e.target.value)}
+                                                name="inputRadios"
+                                                value='m_bank'
 
-                                        />
-                                        <span style={{fontSize: '12px'}}>
+                                            />
+                                            <span style={{fontSize: '12px'}}>
                                              Mbank
                                         </span>
-                                    </label>
-                                </div>
-                                <div
-                                    className='payWithCart'
-                                    onClick={() => active ? setActive(false) : setActive(true)}
-                                >
-                                    <label
-                                        key="О! Деньги"
+                                        </label>
+                                    </div>
+                                    <div
+                                        className='payWithCart'
+                                        onClick={() => active ? setActive(false) : setActive(true)}
                                     >
-                                        <input
-                                            type="radio"
-                                            onChange={(e) => setPayment(e.target.value)}
-                                            name="inputRadios"
-                                            value={'О! Деньги'}
+                                        <label
+                                            key="О! Деньги"
+                                        >
+                                            <input
+                                                type="radio"
+                                                onChange={(e) => setPayment(e.target.value)}
+                                                name="inputRadios"
+                                                value='o_maney'
 
-                                        />
-                                        <img
-                                            src="https://cms.timbu.com/storage/photos/O!-1562927890.png"
-                                            alt="Кошелек «О! Деньги»"
-                                            width={15}
-                                        />
-                                        <span style={{fontSize: "12px"}}>
+                                            />
+                                            <img
+                                                src="https://cms.timbu.com/storage/photos/O!-1562927890.png"
+                                                alt="Кошелек «О! Деньги»"
+                                                width={15}
+                                            />
+                                            <span style={{fontSize: "12px"}}>
                                             «О! Деньги»
                                         </span>
-                                    </label>
-                                </div>
-                                <div
-                                    className='payWithCart'
-                                    onClick={() => active ? setActive(false) : setActive(true)}
-                                >
-                                    <label
-                                        key="Balance.kg"
+                                        </label>
+                                    </div>
+                                    <div
+                                        className='payWithCart'
+                                        onClick={() => active ? setActive(false) : setActive(true)}
                                     >
-                                        <img
-                                            src="https://play-lh.googleusercontent.com/xN4NjulPfpO6gChBLWSdqH30mfzikW1mCwxvHx5Qp2TI-59E5p0e3SqU67VaI5whpF0"
-                                            alt="Кошелек «Balance.kg»"
-                                            width={15}
-                                        />
-                                        <input
-                                            type="radio"
-                                            onChange={(e) => setPayment(e.target.value)}
-                                            name="inputRadios"
-                                            value={'Кошелек «Balance.kg»'}
+                                        <label
+                                            key="Balance.kg"
+                                        >
+                                            <img
+                                                src="https://play-lh.googleusercontent.com/xN4NjulPfpO6gChBLWSdqH30mfzikW1mCwxvHx5Qp2TI-59E5p0e3SqU67VaI5whpF0"
+                                                alt="Кошелек «Balance.kg»"
+                                                width={15}
+                                            />
+                                            <input
+                                                type="radio"
+                                                onChange={(e) => setPayment(e.target.value)}
+                                                name="inputRadios"
+                                                value='balance_kg'
 
-                                        />
-                                        <span style={{fontSize: '12px'}}>
+                                            />
+                                            <span style={{fontSize: '12px'}}>
                                             «Balance.kg»
                                         </span>
-                                    </label>
-                                </div>
-                                <div
-                                    className='payWithCart'
-                                    onClick={() => active ? setActive(false) : setActive(true)}
-                                >
-                                    <label
-                                        key="MegaPay"
+                                        </label>
+                                    </div>
+                                    <div
+                                        className='payWithCart'
+                                        onClick={() => active ? setActive(false) : setActive(true)}
                                     >
-                                        <img
-                                            src="https://play-lh.googleusercontent.com/jNzcWphuFaZAOV-M8ufJqpPHwdXpQrMA8jHScmRuLrYKfPT1RWJk10UiTP5F1XtExy2f"
-                                            width={15}
-                                            alt="MegaPay"
-                                        />
-                                        <input
-                                            type="radio"
-                                            onChange={(e) => setPayment(e.target.value)}
-                                            name="inputRadios"
-                                            value={'MegaPay'}
+                                        <label
+                                            key="MegaPay"
+                                        >
+                                            <img
+                                                src="https://play-lh.googleusercontent.com/jNzcWphuFaZAOV-M8ufJqpPHwdXpQrMA8jHScmRuLrYKfPT1RWJk10UiTP5F1XtExy2f"
+                                                width={15}
+                                                alt="MegaPay"
+                                            />
+                                            <input
+                                                type="radio"
+                                                onChange={(e) => setPayment(e.target.value)}
+                                                name="inputRadios"
+                                                value='mega_pay'
 
-                                        />
-                                        <span style={{fontSize: '12px'}}>
+                                            />
+                                            <span style={{fontSize: '12px'}}>
                                              MegaPay
                                         </span>
-                                    </label>
-                                </div>
-                                <div
-                                    className='payWithCart'
-                                    onClick={() => active ? setActive(false) : setActive(true)}
-                                >
-                                    <label
-                                        key="Элсом"
+                                        </label>
+                                    </div>
+                                    <div
+                                        className='payWithCart'
+                                        onClick={() => active ? setActive(false) : setActive(true)}
                                     >
-                                        <img
-                                            src="https://elsom.kg/wp-content/uploads/2020/12/logo-Elsom-RGB-72.png"
-                                            alt="Элсом"
-                                            width={15}
-                                        />
-                                        <input
-                                            type="radio"
-                                            onChange={(e) => setPayment(e.target.value)}
-                                            name="inputRadios"
-                                            value={'Элсом'}
+                                        <label
+                                            key="Элсом"
+                                        >
+                                            <img
+                                                src="https://elsom.kg/wp-content/uploads/2020/12/logo-Elsom-RGB-72.png"
+                                                alt="Элсом"
+                                                width={15}
+                                            />
+                                            <input
+                                                type="radio"
+                                                onChange={(e) => setPayment(e.target.value)}
+                                                name="inputRadios"
+                                                value='el_som'
 
-                                        />
-                                        <span style={{fontSize: '12px'}}>
+                                            />
+                                            <span style={{fontSize: '12px'}}>
                                                Элсом
                                         </span>
-                                    </label>
-                                </div>
-                            </ListItem>
-                            <List className={cashPaymentActive ? "block" : 'none'}>
-                                <Typography variant='h2' component='h2'>
-                                    Оплата наличными курьеру
-                                </Typography>
-                                <ListItem>
-                                    <span>Сдача с: </span>&nbsp;
-                                    <TextField id="outlined-basic" label="Сдача с" variant="outlined"/>
+                                        </label>
+                                    </div>
                                 </ListItem>
-                            </List>
-                            <List className={active ? "block" : 'none'}>
-                                <ListItem>
+                                <List className={cashPaymentActive ? "block" : 'none'}>
                                     <Typography variant='h2' component='h2'>
-                                        MBank Online от Банка КЫРГЫЗСТАН
+                                        Оплата наличными курьеру
                                     </Typography>
-                                </ListItem>
-                                <ListItem>
-                                    <Grid container className={classes.flexCenter}>
-                                        <Grid item xs={12} md={1} style={{paddingLeft: 10}}>
-                                            <span className={classes.exclamatory}>!</span>
+                                    <ListItem>
+                                        <Grid container>
+                                            <Grid item xs={12} md={5}>
+                                                <label>
+                                                    Сдача с: <input
+                                                    className='phone'
+                                                    type='phone'
+                                                    placeholder='+996 xx xx xx'
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                />
+                                                </label>
+                                            </Grid>
+                                            <Grid item xs={12} md={4} className={classes.flexCenter}>
+                                                <label>
+                                                    Без сдачи: <input
+                                                    type='radio'
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                />
+                                                </label>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={12} md={8}>
+                                    </ListItem>
+                                </List>
+                                <List className={active ? "block" : 'none'}>
+                                    <ListItem>
+                                        <Typography variant='h2' component='h2'>
+                                            MBank Online от Банка КЫРГЫЗСТАН
+                                        </Typography>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Grid container className={classes.flexCenter}>
+                                            <Grid item xs={12} md={1} style={{paddingLeft: 10}}>
+                                                <span className={classes.exclamatory}>!</span>
+                                            </Grid>
+                                            <Grid item xs={12} md={8}>
                                             <span className={classes.payCartTitle}>
                                        «Бесплатная доставка» действует при оплате свыше 990 сом.
                                         Оплата за доставку при заказе менее 990 сом согласно тарифной
                                         политике Namba Food.
                                     </span>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </ListItem>
-                                <ListItem>
-                                    <Grid container>
-                                        <Grid item xs={12} md={3}>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Grid container>
+                                            <Grid item xs={12} md={3}>
                                             <span style={{fontSize: 14}}>
                                                 Введите ваш номер
                                                 телефона:
                                             </span>
+                                            </Grid>
+                                            <Grid item xs={12} md={5}>
+                                                <TextField
+                                                    variant="outlined"
+                                                    type='phone'
+                                                    placeholder='+996 xxx xxx xxx'
+                                                    onChange={(e) => setPhone(e.target.value)}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={12} md={5}>
-                                            <TextField
-                                                variant="outlined"
-                                                type='phone'
-                                                placeholder='+996 xxx xxx xxx'
-                                                onChange={(e) => setPhonee(e.target.value)}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </ListItem>
-                                <ListItem>
-                                    <Grid container>
-                                        <Grid item xs={12} md={9}>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Grid container>
+                                            <Grid item xs={12} md={9}>
                                             <span style={{fontSize: '.7rem'}}>
                                                Вам будет отправлен запрос на оплату услуг Nambafood.
                                                Если номер вашего MBank Online отличается от текущего, то измените его.
                                             </span><br/>
-                                            <span style={{fontSize: '.7rem'}}> При оплате этим способом - БЕСПЛАТНАЯ ДОСТАВКА</span>
+                                                <span style={{fontSize: '.7rem'}}> При оплате этим способом - БЕСПЛАТНАЯ ДОСТАВКА</span>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </ListItem>
+                                    </ListItem>
+                                </List>
                             </List>
                         </List>
-                    </List>
+                    </Grid>
+                    <Grid xs={12} md={2}/>
+                    <Grid item xs={12} md={3}>
+                        <Card>
+                            <List>
+                                <ListItem>
+                                    <Grid item xs={12} md={4}>
+                                        <Typography variant='h1'>
+                                            Итого:
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={8}>
+                                        <Typography variant='h2'>
+                                            {product?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(1)} coм
+                                        </Typography>
+                                    </Grid>
+                                </ListItem>
+                                <ListItem>
+                                    <Grid item xs={12} md={10}>
+                                        <Typography>
+                                            Товары:
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={2}>
+                                        <Typography>
+                                            {product?.reduce((a, c) => a + c.quantity, 0)} шт
+                                        </Typography>
+                                    </Grid>
+                                </ListItem>
+                                <ListItem>
+                                    <Grid item xs={12} md={10}>
+                                        <Typography>
+                                            Скидки:
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={2}>
+                                        <Typography>
+                                            10%
+                                        </Typography>
+                                    </Grid>
+                                </ListItem>
+                                <ListItem>
+                                    <Button
+                                        variant="contained"
+                                        type='submit'
+                                        color="secondary"
+                                        fullWidth
+                                    >
+                                        <NextLink href='/checkouttotal'>
+                                            <a>
+                                                Заказать
+                                            </a>
+                                        </NextLink>
+                                    </Button>
+                                </ListItem>
+                                <ListItem>
+                                    <Typography style={{fontSize: '12px'}} color={"gray"}>
+                                        Согласен с условиями Правил пользования торговой площадкой и правилами возврата
+                                    </Typography>
+                                </ListItem>
+                            </List>
+                        </Card>
+                    </Grid>
                 </Grid>
-                <Grid xs={12} md={2}/>
-
-                <Grid item xs={12} md={3}>
-                    <Card>
-                        <List>
-                            <ListItem>
-                                <Grid item xs={12} md={4}>
-                                    <Typography variant='h1'>
-                                        Итого:
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12} md={8}>
-                                    <Typography variant='h2'>
-                                        {cart?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(1)} coм
-                                    </Typography>
-                                </Grid>
-                            </ListItem>
-                            <ListItem>
-                                <Grid item xs={12} md={10}>
-                                    <Typography>
-                                        Товары({cart?.reduce((a, c) => a + c.quantity, 0)}):
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12} md={2}>
-                                    <Typography>
-                                        5678
-                                    </Typography>
-                                </Grid>
-                            </ListItem>
-                            <ListItem>
-                                <Grid item xs={12} md={10}>
-                                    <Typography>
-                                        Скидки:
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12} md={2}>
-                                    <Typography>
-                                        10%
-                                    </Typography>
-                                </Grid>
-                            </ListItem>
-                            <ListItem>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    fullWidth
-                                    onClick={()=>submitHandler()}
-                                >
-                                    Заказать
-                                </Button>
-                            </ListItem>
-                            <ListItem>
-                                <Typography style={{fontSize: '12px'}} color={"gray"}>
-                                    Согласен с условиями Правил пользования торговой площадкой и правилами возврата
-                                </Typography>
-                            </ListItem>
-                        </List>
-                    </Card>
-                </Grid>
-            </Grid>
+            </form>
         </Layout>
     );
 };
