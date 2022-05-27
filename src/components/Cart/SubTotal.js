@@ -1,14 +1,16 @@
 import React from 'react';
-import {List} from "@material-ui/core";
-import {Button, Card, ListItem, Typography} from "@mui/material";
+import {Card , Typography} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import {useRouter} from "next/router";
+import useStyle from "../../../Utils/styles";
 
 const SubTotal = ({cart}) => {
     const userInfo = useSelector(state => state.user.userInfo)
+    const classes = useStyle();
+
     const router = useRouter();
     const checkoutHandler = () => {
-        if(userInfo) {
+        if (userInfo) {
             router.push("/checkout")
         } else {
             router.push("/login")
@@ -17,24 +19,51 @@ const SubTotal = ({cart}) => {
     return (
         <div>
             <Card>
-                <List>
-                    <ListItem>
+                <div style={{padding: 10}}>
+                    <div className={classes.flex}>
                         <Typography variant="h2">
-                            Общая сумма ({cart?.reduce((a, c) => a + c.quantity, 0)} {''}
-                            товары) :  {''}
+                            Итого
+                        </Typography>
+                        <Typography>
                             {cart?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(1)} coм
                         </Typography>
-                    </ListItem>
-                    <ListItem>
+                    </div>
+                    <div className={classes.flex}>
+                        <span>Количество</span>
+                        <span>
+                            {cart?.reduce((a, c) => a + c.quantity, 0)}
+                        </span>
+                    </div>
+                    <div style={{paddingTop: 10}} className={classes.flex}>
+                        <span>Товары, 1шт.</span>
+                        <span>
+                            {cart.map(el => (
+                                <span key={el.id}>
+                                    {el.price} сом
+                                </span>
+                            ))}
+                        </span>
+                    </div>
+                    {cart.discount ? (
+                        <div className={classes.flex}>
+                            <span>Скидки</span>
+                            <span style={{color: "gray"}}>
+                                    -{cart.discount}%
+                                </span>
+                        </div>
+
+                    ) : (
+                        " "
+                    )}
+                    <div style={{marginTop: 10}}>
                         <button
-                            style={{width: '100%'}}
-                            className='btnCart'
+                            className='globalBtn'
                             onClick={checkoutHandler}
                         >
                             Проверить
                         </button>
-                    </ListItem>
-                </List>
+                    </div>
+                </div>
             </Card>
         </div>
     );

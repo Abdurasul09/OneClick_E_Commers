@@ -5,11 +5,12 @@ import {
     Grid,
     List,
     ListItem,
-    Typography
-} from "@mui/material";
-import Card from "@mui/material/Card";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+    Typography,
+    Card,
+    CircularProgress
+} from "@material-ui/core";
 import NextLink from "next/link";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import useStyle from "../Utils/styles";
 import Advertising from "../src/components/Advertising/Advertising";
 import {Recommend} from "../src/components/Recommend/Recommend";
@@ -17,9 +18,7 @@ import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import api from "../api/globalApi";
-import {Link} from "@material-ui/core";
 import Banners from "../src/components/Banners/Banners";
-import {CircularProgress} from "@material-ui/core";
 import {New} from "../src/components/New/New";
 
 
@@ -54,7 +53,7 @@ const Home = ({products}) => {
                             </NextLink>
                             <Grid container spacing={5}>
                                 {allProducts.map(product => (
-                                    <Grid item md={3} key={product.id}>
+                                    <Grid item md={3} sm={6} xs={12} key={product.id}>
                                         <Card>
                                             <NextLink href={`/product/${product.id}`}>
                                                 <CardActionArea className='productImage'>
@@ -65,22 +64,20 @@ const Home = ({products}) => {
                                                         title={product.title}
                                                     />
                                                     {product.discount ? (
-                                                        <span
-                                                            className={classes.productDiscount}
-                                                        >
-                                                -{product.discount}%
-                                            </span>
+                                                        <span className={classes.productDiscount}>
+                                                           -{product.discount}%
+                                                        </span>
                                                     ) : (
                                                         " "
                                                     )}
                                                     <span className='willLook'>
-                                                Посмотреть
-                                            </span>
+                                                        Посмотреть
+                                                    </span>
                                                 </CardActionArea>
                                             </NextLink>
                                             <List style={{paddingBottom: 0}}>
                                                 <ListItem className={classes.priceFavoriteIcon}>
-                                                    <Typography style={{color: '#919EAB'}}>
+                                                    <Typography className={classes.productTitle}>
                                                         {product.title}
                                                     </Typography>
                                                     <FavoriteBorderIcon
@@ -94,7 +91,7 @@ const Home = ({products}) => {
                                                             <Typography>
                                                                 <strong>{product.discount_price} coм</strong>
                                                             </Typography>
-                                                            <Typography pl={2}>
+                                                            <Typography>&nbsp;
                                                                 <del style={{color: "grey", fontSize: '13px'}}>
                                                                     {product.price} coм
                                                                 </del>

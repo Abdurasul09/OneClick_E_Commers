@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Grid, List, ListItem, Typography} from "@mui/material";
-import {Avatar, CircularProgress, IconButton, Link, TextField} from "@material-ui/core";
+import {
+    Avatar,
+    CircularProgress,
+    IconButton,
+    Link,
+    TextField,
+    Grid,
+    List,
+    ListItem,
+    Typography
+} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {useSnackbar} from "notistack";
 import useStyle from "../../../Utils/styles";
@@ -8,6 +17,7 @@ import Axios from "../../../api/Api";
 import AnswerComment from "./AnswerComment";
 import {ActionType} from "../../../Utils/redux/actions/types";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import api from "../../../api/globalApi";
 
 const Comment = ({item}) => {
     const {userInfo} = useSelector(state => state.user)
@@ -15,20 +25,59 @@ const Comment = ({item}) => {
     const [comment, setComment] = useState('')
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [idComment, setIdComment] = useState([])
+    const [commentsPhoto, setCommentsPhoto] = useState()
+    // const [imagePreviewUrl, setImagePreviewUrl] = useState();
     const {enqueueSnackbar} = useSnackbar();
-    useEffect(() => {
-        setIdComment(reviews.map(el => el.id))
-    }, [item])
+    const [read, setRead] = useState();
+
+    // const handleImageChange = (e) => {
+    //     e.preventDefault();
+    //     const reader = new FileReader();
+    //     const file = e.target.files[0];
+    //     setRead(file);
+    //     reader.onloadend = () => {
+    //         setImagePreviewUrl(reader.result);
+    //     };
+    //     reader.readAsDataURL(file);
+    // };
+    const [file, setFile] = useState("");
+    console.log('file',file)
+    const [imagePreviewUrl, setImagePreviewUrl] = useState();
+    const handleImageChange = (e) => {
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+            setFile(file);
+            setImagePreviewUrl(reader.result);
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+
+    // const handleImageChange = (e) => {
+    //     e.preventDefault();
+    //     const reader = new FileReader();
+    //     const file = e.target.files[0];
+    //     reader.onloadend = () => {
+    //         setImagePreviewUrl(reader.result);
+    //     };
+    //     reader.readAsDataURL(file);
+    // };
 
     const submitHandler = async (e) => {
         e.preventDefault();
         setLoading(true);
+
         try {
             await Axios.post("/comments",
                 {
                     description: comment,
                     product: item.id,
+                    photos: [file.lastModified]
                 })
             setLoading(false);
             enqueueSnackbar('Отзыв успешно отправлен!', {variant: 'success'});
@@ -39,6 +88,16 @@ const Comment = ({item}) => {
             enqueueSnackbar("Error", {variant: 'error'});
         }
     };
+
+
+    const getPhotos = async () => {
+        try {
+            const {data} = await api.get(`/comments-photo?catalog_id=${item.id}`)
+            setCommentsPhoto(data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     const fetchReviews = async () => {
         try {
@@ -51,26 +110,15 @@ const Comment = ({item}) => {
     };
 
     useEffect(() => {
+        getPhotos()
         fetchReviews()
     }, []);
 
-    const [imagePreviewUrl, setImagePreviewUrl] = useState();
-    const handleImageChange = (e) => {
-        e.preventDefault();
-        const reader = new FileReader();
-        const file = e.target.files[0];
-        reader.onloadend = () => {
-            setImagePreviewUrl(reader.result);
-        };
-        reader.readAsDataURL(file);
-    };
-
     const handlerClickLike = (id) => {
-        console.log(id)
         try {
             Axios.post('/like-comment', {
                 user: userInfo.id,
-                comment: id
+                comment: id,
             })
             fetchReviews()
         } catch (e) {
@@ -91,62 +139,61 @@ const Comment = ({item}) => {
     return (
         <div>
             <List>
-                <List>
-                    <Typography component='h1' variant='h1'>Фотографии пользователей</Typography>
-                    <Typography pb={2}>
-                        <img
-                            alt="comment image"
-                            style={{objectFit: 'cover'}}
-                            src={imagePreviewUrl}
-                            width={150}
-                            height={150}
-                        />
+                <div>
+                    <Typography
+                        component='h1'
+                        variant='h1'
+                    >
+                        Фотографии пользователей
                     </Typography>
-                    <input
-                        type="file"
-                        onChange={(e) => handleImageChange(e)}
-                    />
-                </List>
-                <ListItem>
+                </div>
+                {
+                    commentsPhoto ? (
+                        commentsPhoto.results.map((item) => (
+                            <div key={item}>
+                                <img src={item.photo} alt=""/>
+                            </div>
+                        ))
+                    ) : (<h2>loading</h2>)
+                }
+                <div>
                     <Typography name="reviews" id="reviews" variant="h1" component='h1'>
                         Отзывы клиентов
                     </Typography>
-                </ListItem>
-                {reviews.length === 0 && <ListItem>No review</ListItem>}
+                </div>
+                <div>
+                    {reviews.length === 0 && <ListItem>Нет обзора</ListItem>}
+                </div>
                 {reviews.map((review) => (
-                    <ListItem key={review.id}>
+                    <div key={review.id}>
                         <Grid container>
-                            <Grid item className={classes.reviewItem}>
-                                <ListItem>
+                            <Grid item>
+                                <div className={classes.flex}>
                                     <div>
                                         <Avatar>
                                             {review.avatar}
                                         </Avatar>
                                     </div>
+                                    &nbsp;
                                     <div>
-                                        <Typography pl={1}>
+                                        <Typography>
                                             <strong>{review.user.username}</strong>
                                             <span className={classes.dataYear}>
                                                 {review.created_at.substring(0, 10)}
                                             </span>
                                         </Typography>
                                     </div>
-                                </ListItem>
+                                </div>
                             </Grid>
                             <Grid item xs={12} md={12}>
-                                <List style={{padding: "0 0 0 4rem" }}>
-                                    <ListItem className={classes.flex} style={{padding: 0}}>
+                                <div className={classes.comDesc}>
+                                    <div className={classes.flex}>
                                         <Grid xs={12}>
-                                            <ListItem style={{padding: 0}}>
-                                                <Grid
-                                                    item
-                                                    xs={12}
-                                                    md={11}
-                                                    style={{padding: 0}}
-                                                >
-                                                    <Typography>{review.description}</Typography>
-                                                </Grid>
-                                                <Grid item xs={12} md={1}>
+                                            <div className={classes.flex}>
+                                                <div>
+                                                    <span>{review.description}</span>
+                                                </div>
+                                                <div>
                                                     <IconButton
                                                         onClick={() => review.liked ? (
                                                             removeHandlerClick(review.id)
@@ -155,19 +202,18 @@ const Comment = ({item}) => {
                                                         )}>
                                                         <ThumbUpIcon
                                                             style={review.liked ? (
-                                                                {color: '#021b79'}
+                                                                {color: 'crimson'}
                                                             ) : (
                                                                 {color: '#bdbdbd'}
                                                             )}
                                                         />
                                                     </IconButton>
                                                     <span>{review.likes}</span>
-                                                </Grid>
-                                            </ListItem>
-
+                                                </div>
+                                            </div>
                                             <div className={classes.childComment}>
                                                 {review.children.map(item => (
-                                                    <List key={item.id}>
+                                                    <div key={item.id}>
                                                         {item ? (
                                                             <Typography pb={1}>
                                                                 <strong>{item.user.username}</strong>
@@ -179,46 +225,57 @@ const Comment = ({item}) => {
                                                         <Typography pl={1}>
                                                             {item.description}
                                                         </Typography>
-                                                    </List>
+                                                    </div>
                                                 ))}
                                             </div>
                                             <AnswerComment comment={review} product={item}/>
                                         </Grid>
-                                    </ListItem>
-                                </List>
+                                    </div>
+                                </div>
                             </Grid>
                         </Grid>
-                    </ListItem>
+                    </div>
                 ))}
-                <ListItem>
+                <div>
                     {userInfo ? (
                         <form onSubmit={submitHandler} className={classes.reviewForm}>
-                            <List>
-                                <ListItem>
-                                    <Typography variant="h2">Оставьте свой отзыв</Typography>
-                                </ListItem>
-                                <ListItem>
-                                    <TextField
-                                        multiline
-                                        variant='standard'
-                                        name="review"
-                                        label="Введите комментарий"
-                                        value={comment}
-                                        onChange={(e) => setComment(e.target.value)}
-                                    />
-                                </ListItem>
-                                <ListItem>
-                                    <Button
+                            <Typography variant="h2" component='h2'>Оставьте свой отзыв</Typography>
+                            <div>
+                                <TextField
+                                    fullWidth
+                                    variant='standard'
+                                    name="review"
+                                    label="Введите комментарий"
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                />
+                            </div>
+                            <div className={classes.flexCenter}>
+                                <div>
+                                    <button
+                                        className='btn'
                                         type="submit"
-                                        variant="contained"
-                                        color='secondary'
-                                        size="small"
                                     >
                                         Отправить
-                                    </Button>
+                                    </button>
                                     {loading && <CircularProgress/>}
-                                </ListItem>
-                            </List>
+                                </div>
+                                <div>
+                                    <ListItem>
+                                        <label className="input-file">
+                                            <input
+                                                type="file"
+                                                id="profile_pic"
+                                                name="profile_pic"
+                                                accept=".jpg, .jpeg, .png"
+                                                onChange={(e) => handleImageChange(e)}
+                                                className="fileInput"
+                                            />
+                                            Добавить фото
+                                        </label>
+                                    </ListItem>
+                                </div>
+                            </div>
                         </form>
                     ) : (
                         <Typography variant="h2">
@@ -226,10 +283,10 @@ const Comment = ({item}) => {
                             <Link href="/login">
                                 login
                             </Link>{' '}
-                            to write a review
+                            написать отзыв
                         </Typography>
                     )}
-                </ListItem>
+                </div>
             </List>
         </div>
     );

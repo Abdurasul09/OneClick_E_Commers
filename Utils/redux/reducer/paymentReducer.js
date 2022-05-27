@@ -1,11 +1,8 @@
-import Cookies from "js-cookie";
 import {ActionType} from "../actions/types";
 
 const initialState = {
     shippingAddress: [],
-    paymentMethod:  Cookies.get('paymentMethod')
-        ? Cookies.get('paymentMethod')
-        : '',
+    paymentMethod:  []
 }
 
 export const PaymentMethodReducer = (state = initialState, action) => {

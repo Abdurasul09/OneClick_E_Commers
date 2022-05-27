@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import { ListItem, ListItemIcon} from "@material-ui/core";
+import {
+    ListItem,
+    ListItemIcon,
+    CardActionArea,
+    CardMedia
+
+} from "@material-ui/core";
 import api from "../../api/globalApi";
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import useStyle from "../../Utils/styles";
 import NextLink from 'next/link'
-import {CardActionArea, CardMedia} from "@mui/material";
-import Image from 'next/image'
 
 const Categories = ({active, setActive}) => {
     const [category, setCategory] = useState({})
@@ -70,8 +74,8 @@ const Categories = ({active, setActive}) => {
                                     </div>
                                 </ul>
                                 <ArrowForwardIosRoundedIcon
-                                    fontSize={"inherit"}
-                                    color={"secondary"}
+                                    fontSize="inherit"
+                                    color="secondary"
                                 />
                             </ListItem>
                         </li>

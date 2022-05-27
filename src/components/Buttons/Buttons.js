@@ -1,6 +1,5 @@
 import React from 'react';
 import NextLink from "next/link";
-import {Button, Typography} from "@mui/material";
 import useStyle from "../../../Utils/styles";
 
 const Buttons = () => {

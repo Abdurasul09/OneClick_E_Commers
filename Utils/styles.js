@@ -1,24 +1,57 @@
 import {makeStyles} from '@material-ui/core/styles';
 import {alpha} from "@mui/material/styles";
 
-
 const useStyle = makeStyles((theme) => ({
     navbar: {
         // background: 'linear-gradient(45deg, #1cb5e0 30%, #021b79 90%)',
-        backgroundColor: "#111827FF",
+        backgroundColor: " #000016",
         '& a': {
             color: '#ffffff',
             marginLeft: 10,
         },
+        zIndex: '200'
     },
-    globalText:{
+    layoutSearchIcon: {
+        display: "none",
+        [theme.breakpoints.down('md')]: {
+            display: 'block'
+        },
+        [theme.breakpoints.between("lg")]: {
+            display: "none",
+        },
+    },
+    layoutBrand: {
         fontWeight: 'bold',
         fontSize: '2rem',
-        color: '#111827FF'
+        cursor: 'pointer',
+        display: "none",
+        [theme.breakpoints.down('md')]: {
+            display: 'block'
+        },
+        [theme.breakpoints.between("lg")]: {
+            display: "none",
+        },
+    },
+    globalText: {
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        color: '#111827FF',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1.5rem'
+        },
+
     },
     brand: {
         fontWeight: 'bold',
         fontSize: '2rem',
+        cursor: 'pointer',
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
+        },
+        [theme.breakpoints.between("lg")]: {
+            display: "block",
+        },
+
     },
     brandR: {
         color: '#faaf00'
@@ -37,6 +70,7 @@ const useStyle = makeStyles((theme) => ({
     grow: {
         flexGrow: "2"
     },
+    // Cart
     card: {
         marginTop: "2rem"
     },
@@ -46,7 +80,55 @@ const useStyle = makeStyles((theme) => ({
     cardTitleIcon: {
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
+        },
+        [theme.breakpoints.between("lg")]: {
+            display: "block",
+        },
+    },
+    navbarIcons: {
+        paddingLeft: '2em',
+        width: '100%',
+        position: 'fixed',
+        top: '43rem',
+        bottom: '0',
+        left: 0,
+        right: 0,
+        backgroundColor: '#4F7CA1',
+        display: 'none',
+        [theme.breakpoints.down('md')]: {
+            display: 'block'
+        },
+        [theme.breakpoints.between("lg")]: {
+            display: "none",
+        },
+    },
+    // Cart
+    cartTableContainer:{
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
+        },
+    },
+    cartPrice: {
+        color: ' #696969',
+        fontSize: '.8rem',
+        fontWeight: 400,
+        letterSpacing: 0,
+        lineHeight: '1.5em',
+    },
+    cartDel: {
+        cursor: "pointer"
+    },
+    cartMd: {
+        display: "none",
+        [theme.breakpoints.down('md')]: {
+            display: 'block'
+        },
+    },
+    cartTableBodyMd: {
+        width: '100%'
     },
 
     section: {
@@ -60,6 +142,9 @@ const useStyle = makeStyles((theme) => ({
     },
     iconSvg: {
         color: "#F6F9FC",
+        [theme.breakpoints.down('md')]: {
+            marginLeft: '1.5rem'
+        },
     },
     badge: {
         color: "#F6F9FC",
@@ -74,8 +159,8 @@ const useStyle = makeStyles((theme) => ({
         marginTop: "7rem"
     },
     cartQuantity: {
-        margin: "10px",
         fontSize: "18px",
+        margin: 5
     },
     form: {
         width: '100%',
@@ -109,10 +194,13 @@ const useStyle = makeStyles((theme) => ({
         fontSize: "30px",
     },
     searchSection: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
         },
+        [theme.breakpoints.between("lg")]: {
+            display: "block",
+        },
+
     },
     searchForm: {
         width: "400px",
@@ -151,6 +239,69 @@ const useStyle = makeStyles((theme) => ({
     reviewForm: {
         maxWidth: 800,
         width: '100%',
+    },
+    // ContactPage
+    contactPagePhone: {
+        display: "flex",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#1384E2',
+        marginRight: 2,
+        padding: "5px",
+        borderRadius: '50%'
+    },
+    contactPageWhatsapp: {
+        display: "flex",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#2FB350',
+        fontSize: '10px',
+        marginRight: 2,
+        padding: "5px",
+        marginLeft: 4,
+        borderRadius: '50%'
+    },
+    contactPageInstagram: {
+        display: "flex",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#C13584',
+        fontSize: '10px',
+        marginRight: 2,
+        padding: "5px",
+        marginLeft: 4,
+        borderRadius: '50%'
+    },
+    //About Us
+    about: {
+        padding: 4,
+        position: "relative",
+    },
+    aboutLine: {
+        padding: "30px",
+        borderLeft: "1px solid #7582EBFF",
+        borderBottom: "1px solid #7582EBFF"
+    },
+    aboutLineFirstPoint: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        padding: 5,
+        backgroundColor: '#7582EBFF',
+        borderRadius: "50%",
+    },
+    aboutLineSecondPoint: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        padding: 5,
+        backgroundColor: '#7582EBFF',
+        borderRadius: "50%",
+    },
+    aboutBrand: {
+        margin: 0,
+        fontWeight: 700,
+        fontSize: '50px',
     },
     //GlobalColor
     globalColor: {
@@ -276,11 +427,28 @@ const useStyle = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "start"
     },
-    flex1: {
+    flexStart: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "start"
+    },
+    flexColumn: {
         display: "flex",
         flexDirection: "column",
         margin: 0,
         padding: 0,
+    },
+    //outlined
+    outlined:{
+        width: "100%",
+        margin: "10px 0",
+        height: 2,
+        background: "#ccc",
+        display: "none",
+        [theme.breakpoints.down('md')]: {
+            display: 'block'
+        },
+
     },
     //Categories
     categoryChildren: {
@@ -297,7 +465,7 @@ const useStyle = makeStyles((theme) => ({
 // ProductDiscount
     productDiscount: {
         position: "absolute",
-        backgroundColor: "#f0c000",
+        backgroundColor: "#7582EBFF",
         padding: 5,
         color: "#ffffff",
         fontSize: "1em",
@@ -305,6 +473,11 @@ const useStyle = makeStyles((theme) => ({
         left: 0,
     },
 
+    // productTitle
+    productTitle: {
+        fontSize: 15,
+        color: "gray"
+    },
 
     //ProductImage
     productImage: {
@@ -329,6 +502,41 @@ const useStyle = makeStyles((theme) => ({
             backgroundColor: "#e8e8e8",
         }
     },
+//idProductGlobalImg
+    idSmalImage: {
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
+        },
+    },
+    idBigImage: {
+        [theme.breakpoints.down('md')]: {
+            padding: 0
+        },
+    },
+    idSizes:{
+        [theme.breakpoints.down('md')]: {
+            padding: 0
+        },
+    },
+    idProductGlobalImg:{
+        width: "400px",
+        height: "540px",
+        [theme.breakpoints.down('md')]: {
+            width: "380px",
+            height: "520px",
+        },
+    },
+    idProdDescriptions:{
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
+        },
+    },
+    idProdDescriptionsMd:{
+        display:"none",
+        [theme.breakpoints.down('md')]: {
+            display: 'block'
+        },
+    },
 
     // marginTopGlobal
     marginTopGlobal: {
@@ -340,6 +548,13 @@ const useStyle = makeStyles((theme) => ({
         fontSize: 12,
         color: "gray",
         paddingLeft: 5
+    },
+    comDesc: {
+        paddingLeft: "4rem",
+        [theme.breakpoints.down('md')]: {
+            padding: 0
+        },
+
     },
 
     // globalColorStyle
@@ -377,6 +592,10 @@ const useStyle = makeStyles((theme) => ({
         marginTop: '1.5rem',
         marginRight: '4rem',
         borderRight: '1px #808080 solid',
+        [theme.breakpoints.down('md')]: {
+            marginRight: '2rem',
+            marginLeft: "2rem"
+        },
     },
     delivery: {
         fontSize: 16,

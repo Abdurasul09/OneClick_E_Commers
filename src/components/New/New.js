@@ -57,7 +57,7 @@ export const New = () => {
                 {productsItem.results?.map(productItem => (
                     <>
                         {productItem.products.map(product => (
-                            <Grid item md={3} key={product.id}>
+                            <Grid item md={3} sm={6} xs={12} key={product.id}>
                                 <Card>
                                     <NextLink href={`/product/${product.id}`}>
                                         <CardActionArea className='productImage'>
@@ -88,7 +88,7 @@ export const New = () => {
                                         <ListItem className={classes.priceFavoriteIcon}>
                                             <Typography
                                                 onClick={() => setModalActive(true)}
-                                                sx={{color: grey[600]}}
+                                                className={classes.productTitle}
                                             >
                                                 {product.title}
                                             </Typography>
@@ -103,7 +103,7 @@ export const New = () => {
                                                     <Typography>
                                                         <strong>{product.discount_price} coм</strong>
                                                     </Typography>
-                                                    <Typography pl={2}>
+                                                    <Typography pl={1}>
                                                         <del style={{color: "grey", fontSize: '13px'}}>
                                                             {product.price} coм
                                                         </del>

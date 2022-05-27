@@ -102,14 +102,14 @@ const Checkout = () => {
                             </ListItem>
                             <ListItem>
                                 <Grid container>
-                                    <Grid item xs={12} md={2}>
+                                    <Grid item md={5}>
                                         <Typography
                                             variant='h2'
                                             component='h2'
                                         >
                                             Платный
                                         </Typography>
-                                        <Button variant={"outlined"}>
+                                        <button className='btnFav'>
                                             <span className='free'>
                                                 <label onClick={() => Order('courier')} key="Курьером">
                                                     <input
@@ -122,20 +122,20 @@ const Checkout = () => {
                                                     КУРЬЕРОМ
                                                 </label>
                                             </span>
-                                        </Button>
+                                        </button>
                                     </Grid>
-                                    <Grid item cs={12} md={1} className={classes.reviewItem}/>
-                                    <Grid item xs={12} md={5}>
+                                    <Grid item cs={12} md={2} className={classes.reviewItem}/>
+                                    <Grid item md={3}>
                                         <Typography variant='h2' component='h2'>Бесплатный</Typography>
                                         <div className={classes.flex1}>
                                             <NextLink href='/issuepoint'>
                                                 <a style={{textDecoration: 'none'}}>
-                                                    <Button variant='outlined'>
-                                                        Пунк выдачи
-                                                    </Button>
+                                                    <button className='btnFav'>
+                                                        ПУНК ВЫДАЧИ
+                                                    </button>
                                                 </a>
                                             </NextLink>
-                                            <span className='free deliverFree'>
+                                            <div className='free deliverFree'>
                                                 <label key="Курьером Только по городу Бишкек">
                                                     <input
                                                         onClick={() => Order('courier')}
@@ -144,10 +144,10 @@ const Checkout = () => {
                                                         name="inputRadios"
                                                         value='free'
                                                     />
-                                                        КУРЬЕРОМ
+                                                    КУРЬЕРОМ
                                                     <p style={{fontSize: '0.4rem'}}>Только по городу Бишкек</p>
                                                 </label>
-                                            </span>
+                                            </div>
                                         </div>
                                     </Grid>
                                 </Grid>
@@ -196,152 +196,143 @@ const Checkout = () => {
                                         Способ оплаты
                                     </Typography>
                                 </ListItem>
-                                <ListItem>
-                                    <div
-                                        className='payWithCart'
-                                        onClick={() => cashPaymentActive ? setCashPaymentActive(false) : setCashPaymentActive(true)}
-                                    >
-                                        <label
-                                            key="Оплата наличными"
-                                        >
-                                            💵
-                                            <input
-                                                type="radio"
-                                                onChange={(e) => setPayment(e.target.value)}
-                                                name="inputRadios"
-                                                value='cash'
-                                            />
-                                            <span style={{fontSize: "12px"}}>
-                                          Оплата
-                                        наличными
-                                        </span>
-                                        </label>
-                                    </div>
-                                    <div
-                                        className='payWithCart'
-                                        onClick={() => active ? setActive(false) : setActive(true)}
-                                    >
-                                        <label
-                                            key="Mbank"
-                                        >
-                                            <img
-                                                src='https://play-lh.googleusercontent.com/dsfiyTKElmAxtD0QhvuXdfHGhWsbnDW7vTC_dYdeN9yKTv9xs8_HyHz1O8c9f6uvrQ'
-                                                alt="mbank"
-                                                width={12}
-                                            />
-                                            <input
-                                                type="radio"
-                                                onChange={(e) => setPayment(e.target.value)}
-                                                name="inputRadios"
-                                                value='m_bank'
+                                <ListItem className={classes.flexStart}>
+                                    <div className='checkboxPaymentCart'>
+                                        <div className='payWithCart'>
+                                            <label>
+                                                💵
+                                                <input
+                                                    type="radio"
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                    name="inputRadios"
+                                                    value='cash'
+                                                />
+                                                <span
+                                                    onClick={() => cashPaymentActive ? setCashPaymentActive(false) : setCashPaymentActive(true)}
+                                                    className='spanPayCart'
+                                                >
+                                                            Оплатаналичными
+                                                        </span>
+                                            </label>
+                                        </div>
+                                        <div className='payWithCart'>
+                                            <label key="Mbank">
+                                                <img
+                                                    src='https://play-lh.googleusercontent.com/dsfiyTKElmAxtD0QhvuXdfHGhWsbnDW7vTC_dYdeN9yKTv9xs8_HyHz1O8c9f6uvrQ'
+                                                    alt="mbank"
+                                                    width={12}
+                                                />
+                                                <input
+                                                    type="radio"
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                    name="inputRadios"
+                                                    value='m_bank'
 
-                                            />
-                                            <span style={{fontSize: '12px'}}>
-                                             Mbank
-                                        </span>
-                                        </label>
-                                    </div>
-                                    <div
-                                        className='payWithCart'
-                                        onClick={() => active ? setActive(false) : setActive(true)}
-                                    >
-                                        <label
-                                            key="О! Деньги"
-                                        >
-                                            <input
-                                                type="radio"
-                                                onChange={(e) => setPayment(e.target.value)}
-                                                name="inputRadios"
-                                                value='o_maney'
+                                                />
+                                                <span
+                                                    onClick={() => active ? setActive(false) : setActive(true)}
+                                                    className='spanPayCart'
+                                                >
+                                                            Mbank
+                                                        </span>
+                                            </label>
+                                        </div>
+                                        <div className='payWithCart'>
+                                            <label key="О! Деньги">
+                                                <input
+                                                    type="radio"
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                    name="inputRadios"
+                                                    value='o_maney'
 
-                                            />
-                                            <img
-                                                src="https://cms.timbu.com/storage/photos/O!-1562927890.png"
-                                                alt="Кошелек «О! Деньги»"
-                                                width={15}
-                                            />
-                                            <span style={{fontSize: "12px"}}>
-                                            «О! Деньги»
-                                        </span>
-                                        </label>
-                                    </div>
-                                    <div
-                                        className='payWithCart'
-                                        onClick={() => active ? setActive(false) : setActive(true)}
-                                    >
-                                        <label
-                                            key="Balance.kg"
-                                        >
-                                            <img
-                                                src="https://play-lh.googleusercontent.com/xN4NjulPfpO6gChBLWSdqH30mfzikW1mCwxvHx5Qp2TI-59E5p0e3SqU67VaI5whpF0"
-                                                alt="Кошелек «Balance.kg»"
-                                                width={15}
-                                            />
-                                            <input
-                                                type="radio"
-                                                onChange={(e) => setPayment(e.target.value)}
-                                                name="inputRadios"
-                                                value='balance_kg'
+                                                />
+                                                <img
+                                                    src="https://cms.timbu.com/storage/photos/O!-1562927890.png"
+                                                    alt="Кошелек «О! Деньги»"
+                                                    width={15}
+                                                />
+                                                <span
+                                                    onClick={() => active ? setActive(false) : setActive(true)}
+                                                    className='spanPayCart'
+                                                >
+                                                            «О! Деньги»
+                                                        </span>
+                                            </label>
+                                        </div>
+                                        <div className='payWithCart'>
+                                            <label key="Balance.kg">
+                                                <img
+                                                    src="https://play-lh.googleusercontent.com/xN4NjulPfpO6gChBLWSdqH30mfzikW1mCwxvHx5Qp2TI-59E5p0e3SqU67VaI5whpF0"
+                                                    alt="Кошелек «Balance.kg»"
+                                                    width={15}
+                                                />
+                                                <input
+                                                    type="radio"
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                    name="inputRadios"
+                                                    value='balance_kg'
 
-                                            />
-                                            <span style={{fontSize: '12px'}}>
-                                            «Balance.kg»
-                                        </span>
-                                        </label>
-                                    </div>
-                                    <div
-                                        className='payWithCart'
-                                        onClick={() => active ? setActive(false) : setActive(true)}
-                                    >
-                                        <label
-                                            key="MegaPay"
-                                        >
-                                            <img
-                                                src="https://play-lh.googleusercontent.com/jNzcWphuFaZAOV-M8ufJqpPHwdXpQrMA8jHScmRuLrYKfPT1RWJk10UiTP5F1XtExy2f"
-                                                width={15}
-                                                alt="MegaPay"
-                                            />
-                                            <input
-                                                type="radio"
-                                                onChange={(e) => setPayment(e.target.value)}
-                                                name="inputRadios"
-                                                value='mega_pay'
+                                                />
+                                                <span
+                                                    onClick={() => active ? setActive(false) : setActive(true)}
+                                                    className='spanPayCart'
+                                                >
+                                                            «Balance.kg»
+                                                        </span>
+                                            </label>
+                                        </div>
+                                        <div className='payWithCart'>
+                                            <label key="MegaPay">
+                                                <img
+                                                    src="https://play-lh.googleusercontent.com/jNzcWphuFaZAOV-M8ufJqpPHwdXpQrMA8jHScmRuLrYKfPT1RWJk10UiTP5F1XtExy2f"
+                                                    width={15}
+                                                    alt="MegaPay"
+                                                />
+                                                <input
+                                                    type="radio"
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                    name="inputRadios"
+                                                    value='mega_pay'
 
-                                            />
-                                            <span style={{fontSize: '12px'}}>
-                                             MegaPay
-                                        </span>
-                                        </label>
-                                    </div>
-                                    <div
-                                        className='payWithCart'
-                                        onClick={() => active ? setActive(false) : setActive(true)}
-                                    >
-                                        <label
-                                            key="Элсом"
-                                        >
-                                            <img
-                                                src="https://elsom.kg/wp-content/uploads/2020/12/logo-Elsom-RGB-72.png"
-                                                alt="Элсом"
-                                                width={15}
-                                            />
-                                            <input
-                                                type="radio"
-                                                onChange={(e) => setPayment(e.target.value)}
-                                                name="inputRadios"
-                                                value='el_som'
+                                                />
+                                                <span
+                                                    onClick={() => active ? setActive(false) : setActive(true)}
+                                                    className='spanPayCart'
+                                                >
+                                                            MegaPay
+                                                        </span>
+                                            </label>
+                                        </div>
+                                        <div className='payWithCart'>
+                                            <label key="Элсом">
+                                                <img
+                                                    src="https://elsom.kg/wp-content/uploads/2020/12/logo-Elsom-RGB-72.png"
+                                                    alt="Элсом"
+                                                    width={15}
+                                                />
+                                                <input
+                                                    type="radio"
+                                                    onChange={(e) => setPayment(e.target.value)}
+                                                    name="inputRadios"
+                                                    value='el_som'
 
-                                            />
-                                            <span style={{fontSize: '12px'}}>
-                                               Элсом
-                                        </span>
-                                        </label>
+                                                />
+                                                <span
+                                                    onClick={() => active ? setActive(false) : setActive(true)}
+                                                    className='spanPayCart'
+                                                >
+                                                             Элсом
+                                                        </span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </ListItem>
                                 <List className={cashPaymentActive ? "block" : 'none'}>
-                                    <Typography variant='h2' component='h2'>
-                                        Оплата наличными курьеру
-                                    </Typography>
+                                    <ListItem>
+                                        <Typography variant='h2' component='h2'>
+                                            Оплата наличными курьеру
+                                        </Typography>
+                                    </ListItem>
                                     <ListItem>
                                         <Grid container>
                                             <Grid item xs={12} md={5}>
@@ -371,20 +362,20 @@ const Checkout = () => {
                                             MBank Online от Банка КЫРГЫЗСТАН
                                         </Typography>
                                     </ListItem>
-                                    <ListItem>
+                                    <div>
                                         <Grid container className={classes.flexCenter}>
                                             <Grid item xs={12} md={1} style={{paddingLeft: 10}}>
                                                 <span className={classes.exclamatory}>!</span>
                                             </Grid>
                                             <Grid item xs={12} md={8}>
-                                            <span className={classes.payCartTitle}>
-                                       «Бесплатная доставка» действует при оплате свыше 990 сом.
-                                        Оплата за доставку при заказе менее 990 сом согласно тарифной
-                                        политике Namba Food.
-                                    </span>
+                                                <span className={classes.payCartTitle}>
+                                                     «Бесплатная доставка» действует при оплате свыше 990 сом.
+                                                     Оплата за доставку при заказе менее 990 сом согласно тарифной
+                                                     политике Namba Food.
+                                                </span>
                                             </Grid>
                                         </Grid>
-                                    </ListItem>
+                                    </div>
                                     <ListItem>
                                         <Grid container>
                                             <Grid item xs={12} md={3}>
@@ -422,55 +413,53 @@ const Checkout = () => {
                     <Grid item xs={12} md={3}>
                         <Card>
                             <List>
-                                <ListItem>
-                                    <Grid item xs={12} md={4}>
+                                <ListItem className={classes.flex}>
+                                    <div>
                                         <Typography variant='h1'>
                                             Итого:
                                         </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} md={8}>
+                                    </div>
+                                    <div>
                                         <Typography variant='h2'>
                                             {product?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(1)} coм
                                         </Typography>
-                                    </Grid>
+                                    </div>
                                 </ListItem>
-                                <ListItem>
-                                    <Grid item xs={12} md={10}>
+                                <ListItem className={classes.flex}>
+                                    <div>
                                         <Typography>
                                             Товары:
                                         </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} md={2}>
+                                    </div>
+                                    <div>
                                         <Typography>
                                             {product?.reduce((a, c) => a + c.quantity, 0)} шт
                                         </Typography>
-                                    </Grid>
+                                    </div>
                                 </ListItem>
-                                <ListItem>
-                                    <Grid item xs={12} md={10}>
+                                <ListItem className={classes.flex}>
+                                    <div>
                                         <Typography>
                                             Скидки:
                                         </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} md={2}>
+                                    </div>
+                                    <div>
                                         <Typography>
                                             10%
                                         </Typography>
-                                    </Grid>
+                                    </div>
                                 </ListItem>
                                 <ListItem>
-                                    <Button
-                                        variant="contained"
+                                    <button
+                                        className='globalBtn'
                                         type='submit'
-                                        color="secondary"
-                                        fullWidth
                                     >
                                         <NextLink href='/checkouttotal'>
                                             <a>
                                                 Заказать
                                             </a>
                                         </NextLink>
-                                    </Button>
+                                    </button>
                                 </ListItem>
                                 <ListItem>
                                     <Typography style={{fontSize: '12px'}} color={"gray"}>

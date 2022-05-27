@@ -45,7 +45,7 @@ export default function AnswerComment({comment, product}) {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Typography color='#009688'>Ответить</Typography>
+                    <Typography color='#7582EBFF'>Ответить</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <form onSubmit={submitHandler}>
@@ -62,15 +62,12 @@ export default function AnswerComment({comment, product}) {
                                 onChange={(e) => setAnswer(e.target.value)}
                             />
                         </div>
-                        <Button
+                        <button
+                            className='btn'
                             type="submit"
-                            variant="text"
-                            color="secondary"
-                            size="small"
                         >
                             Отправить
-                            {loading && <CircularProgress/>}
-                        </Button>
+                        </button>
                     </form>
                 </AccordionDetails>
             </Accordion>

@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import SearchIcon from "@mui/icons-material/Search";
-import useStyle from "../../../Utils/styles";
+import useStyle from "../../Utils/styles";
 import {useRouter} from "next/router";
 import {Box, IconButton} from "@material-ui/core";
 import {useDispatch} from "react-redux";
-import {fetchPosts} from "../../../Utils/redux/actions/fetchPosts";
+import {fetchPosts} from "../../Utils/redux/actions/fetchPosts";
 
 
-const Search = () => {
+const SearchPeage = () => {
     const router = useRouter()
     const [search, setSearch]=useState('')
     const dispatch = useDispatch()
@@ -50,4 +50,4 @@ const Search = () => {
     );
 };
 
-export default Search;
+export default SearchPeage;

@@ -1,3 +1,4 @@
+$btnColor: #7582EBFF;
 .location{
   div{
     width: 300px;
@@ -12,15 +13,11 @@
 }
 
 .payWithCart{
-  border: 1px solid #666666;
-  padding: 10px;
+  border: 1px solid black;
   transition: .2s all;
+  padding: 5px;
   margin: 5px;
-  border-radius: 5px;
   cursor: pointer;
-  &:hover{
-    background: rgba(153, 153, 153, 0.35);
-  }
 }
 .payWithCart input[type=radio] {
   display: none;
@@ -56,13 +53,42 @@
 
 .deliverFree{
   margin-top: 10px;
-  border: 1px solid rgba(0,150,136,0.56);
-  padding: 5px 15px;
-  width: 40%;
-  border-radius: 5px;
+  border: 1px solid black;
+  padding: 10px;
   text-align: center;
-  color: rgba(0,150,136,0.95);
-  font-weight: 500;
-  //background-color: rgb(117, 130, 235)
+  color: black;
+  width: 82%;
+}
 
+.checkBtn{
+  padding: 10px;
+  font-size:  15px;
+  font-weight: 400;
+  border: 1px solid #7582EBFF;
+  color: white;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+.spanPayCart{
+  cursor: pointer;
+  font-size: 12px;
+}
+
+//@media (max-width: 900px) {
+//  .deliverFree{
+//    width: 19%;
+//  }
+//}
+@media (max-width: 414px) {
+  .deliverFree{
+    width: 100%;
+  }
+}
+
+@media (max-width: 414px) {
+  .checkboxPaymentCart{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

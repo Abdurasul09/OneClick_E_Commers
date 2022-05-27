@@ -1,9 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import NextLink from "next/link";
 import Layout from "../../src/components/Layout";
-import {Button, Grid, List, ListItem, Typography} from "@mui/material";
 import useStyle from "../../Utils/styles";
-import {Avatar, CircularProgress, IconButton, TextField} from "@material-ui/core";
+import {
+    Avatar,
+    CircularProgress,
+    IconButton,
+    Grid,
+    List,
+    Typography
+} from "@material-ui/core";
 import {useDispatch} from "react-redux";
 import api from "../../api/globalApi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -16,9 +22,9 @@ import {useSnackbar} from "notistack";
 import Modal from "../../src/components/Ocno";
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import YouTubeIcon from '@mui/icons-material/YouTube';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Buttons from "../../src/components/Buttons/Buttons";
+import TelegramIcon from "@mui/icons-material/Telegram";
 
 const ProductScreen = ({product}) => {
     const classes = useStyle();
@@ -32,7 +38,7 @@ const ProductScreen = ({product}) => {
 
     const sendUrl = `https://mui.com/store/previews/onepirate/`
 
-    console.log(product)
+    console.log(cartProduct)
     useEffect(() => {
         if (!currentProduct) return
         setCartProduct(currentProduct)
@@ -40,21 +46,33 @@ const ProductScreen = ({product}) => {
 
     useEffect(() => {
         product?.products.slice(0, 1).map((item) => {
+            item.title = product.title
             item.quantity = 0
             item.price = product.price
+            item.discount = product.discount
             setCurrentProduct(item)
         })
         dispatch(addToCartProductPrice(product))
     }, [product])
 
     const buy = () => {
+        closeSnackbar();
         if (!size) {
-            enqueueSnackbar("Выберите размер !!!", {variant: 'error'})
+            enqueueSnackbar("Выберите размер", {variant: 'error'})
             return
         }
         try {
+            enqueueSnackbar('ТОВАРЫ В КОРЗИНЕ', {variant: 'success'})
             cartProduct.sizes = size
             return dispatch(addToCartHandler(cartProduct))
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const addToFav = (product) => {
+        try {
+            enqueueSnackbar('ТОВАРЫ В ИЗБРАННОЕ', {variant: 'success'})
+            return dispatch(addToFavorite(product))
         } catch (e) {
             console.log(e)
         }
@@ -69,22 +87,19 @@ const ProductScreen = ({product}) => {
                 <>
                     <div className={classes.section}>
                         <Buttons/>
-                        <List>
-                            <ListItem>
-                                <Typography
-                                    component="h1"
-                                    variant="h1"
-                                >
-                                    <strong>{product.title}</strong>
-                                </Typography>
-                            </ListItem>
-                        </List>
+                        <div>
+                            <Typography
+                                component="h1"
+                                variant="h1"
+                            >
+                                <strong>{product.title}</strong>
+                            </Typography>
+                        </div>
                         <Grid container spacing={1}>
-                            <Grid item md={6} xs={12}>
-                                <List>
-                                    <ListItem>
-                                        <Grid item xs={2}>
-                                            <div>
+                            <Grid item md={5} xs={10}>
+                                    <div className={classes.flex}>
+                                        <Grid item md={4} xs={2}>
+                                            <div className={classes.idSmalImage}>
                                                 {currentProduct?.images.map((item, idx) => (
                                                     <List key={item}>
                                                         <Image
@@ -100,53 +115,51 @@ const ProductScreen = ({product}) => {
                                                 ))}
                                             </div>
                                         </Grid>
-                                        <Grid item xs={5}>
+                                        <Grid item md={9}>
                                             <div>
                                                 <img
                                                     alt={currentProduct?.images[clickedImg].title}
                                                     src={currentProduct?.images[clickedImg].image}
-                                                    width={400}
-                                                    height={540}
+                                                    className={classes.idProductGlobalImg}
                                                 />
                                             </div>
                                         </Grid>
-                                    </ListItem>
-                                </List>
-                                <List>
-                                    <Typography
-                                        component='h1'
-                                        variant="h1"
-                                    >
-                                        <strong>
-                                            Описание
-                                        </strong>
-                                    </Typography>
+                                    </div>
+                                <div className={classes.idProdDescriptions}>
+                                    <h1>
+                                        Описание
+                                    </h1>
                                     <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
-                                </List>
+                                </div>
                             </Grid>
-                            <Grid item xs={5}>
-                                <List>
-                                    <ListItem>
-                                        <Typography
-                                            component="h1"
-                                            variant="h1"
-                                            style={{margin: 0}}
-                                        >
-                                            <strong>
-                                                {product.price} coм
-                                            </strong>
-                                        </Typography>
-                                        <Typography pl={2}>
-                                            <del style={{color: "grey", fontSize: '18px'}}>
-                                                {product.price} coм
-                                            </del>
-                                        </Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Grid item xs={2}>
+                            <Grid item xs={12} md={1}/>
+                            <Grid item md={4} xs={12}>
+                                <div>
+                                    <div className={classes.flexStart}>
+                                        <Grid md={4} xs={4}>
+                                            <Typography
+                                                component="h1"
+                                                variant="h1"
+                                                style={{margin: 0}}
+                                            >
+                                                <strong>
+                                                    {product.price} coм
+                                                </strong>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid md={3} xs={4}>
+                                            <Typography>
+                                                <del style={{color: "grey", fontSize: '18px'}}>
+                                                    {product.price} coм
+                                                </del>
+                                            </Typography>
+                                        </Grid>
+                                    </div>
+                                    <div className={classes.flexStart}>
+                                        <Grid item md={2} xs={4}>
                                             <Typography>Скидка:</Typography>
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item md={2} xs={4}>
                                             {product.discount ? (
                                                 <Avatar
                                                     className={classes.globalColorYellow}
@@ -159,12 +172,12 @@ const ProductScreen = ({product}) => {
                                                 " "
                                             )}
                                         </Grid>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Grid item xs={1}>
+                                    </div>
+                                    <div className={classes.flexStart}>
+                                        <Grid item md={2} xs={2}>
                                             <Typography>Цвет:</Typography>
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item md={2} xs={1}>
                                             {currentProduct?.color ? (
                                                 <Typography
                                                     pl={2}
@@ -173,8 +186,8 @@ const ProductScreen = ({product}) => {
                                                 </Typography>
                                             ) : (" ")}
                                         </Grid>
-                                    </ListItem>
-                                    <ListItem>
+                                    </div>
+                                    <div className={classes.flexStart}>
                                         {product.products.map(item => (
                                             <div
                                                 onClick={() => setCurrentProduct(item)}
@@ -189,10 +202,15 @@ const ProductScreen = ({product}) => {
                                                 />
                                             </div>
                                         ))}
-                                    </ListItem>
-                                    <Typography pl={2} pt={1}>Размер: {size ? size : 'ne vybrano'} </Typography>
-                                    <ListItem style={{marginBottom: 10}}>
-                                        <form className={classes.flex}>
+                                    </div>
+                                    <div className={classes.outlined}/>
+                                    <div style={{margin: '15px 0 10px 0'}}>
+                                        <Typography pl={2} pt={1}>Размер: {size ? (size) : (
+                                            <span style={{color: 'gray'}}>Не выброно</span>
+                                        )}</Typography>
+                                    </div>
+                                    <div style={{marginBottom: 15}}>
+                                        <form className={classes.flexStart}>
                                             {currentProduct?.sizes.map(itemSize => (
                                                 <div key={itemSize} className='form_radio_btn'>
                                                     <label
@@ -215,8 +233,8 @@ const ProductScreen = ({product}) => {
                                                 </div>
                                             ))}
                                         </form>
-                                    </ListItem>
-                                    <ListItem>
+                                    </div>
+                                    <div className={classes.flexCenter}>
                                         <button
                                             className='btnCart'
                                             onClick={() => {
@@ -227,95 +245,100 @@ const ProductScreen = ({product}) => {
                                         </button>
                                         <button
                                             className='btnFav'
-                                            onClick={() => dispatch(addToFavorite(product))}
+                                            onClick={() => addToFav(product)}
                                         >
                                             <FavoriteBorderIcon fontSize={"small"}/>&nbsp; Избранное
                                         </button>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>
-                                            Артикул: 65634576527
-                                        </Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>
-                                            Продавец: Алиса Анарбаева
-                                        </Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <NextLink href={`/stores/${product.id}`}>
-                                            <a>
-                                                <button className='btnFav'>
-                                                    Перейти в магазине
-                                                </button>
-                                            </a>
-                                        </NextLink>&nbsp;
-                                        <IconButton
-                                            onClick={() => setModalActive(true)}
-                                        >
-                                            <ShareIcon/>
-                                        </IconButton>
-                                    </ListItem>
-                                </List>
+                                    </div>
+                                    <div/>
+                                    <div style={{marginTop: "20px"}}>
+                                        <div>
+                                            <Typography>
+                                                Артикул: 65634576527
+                                            </Typography>
+                                            <Typography>
+                                                Продавец: Алиса Анарбаева
+                                            </Typography>
+                                        </div>
+                                        <div className={classes.flexStart}>
+                                            <NextLink href={`/stores/${product.id}`}>
+                                                <a>
+                                                    <button className='btnFav'>
+                                                        Перейти в магазине
+                                                    </button>
+                                                </a>
+                                            </NextLink>&nbsp;
+                                            <IconButton
+                                                onClick={() => setModalActive(true)}
+                                            >
+                                                <ShareIcon/>
+                                            </IconButton>
+                                        </div>
+                                    </div>
+                                </div>
                             </Grid>
+                            <div className={classes.idProdDescriptionsMd}>
+                                <h2 style={{color: 'gray', paddingTop: '-5px'}}>
+                                    Описание
+                                </h2>
+                                <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
+                            </div>
                         </Grid>
-                        <List>
-                            <ListItem>
-                                <Typography component='h1' variant='h1'>С товаром рекомендуют</Typography>
-                            </ListItem>
-                        </List>
+                        <div>
+                            <Typography component='h1' variant='h1'>С товаром рекомендуют</Typography>
+                        </div>
                     </div>
                     <Comment item={product}/>
                     <Modal active={modalActive} setActive={setModalActive}>
-                        <List>
-                            <Typography component='h1' variant='h1'>Поделиться</Typography>
-                            <ListItem>
-                                <NextLink href='https://www.youtube.com/'>
-                                    <a>
-                                        <YouTubeIcon
-                                            style={{fontSize: '100px'}}
-                                            fontSize={"large"}
-                                        />
-                                    </a>
-                                </NextLink>&nbsp;
-                                <NextLink href='https://www.instagram.com/'>
-                                    <a>
-                                        <InstagramIcon
-                                            style={{fontSize: '70px'}}
-                                            fontSize={"large"}
-                                        />
-                                    </a>
-                                </NextLink>&nbsp;
-                                <NextLink href='https://www.facebook.com/'>
-                                    <a>
-                                        <FacebookIcon
-                                            style={{fontSize: '80px'}}
-                                            fontSize={"large"}
-                                        />
-                                    </a>
-                                </NextLink>&nbsp;
-                                <NextLink href='https://www.whatsapp.com/'>
-                                    <a>
-                                        <WhatsAppIcon
-                                            style={{fontSize: '70px'}}
-                                            fontSize={"large"}
-                                        />
-                                    </a>
-                                </NextLink>
-                            </ListItem>
-                            <ListItem>
+                        <Typography component='h1' variant='h1'>Поделиться</Typography>
+                        <div>
+                            <div className={classes.flexStart}>
+                                <div>
+                                    <span className={classes.contactPagePhone}>
+                                        <TelegramIcon fontSize={"large"} className={classes.iconSvg}/>
+                                    </span>
+                                </div>
+                                <div style={{margin: "15px"}}>
+                                    <span className={classes.contactPageWhatsapp}>
+                                        <NextLink href='https://www.whatsapp.com/'>
+                                            <a>
+                                                <WhatsAppIcon fontSize={"large"} className={classes.iconSvg}/>
+                                            </a>
+                                        </NextLink>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className={classes.contactPageInstagram}>
+                                        <NextLink href='https://www.instagram.com/'>
+                                            <a>
+                                                <InstagramIcon fontSize={"large"} className={classes.iconSvg}/>
+                                            </a>
+                                        </NextLink>
+                                    </span>
+                                </div>
+                                <div style={{margin: "15px"}}>
+                                    <span className={classes.contactPagePhone}>
+                                        <NextLink href='https://www.facebook.com/'>
+                                             <a>
+                                                 <FacebookIcon fontSize={"large"} className={classes.iconSvg}/>
+                                             </a>
+                                        </NextLink>
+                                    </span>
+                                </div>
+                            </div>
+                            <div style={{margin: "15px 0"}} className={classes.flex}>
                                 <input
                                     type="text"
                                     className='url'
                                     value={sendUrl}
                                 />
                                 <button className='btnCart'
-                                    onClick={ async (event) => await navigator.clipboard.writeText(sendUrl)}
+                                        onClick={async (event) => await navigator.clipboard.writeText(sendUrl)}
                                 >
                                     Копировать
                                 </button>
-                            </ListItem>
-                        </List>
+                            </div>
+                        </div>
                     </Modal>
                 </>
             ) : (

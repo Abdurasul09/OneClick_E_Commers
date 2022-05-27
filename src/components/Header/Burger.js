@@ -1,10 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-
-import {Link} from "@mui/material";
-import Image from "next/image";
-import logo from "../../../public/images/logo.svg";
+import {IconButton, Box} from '@material-ui/core';
 import NextLink from "next/link";
 import {GridMenu} from "../../../Utils/svg";
 import useStyle from "../../../Utils/styles";
@@ -14,15 +9,9 @@ export default function Burger({active, setActive}) {
     const classes = useStyle();
 
     return (
-        <Box
-            className={classes.flex}
-            position="relative"
-            width={150}
-        >
+        <Box className={classes.flex}>
             <IconButton
-                aria-label="open drawer"
                 onClick={() => setActive(!active)}
-                size={"medium"}
                 className={classes.gridMenu}
             >
                 <GridMenu/>

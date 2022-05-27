@@ -6,9 +6,10 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import Footer from "./Footer";
-import {Container} from "@mui/material";
-import {Typography} from "@material-ui/core";
+import {Typography, Container} from "@material-ui/core";
 import useStyle from "../../../Utils/styles";
+import PhoneIcon from "@mui/icons-material/Phone";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 
 const Contact = () => {
@@ -18,17 +19,17 @@ const Contact = () => {
             <section className='contact'>
                 <Container>
                     <div className='contact__content'>
-
                         <div className='contact__content__logo'>
                             <Typography className={classes.brand}>
                                 <span className={classes.brandR}>r</span>izon
                             </Typography>
                             <div className='contact__content__logo__text'>
-                                ONE CLICK - международный интернет-магазин одежды, обуви, электроники, детских товаров,
+                                ONE CLICK - международный интернет-магазин одежды, обуви, электроники,
+                                детских
+                                товаров,
                                 товаров для дома и других товаров.
                             </div>
                         </div>
-
                         <div className='contact__content__buyers'>
                             <h3>Покупателям</h3>
                             <h4>Как сделать заказ</h4>
@@ -50,10 +51,26 @@ const Contact = () => {
                         <div className='contact__content__sotSet'>
                             <h3>Мы в соцсетях</h3>
                             <div className='contact__content__sotSet__sets'>
-                                <InstagramIcon fontSize={"small"}/>
-                                <FacebookIcon fontSize={"small"}/>
-                                <YouTubeIcon fontSize={"small"}/>
-                                <TelegramIcon fontSize={"small"}/>
+                                <div>
+                                   <span className={classes.contactPagePhone}>
+                                       <TelegramIcon fontSize={"small"} className={classes.iconSvg}/>
+                                   </span>
+                                </div>
+                                <div>
+                                   <span className={classes.contactPageWhatsapp}>
+                                       <WhatsAppIcon fontSize={"small"} className={classes.iconSvg}/>
+                                   </span>
+                                </div>
+                                <div>
+                                   <span className={classes.contactPageInstagram}>
+                                       <InstagramIcon fontSize={"small"} className={classes.iconSvg}/>
+                                   </span>
+                                </div>
+                                <div>
+                                   <span className={classes.contactPagePhone}>
+                                       <FacebookIcon fontSize={"small"} className={classes.iconSvg}/>
+                                   </span>
+                                </div>
                             </div>
                         </div>
 

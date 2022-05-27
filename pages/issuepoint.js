@@ -6,6 +6,7 @@ import useStyle from "../Utils/styles";
 import {useDispatch} from "react-redux";
 import {ActionType} from "../Utils/redux/actions/types";
 
+
 const Issuepoint = () => {
 
     const [locations, setLocations] = useState()
