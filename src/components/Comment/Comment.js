@@ -26,59 +26,32 @@ const Comment = ({item}) => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(false);
     const [commentsPhoto, setCommentsPhoto] = useState()
-    // const [imagePreviewUrl, setImagePreviewUrl] = useState();
     const {enqueueSnackbar} = useSnackbar();
-    const [read, setRead] = useState();
-
-    // const handleImageChange = (e) => {
-    //     e.preventDefault();
-    //     const reader = new FileReader();
-    //     const file = e.target.files[0];
-    //     setRead(file);
-    //     reader.onloadend = () => {
-    //         setImagePreviewUrl(reader.result);
-    //     };
-    //     reader.readAsDataURL(file);
-    // };
     const [file, setFile] = useState("");
-    console.log('file',file)
-    const [imagePreviewUrl, setImagePreviewUrl] = useState();
+    const [imagePreview, setImagePreview] = useState("");
+
+
+
     const handleImageChange = (e) => {
         e.preventDefault();
-
-        let reader = new FileReader();
-        let file = e.target.files[0];
-
-        reader.onloadend = () => {
-            setFile(file);
-            setImagePreviewUrl(reader.result);
+        let readerBackground = new FileReader();
+        let fileBackground = e.target.files[0];
+        readerBackground.onloadend = () => {
+            setFile(fileBackground);
+            setImagePreview(readerBackground.result);
         };
-
-        reader.readAsDataURL(file);
+        readerBackground.readAsDataURL(fileBackground);
     };
-
-
-    // const handleImageChange = (e) => {
-    //     e.preventDefault();
-    //     const reader = new FileReader();
-    //     const file = e.target.files[0];
-    //     reader.onloadend = () => {
-    //         setImagePreviewUrl(reader.result);
-    //     };
-    //     reader.readAsDataURL(file);
-    // };
-
     const submitHandler = async (e) => {
         e.preventDefault();
+        if(!file)return
         setLoading(true);
-
+        const form = new FormData();
+        form.append("description", comment)
+        form.append("product", item.id)
+        form.append("photos", file)
         try {
-            await Axios.post("/comments",
-                {
-                    description: comment,
-                    product: item.id,
-                    photos: [file.lastModified]
-                })
+            await Axios.post("/comments", form)
             setLoading(false);
             enqueueSnackbar('Отзыв успешно отправлен!', {variant: 'success'});
             fetchReviews();
@@ -147,15 +120,23 @@ const Comment = ({item}) => {
                         Фотографии пользователей
                     </Typography>
                 </div>
-                {
-                    commentsPhoto ? (
-                        commentsPhoto.results.map((item) => (
-                            <div key={item}>
-                                <img src={item.photo} alt=""/>
-                            </div>
-                        ))
-                    ) : (<h2>loading</h2>)
-                }
+                <div className={classes.flexStart}>
+                    {
+                        commentsPhoto ? (
+                            commentsPhoto.results.map((item) => (
+                                <div key={item} style={{margin: 2}}>
+                                    <img
+                                        src={item.photo}
+                                        alt="Фотографии пользователей"
+                                        width={150}
+                                        height={150}
+                                    />
+                                </div>
+                            ))
+                        ) : (<h2>loading</h2>)
+                    }
+                </div>
+
                 <div>
                     <Typography name="reviews" id="reviews" variant="h1" component='h1'>
                         Отзывы клиентов

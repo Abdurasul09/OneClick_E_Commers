@@ -5,7 +5,6 @@ import useStyle from "../Utils/styles";
 import IconButton from "@mui/material/IconButton";
 import {Avatar, Badge, Button, FormControl, FormControlLabel, Modal, Radio, RadioGroup} from "@material-ui/core";
 import EditIcon from '@mui/icons-material/Edit';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import Box from "@mui/material/Box";
 import Email from "../src/components/Profile/Email";
 import Phone from "../src/components/Profile/Phone";
@@ -18,8 +17,20 @@ import Name from "../src/components/Profile/name";
 const Profile = () => {
     const classes = useStyle();
     const [user, setUser] = useState({})
-    const [changeAvatar, setChangeAvatar] = useState({})
-    console.log(changeAvatar)
+    // const [changeAvatar, setChangeAvatar] = useState({})
+    const [file, setFile] = useState("");
+    const [imagePreview, setImagePreview] = useState("");
+
+    const handleImageChange = (e) => {
+        e.preventDefault();
+        let readerBackground = new FileReader();
+        let fileBackground = e.target.files[0];
+        readerBackground.onloadend = () => {
+            setFile(fileBackground);
+            setImagePreview(readerBackground.result);
+        };
+        readerBackground.readAsDataURL(fileBackground);
+    };
 
     useEffect(() => {
         const parse = JSON.parse(localStorage.getItem("access"));
@@ -30,6 +41,9 @@ const Profile = () => {
     }, [])
 
     const sendUser = async () => {
+        const form = new FormData();
+        form.append("avatar", comment)
+
         try {
             await Axios.patch("user/", {user})
                 .then((data) => setUser(data))
@@ -57,11 +71,20 @@ const Profile = () => {
                         <List>
                             <ListItem>
                                 <Grid item xl={12} md={1}>
-                                    <Avatar alt="Travis Howard" src=""/>
-                                    <input
-                                        type="file"
-                                        onChange={(e) => setChangeAvatar(e)}
-                                    />
+                                    <Avatar src={imagePreview ? imagePreview : null} alt="Travis Howard" />
+                                    <ListItem>
+                                        <label className="input-file">
+                                            <input
+                                                type="file"
+                                                id="profile_pic"
+                                                name="profile_pic"
+                                                accept=".jpg, .jpeg, .png"
+                                                onChange={(e) => handleImageChange(e)}
+                                                className="fileInput"
+                                            />
+                                            Добавить фото
+                                        </label>
+                                    </ListItem>
                                 </Grid>
                                 <Grid item xl={12} md={1}>
                                     <Name

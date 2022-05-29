@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Layout from "../src/components/Layout";
 import Buttons from "../src/components/Buttons/Buttons";
 import {Grid, List, TextField} from "@material-ui/core";
-import {Button, Card, ListItem, Typography} from "@mui/material";
+import {Card, ListItem, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import NextLink from 'next/link'
 import useStyle from "../Utils/styles";
