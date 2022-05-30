@@ -1,9 +1,8 @@
 import React from 'react';
 import Layout from "../src/components/Layout";
 import useStyle from "../Utils/styles";
-import {Button, CardActionArea, CardActions, CardMedia, Grid, List, ListItem, Typography} from "@mui/material";
+import {Button, CardActionArea,Card, CardActions, CardMedia, Grid, List, ListItem, Typography} from "@material-ui/core";
 import NextLink from "next/link";
-import Card from "@mui/material/Card";
 import {addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {useDispatch, useSelector} from "react-redux";
 import Buttons from "../src/components/Buttons/Buttons";

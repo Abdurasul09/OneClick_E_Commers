@@ -28,8 +28,6 @@ const Comment = ({item}) => {
     const [commentsPhoto, setCommentsPhoto] = useState()
     const {enqueueSnackbar} = useSnackbar();
     const [file, setFile] = useState("");
-    const [imagePreview, setImagePreview] = useState("");
-
 
 
     const handleImageChange = (e) => {
@@ -38,7 +36,6 @@ const Comment = ({item}) => {
         let fileBackground = e.target.files[0];
         readerBackground.onloadend = () => {
             setFile(fileBackground);
-            setImagePreview(readerBackground.result);
         };
         readerBackground.readAsDataURL(fileBackground);
     };

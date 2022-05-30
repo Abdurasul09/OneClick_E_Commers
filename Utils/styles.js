@@ -33,7 +33,7 @@ const useStyle = makeStyles((theme) => ({
         },
     },
     globalText: {
-        fontWeight: 'bold',
+        fontWeight: '700',
         fontSize: '2rem',
         color: '#111827FF',
         [theme.breakpoints.down('md')]: {

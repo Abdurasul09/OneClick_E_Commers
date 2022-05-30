@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../src/components/Layout";
 import Buttons from "../src/components/Buttons/Buttons";
-import {Grid, List, TextField} from "@material-ui/core";
-import {Card, ListItem, Typography} from "@mui/material";
+import {Grid, List, TextField, Card, ListItem, Typography} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import NextLink from 'next/link'
 import useStyle from "../Utils/styles";
@@ -22,7 +21,6 @@ const Checkout = () => {
     const [delivery, setDelivery] = useState('')
     const [phone, setPhone] = useState('')
     const [payment, setPayment] = useState('')
-    // const [pay, setPay] = useState('платный')
     const [sendProduct, setSendProduct] = useState({})
     const [totalPrice, setTotalPrice] = useState('')
     const [product, setProduct] = useState([])
@@ -36,7 +34,6 @@ const Checkout = () => {
         setProduct(JSON.parse(localStorage.getItem('cart')))
         setFormAdderss(JSON.parse(localStorage.getItem('formAddress')))
         setDelivery(JSON.parse(localStorage.getItem('delivery')))
-        // setPay(JSON.parse(localStorage.getItem('pay')))
     }, [])
 
     useEffect(() => {

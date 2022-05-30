@@ -28,7 +28,6 @@ const Login = () => {
             return
         }
         api.get(`verify-email/${token}`)
-
     }, [token])
 
     const submitHandler = async ({email, password}) => {

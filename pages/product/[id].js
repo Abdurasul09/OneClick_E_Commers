@@ -37,8 +37,6 @@ const ProductScreen = ({product}) => {
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     const sendUrl = `https://mui.com/store/previews/onepirate/`
-
-    console.log(cartProduct)
     useEffect(() => {
         if (!currentProduct) return
         setCartProduct(currentProduct)

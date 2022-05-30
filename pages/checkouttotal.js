@@ -1,8 +1,7 @@
 import React from 'react';
 import Layout from "../src/components/Layout";
 import Buttons from "../src/components/Buttons/Buttons";
-import {Grid, List, ListItem, Typography} from "@material-ui/core";
-import {Card} from "@mui/material";
+import {Grid, Card, List, ListItem, Typography} from "@material-ui/core";
 
 const Checkouttotal = () => {
     return (

@@ -122,10 +122,6 @@ const Layout = ({title, children, description}) => {
             getUser()
         }, [anchorEl])
 
-
-
-
-
     const submitHandler = (e) => {
         e.preventDefault();
         router.push(`/search?query=${search}`);
@@ -269,7 +265,6 @@ const Layout = ({title, children, description}) => {
                     <Contact/>
                     <Categories active={menuActive} setActive={setMenuActive}/>
                     <SearchModal active={modalActive} setActive={setModalActive}>
-                        kguhjbhj
                         <form onSubmit={submitHandler} className={classes.searchForm}>
                             <input
                                 name="query"

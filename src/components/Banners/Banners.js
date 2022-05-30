@@ -1,11 +1,7 @@
 import React from 'react';
 import {Grid, List, ListItem} from "@material-ui/core";
-import Image from 'next/image'
-import useStyle from "../../../Utils/styles";
 
 const Banners = () => {
-    const classes = useStyle();
-
     return (
         <div>
             <List>
@@ -28,7 +24,8 @@ const Banners = () => {
                                         <img
                                             alt='banner image'
                                             src='https://images.wbstatic.net/bners1/main_poloska_cap_838384757575.jpg'
-                                        />                                    </figure>
+                                        />
+                                    </figure>
                                 </div>
                             </div>
                         </Grid>

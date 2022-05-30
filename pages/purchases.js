@@ -1,8 +1,7 @@
 import React from 'react';
 import Layout from "../src/components/Layout";
 import ProfilePages from "../src/components/Profile/ProfilePage/ProfilePages";
-import {ListItem} from "@mui/material";
-import {Button, List} from "@material-ui/core";
+import {Button, List, ListItem} from "@material-ui/core";
 
 const Purchases = () => {
     return (

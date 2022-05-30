@@ -8,11 +8,10 @@ import {ActionType} from "../Utils/redux/actions/types";
 
 
 const Issuepoint = () => {
-
+    const classes = useStyle();
     const [locations, setLocations] = useState()
     const [address, setAddress] = useState()
     const dispatch = useDispatch()
-    console.log(address)
 
     useEffect(() => {
         const getLocations = async () => {
@@ -34,7 +33,6 @@ const Issuepoint = () => {
     }
 
 
-    const classes = useStyle();
 
 
     return (

@@ -24,7 +24,6 @@ const CartScreen = () => {
     const dispatch = useDispatch();
     const {cart} = useSelector(state => state.cart);
     const classes = useStyle();
-    console.log(cart)
 
     useEffect(() => {
         dispatch(getCart(JSON.parse(localStorage.getItem('cart'))))

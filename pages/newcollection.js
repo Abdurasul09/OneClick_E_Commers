@@ -1,28 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {CardActionArea, CardMedia, Grid, List, ListItem, Typography} from "@mui/material";
-import {Link} from "@material-ui/core";
+import {CardActionArea, CardMedia, Grid, List, ListItem, Typography,Link,Card} from "@material-ui/core";
 import NextLink from "next/link";
 import useStyle from "../Utils/styles";
 import api from "../api/globalApi";
-import Card from "@mui/material/Card";
 import {grey} from "@material-ui/core/colors";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
 import {useDispatch, useSelector} from "react-redux";
 
 const Newcollection = ({products}) => {
-    console.log(products)
-
+    const classes = useStyle();
     const [allProducts, setAllProducts] = useState(products)
     const dispatch = useDispatch()
     const {posts} = useSelector(state => state.posts)
+
     useEffect(() => {
         if (posts[0]) {
             setAllProducts(posts)
         }
     }, [posts])
 
-    const classes = useStyle();
     return (
         <div>
             <NextLink href="/newcollection" passHref>

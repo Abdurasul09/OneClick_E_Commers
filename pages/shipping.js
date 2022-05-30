@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from "../src/components/Layout";
-import {Button, List, ListItem, TextField, Typography} from "@mui/material";
+import {Button, List, ListItem, TextField, Typography} from "@material-ui/core";
 import useStyle from "../Utils/styles";
 import {ActionType} from "../Utils/redux/actions/types";
 import {useRouter} from "next/router";

@@ -1,15 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../src/components/Layout";
-import {Card, Grid, List, ListItem, Typography} from "@mui/material";
 import useStyle from "../Utils/styles";
-import IconButton from "@mui/material/IconButton";
-import {Avatar, Badge, Button, FormControl, FormControlLabel, Modal, Radio, RadioGroup} from "@material-ui/core";
+import {
+    Button,
+    FormControl,
+    FormControlLabel,
+    Modal,
+    Radio,
+    RadioGroup,
+    Card,
+    Grid,
+    List,
+    ListItem,
+    Typography,
+    IconButton,
+    Box,
+    Avatar
+} from "@material-ui/core";
 import EditIcon from '@mui/icons-material/Edit';
-import Box from "@mui/material/Box";
 import Email from "../src/components/Profile/Email";
 import Phone from "../src/components/Profile/Phone";
 import ProfilePages from "../src/components/Profile/ProfilePage/ProfilePages";
-import api from "../api/globalApi";
 import Axios from "../api/Api";
 import Born from "../src/components/Profile/born";
 import Name from "../src/components/Profile/name";
@@ -17,9 +28,8 @@ import Name from "../src/components/Profile/name";
 const Profile = () => {
     const classes = useStyle();
     const [user, setUser] = useState({})
-    // const [changeAvatar, setChangeAvatar] = useState({})
     const [file, setFile] = useState("");
-    const [imagePreview, setImagePreview] = useState("");
+    const [token, setToken] = useState('')
 
     const handleImageChange = (e) => {
         e.preventDefault();
@@ -27,26 +37,48 @@ const Profile = () => {
         let fileBackground = e.target.files[0];
         readerBackground.onloadend = () => {
             setFile(fileBackground);
-            setImagePreview(readerBackground.result);
         };
         readerBackground.readAsDataURL(fileBackground);
+        saveAvatar()
     };
 
     useEffect(() => {
-        const parse = JSON.parse(localStorage.getItem("access"));
-        api.get("user/", {
-            headers: {authorization: `Bearer ${parse}`}
-        })
+        setToken(JSON.parse(localStorage.getItem("access")));
+        Axios.get("user/")
             .then(res => setUser(res.data))
     }, [])
 
     const sendUser = async () => {
         const form = new FormData();
-        form.append("avatar", comment)
-
+        form.append("avatar", file)
+        console.log(form)
         try {
-            await Axios.patch("user/", {user})
+            await Axios.patch("user/", {user, form})
                 .then((data) => setUser(data))
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const saveAvatar = async () => {
+        try {
+            const form = new FormData();
+            // form.append("birth_day", user.birth_day)
+            // form.append("email", user.email)
+            // form.append("gender", user.gender)
+            // form.append("username", user.username)
+            form.append("avatar", file)
+            console.log(user)
+            console.log(form)
+            await fetch('http://68.183.182.243/user/', {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    authorization: `Bearer ${token}`
+                },
+
+                body: JSON.stringify({ birth_day:  user.birth_day ,email: user.email , gender:  user.gender ,username:  user.username , avatar:  form})
+            })
         } catch (e) {
             console.log(e)
         }
@@ -71,7 +103,7 @@ const Profile = () => {
                         <List>
                             <ListItem>
                                 <Grid item xl={12} md={1}>
-                                    <Avatar src={imagePreview ? imagePreview : null} alt="Travis Howard" />
+                                    <Avatar src={user.avatar} alt="Travis Howard"/>
                                     <ListItem>
                                         <label className="input-file">
                                             <input

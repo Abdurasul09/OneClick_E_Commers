@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import api from "../api/globalApi";
-import {Grid, List, ListItem} from "@material-ui/core";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import {Button, CardActionArea, CardActions} from "@mui/material";
-import CardMedia from "@mui/material/CardMedia";
+import {
+    Grid, List, ListItem,Typography,
+    Card,Button, CardActionArea,
+    CardActions,CardMedia
+} from "@material-ui/core";
 import useStyle from "../Utils/styles";
 import NextLink from "next/link";
 import {grey} from "@material-ui/core/colors";
