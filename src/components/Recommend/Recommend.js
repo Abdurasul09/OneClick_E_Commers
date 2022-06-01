@@ -1,47 +1,50 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import {CardActionArea} from '@mui/material';
-import {Grid, Link, List, ListItem} from "@material-ui/core";
+import React from 'react';
+import {
+    Grid, List, ListItem,CardActionArea,
+    Typography,CardMedia,Card
+} from "@material-ui/core";
 import useStyle from "../../../Utils/styles";
 import NextLink from "next/link";
 import api from "../../../api/globalApi";
 import {useEffect, useState} from "react";
-import {grey} from "@material-ui/core/colors";
-import Modal from "../Ocno";
-import SingleProduct from "../SingleProduct/SingleProduct";
 import {addToFavorite} from "../../../Utils/redux/actions/FavoriteAction";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export const Recommend = () => {
-    const [productsItem, setProductsItem] = useState([])
-    const [modalActive, setModalActive] = useState(false)
-    const [singleProduct, setSingleProduct] = useState({})
+    // const [productsItem, setProductsItem] = useState([])
+    const [allProducts, setAllProducts] = useState({})
+    const {posts} = useSelector(state => state.posts)
     const dispatch = useDispatch()
-    useEffect(() => {
-        productsItem.results?.map(item => (
-            item.products.slice(0, 1).map((item) => {
-                setSingleProduct(item)
-            })
-        ))
-    },[productsItem])
+    const classes = useStyle();
+
+
+
+
+
 
     useEffect(() => {
+        if (posts[0]) {
+            setAllProducts(posts)
+        }
+    }, [posts])
+    const getRecommend = async () => {
         try {
-            api('/collections')
-                .then(res => setProductsItem(res.data))
+            await api('/collections')
+                .then(res => setAllProducts(res.data))
         } catch (e) {
             console.log(e)
         }
+    }
+    useEffect(() => {
+       getRecommend()
     },[])
-    const classes = useStyle();
+
     return (
         <div>
             <NextLink href="/rec" passHref>
                 <a>
-                    {productsItem.results?.map(el => (
+                    {allProducts.results?.map(el => (
                         <Typography
                             key={el.id}
                             py={2}
@@ -53,7 +56,7 @@ export const Recommend = () => {
                 </a>
             </NextLink>
             <Grid container spacing={5}>
-                {productsItem.results?.map(productItem => (
+                {allProducts.results?.map(productItem => (
                     <>
                         {productItem.products.map(product => (
                             <Grid item md={3} sm={6} xs={12} key={product.id}>
@@ -81,12 +84,10 @@ export const Recommend = () => {
                                         </CardActionArea>
                                     </NextLink>
                                     <List
-                                        onClick={() => setSingleProduct(product)}
                                         style={{paddingBottom: 0}}
                                     >
                                         <ListItem className={classes.priceFavoriteIcon}>
                                             <Typography
-                                                onClick={() => setModalActive(true)}
                                                 className={classes.productTitle}
                                             >
                                                 {product.title}
@@ -123,9 +124,6 @@ export const Recommend = () => {
                     </>
                 ))}
             </Grid>
-            <Modal active={modalActive} setActive={setModalActive}>
-                <SingleProduct singleProduct={singleProduct}/>
-            </Modal>
         </div>
     );
 }

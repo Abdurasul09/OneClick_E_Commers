@@ -74,8 +74,9 @@ const Comment = ({item}) => {
             const {data} = await Axios.get(`/comments?catalog_id=${item.id}`)
             setReviews(data.results);
             dispatch({type: ActionType.DELETE_COMMENT, payload: data.results})
-        } catch (err) {
-            enqueueSnackbar("Error Get", {variant: 'error'});
+            getPhotos()
+        } catch (e) {
+            console.log(e)
         }
     };
 
@@ -84,9 +85,9 @@ const Comment = ({item}) => {
         fetchReviews()
     }, []);
 
-    const handlerClickLike = (id) => {
+    const handlerClickLike = async (id) => {
         try {
-            Axios.post('/like-comment', {
+           await  Axios.post('/like-comment', {
                 user: userInfo.id,
                 comment: id,
             })
@@ -96,9 +97,9 @@ const Comment = ({item}) => {
         }
     }
 
-    const removeHandlerClick = (id) => {
+    const removeHandlerClick = async (id) => {
         try {
-            Axios.delete(`/like-comment/${id}`)
+            await Axios.delete(`/like-comment/${id}`)
             fetchReviews()
         } catch (e) {
             console.log(e)

@@ -15,7 +15,9 @@ Axios.interceptors.response.use(
     return config;
 },
     async (err) => {
+
         const originalRequest = err.config;
+        if(!err.response)return
         if (err.response.status === 401 && !err.config._isRetry) {
             originalRequest._isRetry = true;
             try {

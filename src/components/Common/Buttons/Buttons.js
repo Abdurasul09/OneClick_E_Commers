@@ -1,11 +1,11 @@
 import React from 'react';
 import NextLink from "next/link";
-import useStyle from "../../../Utils/styles";
+import useStyle from "../../../../Utils/styles";
 
 const Buttons = () => {
     const classes = useStyle();
     return (
-        <div className={classes.btns}>
+        <div className='btns'>
             <NextLink href="#">
                 <button className='btnCart'>
                   Назад

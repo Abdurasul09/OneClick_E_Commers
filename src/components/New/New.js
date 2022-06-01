@@ -1,14 +1,9 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import {CardActionArea} from '@mui/material';
-import {Grid, Link, List, ListItem} from "@material-ui/core";
+import React from 'react';
+import {Grid, List, ListItem, CardActionArea, Typography, CardMedia,Card} from "@material-ui/core";
 import useStyle from "../../../Utils/styles";
 import NextLink from "next/link";
 import api from "../../../api/globalApi";
 import {useEffect, useState} from "react";
-import {grey} from "@material-ui/core/colors";
 import Modal from "../Ocno";
 import SingleProduct from "../SingleProduct/SingleProduct";
 import {addToFavorite} from "../../../Utils/redux/actions/FavoriteAction";
@@ -19,6 +14,8 @@ export const New = () => {
     const [productsItem, setProductsItem] = useState([])
     const [modalActive, setModalActive] = useState(false)
     const [singleProduct, setSingleProduct] = useState({})
+    const classes = useStyle();
+
     const dispatch = useDispatch()
     useEffect(() => {
         productsItem.results?.map(item => (
@@ -28,15 +25,18 @@ export const New = () => {
         ))
     }, [productsItem])
 
-    useEffect(() => {
+    const getCollections = async () => {
         try {
-            api('/collections')
+            await api('/collections')
                 .then(res => setProductsItem(res.data))
         } catch (e) {
             console.log(e)
         }
+    }
+    useEffect(() => {
+        getCollections()
     }, [])
-    const classes = useStyle();
+
     return (
         <div>
             <NextLink href="/" passHref>

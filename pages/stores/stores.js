@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from "../../src/components/Layout";
-import Buttons from "../../src/components/Buttons/Buttons";
+import Buttons from "../../src/components/Common/Buttons/Buttons";
 import api from "../../api/globalApi";
 import {List, ListItem, Grid, Card, Typography, CardHeader, Avatar} from "@material-ui/core";
 import useStyle from "../../Utils/styles";

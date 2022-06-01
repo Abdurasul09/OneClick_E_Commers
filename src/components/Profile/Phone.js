@@ -1,13 +1,10 @@
-import React from 'react';
-import {Typography} from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+import React, {useState} from 'react';
 import EditIcon from "@mui/icons-material/Edit";
-import {Button, Modal, TextField} from "@material-ui/core";
-import Box from "@mui/material/Box";
+import {Button, Modal, TextField,Typography,Box,IconButton} from "@material-ui/core";
 import useStyle from "../../../Utils/styles";
 
 const Phone  = ({user,handleChange, sendUser}) => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const classes = useStyle();
@@ -50,16 +47,20 @@ const Phone  = ({user,handleChange, sendUser}) => {
                                 size="small"
                                 inputProps={{type: "phone"}}
                             />
-
-                            <Typography pt={3}>
+                            <div style={{marginTop: "2rem"}}>
                                 <Button
                                     variant={"outlined"}
                                     onClick={sendUser ? handleClose : ''}
                                 >
-                                    Сохранить
+                                    Ok
                                 </Button>&nbsp;
-                                <Button variant={"outlined"}>Отменить</Button>
-                            </Typography>
+                                <Button
+                                    variant="outlined"
+                                    onClick={handleClose}
+                                >
+                                    Отменить
+                                </Button>
+                            </div>
                         </form>
                     </Box>
                 </Modal>

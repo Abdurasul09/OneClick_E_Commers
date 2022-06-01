@@ -23,7 +23,7 @@ import Modal from "../../src/components/Ocno";
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import Buttons from "../../src/components/Buttons/Buttons";
+import Buttons from "../../src/components/Common/Buttons/Buttons";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 const ProductScreen = ({product}) => {
@@ -32,11 +32,16 @@ const ProductScreen = ({product}) => {
     const [clickedImg, setClickedImg] = useState(0)
     const [currentProduct, setCurrentProduct] = useState()
     const [cartProduct, setCartProduct] = useState(currentProduct)
-    const [size, setSize] = useState("")
+    const [size, setSize] = useState([])
     const [modalActive, setModalActive] = useState(false)
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     const sendUrl = `https://mui.com/store/previews/onepirate/`
+
+    console.log('currentProduct', currentProduct)
+    console.log('product', product)
+    console.log(size)
+
     useEffect(() => {
         if (!currentProduct) return
         setCartProduct(currentProduct)
@@ -75,7 +80,6 @@ const ProductScreen = ({product}) => {
             console.log(e)
         }
     }
-
     return (
         <Layout
             title={product.title}
@@ -95,46 +99,48 @@ const ProductScreen = ({product}) => {
                         </div>
                         <Grid container spacing={1}>
                             <Grid item md={5} xs={10}>
-                                    <div className={classes.flex}>
-                                        <Grid item md={4} xs={2}>
-                                            <div className={classes.idSmalImage}>
-                                                {currentProduct?.images.map((item, idx) => (
-                                                    <List key={item}>
-                                                        <Image
-                                                            src={item.image}
-                                                            width={78}
-                                                            alt={item.title}
-                                                            height={100}
-                                                            onClick={() => {
-                                                                setClickedImg(idx)
-                                                            }}
-                                                        />
-                                                    </List>
-                                                ))}
-                                            </div>
-                                        </Grid>
-                                        <Grid item md={9}>
-                                            <div>
-                                                <img
-                                                    alt={currentProduct?.images[clickedImg].title}
-                                                    src={currentProduct?.images[clickedImg].image}
-                                                    className={classes.idProductGlobalImg}
-                                                />
-                                            </div>
-                                        </Grid>
-                                    </div>
-                                <div className={classes.idProdDescriptions}>
-                                    <h1>
-                                        Описание
-                                    </h1>
-                                    <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
+                                <div className={classes.flex}>
+                                    <Grid item md={4} xs={2}>
+                                        <div className={classes.idSmalImage}>
+                                            {currentProduct?.images.map((item, idx) => (
+                                                <List key={item}>
+                                                    <Image
+                                                        src={item.image}
+                                                        width={78}
+                                                        alt={item.title}
+                                                        height={100}
+                                                        onClick={() => {
+                                                            setClickedImg(idx)
+                                                        }}
+                                                    />
+                                                </List>
+                                            ))}
+                                        </div>
+                                    </Grid>
+                                    <Grid item md={9}>
+                                        <div>
+                                            <img
+                                                alt={currentProduct?.images[clickedImg].title}
+                                                src={currentProduct?.images[clickedImg].image}
+                                                className={classes.idProductGlobalImg}
+                                            />
+                                        </div>
+                                    </Grid>
                                 </div>
+                                {product.description ? (
+                                    <div className={classes.idProdDescriptions}>
+                                        <h1>
+                                            Описание
+                                        </h1>
+                                        <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
+                                    </div>
+                                ) : ('')}
                             </Grid>
                             <Grid item xs={12} md={1}/>
                             <Grid item md={4} xs={12}>
                                 <div>
                                     <div className={classes.flexStart}>
-                                        <Grid md={4} xs={4}>
+                                        <Grid item md={4} xs={4}>
                                             <Typography
                                                 component="h1"
                                                 variant="h1"
@@ -145,7 +151,7 @@ const ProductScreen = ({product}) => {
                                                 </strong>
                                             </Typography>
                                         </Grid>
-                                        <Grid md={3} xs={4}>
+                                        <Grid item md={3} xs={4}>
                                             <Typography>
                                                 <del style={{color: "grey", fontSize: '18px'}}>
                                                     {product.price} coм
@@ -171,17 +177,15 @@ const ProductScreen = ({product}) => {
                                             )}
                                         </Grid>
                                     </div>
-                                    <div className={classes.flexStart}>
+                                    <div className={classes.flexStart} style={{margin: '15px 0 10px 0'}}>
                                         <Grid item md={2} xs={2}>
                                             <Typography>Цвет:</Typography>
                                         </Grid>
                                         <Grid item md={2} xs={1}>
                                             {currentProduct?.color ? (
-                                                <Typography
-                                                    pl={2}
-                                                    color='#009688'>
+                                                <span className={classes.idProductColorSize}>
                                                     {currentProduct.color}
-                                                </Typography>
+                                                </span>
                                             ) : (" ")}
                                         </Grid>
                                     </div>
@@ -203,33 +207,42 @@ const ProductScreen = ({product}) => {
                                     </div>
                                     <div className={classes.outlined}/>
                                     <div style={{margin: '15px 0 10px 0'}}>
-                                        <Typography pl={2} pt={1}>Размер: {size ? (size) : (
-                                            <span style={{color: 'gray'}}>Не выброно</span>
+                                        <Typography pl={2} pt={1}>Размер: {size ? (
+                                            <span className={classes.idProductColorSize}>
+                                                {size}
+                                            </span>
+                                        ) : (
+                                            <span className={classes.idProductColorSize}
+                                            >
+                                                Не выброно
+                                            </span>
                                         )}</Typography>
                                     </div>
                                     <div style={{marginBottom: 15}}>
                                         <form className={classes.flexStart}>
-                                            {currentProduct?.sizes.map(itemSize => (
-                                                <div key={itemSize} className='form_radio_btn'>
-                                                    <label
-                                                        key={itemSize.size}
-                                                        htmlFor={`${itemSize.size}`}
-                                                        style={{
-                                                            backgroundColor: size === itemSize.size ? "#0a0c0c" : null,
-                                                            color: size === itemSize.size ? "#ffffff" : null
-                                                        }}
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            onChange={(e) => setSize(e.target.value)}
-                                                            id={`${itemSize.size}`}
-                                                            name="inputRadios"
-                                                            value={`${itemSize.size}`}
-                                                        />
-                                                        {itemSize.size}
-                                                    </label>
-                                                </div>
-                                            ))}
+                                            <form className={classes.flexStart}>
+                                                {currentProduct?.sizes.map(itemSize => (
+                                                    <div key={itemSize} className='form_radio_btn'>
+                                                        <label
+                                                            key={itemSize.size}
+                                                            htmlFor={`${itemSize.size}`}
+                                                            style={{
+                                                                backgroundColor: size === itemSize.size ? "#0a0c0c" : null,
+                                                                color: size === itemSize.size ? "#ffffff" : null
+                                                            }}
+                                                        >
+                                                            <input
+                                                                type="radio"
+                                                                onChange={(e) => setSize(e.target.value)}
+                                                                id={`${itemSize.size}`}
+                                                                name="inputRadios"
+                                                                value={`${itemSize.size}`}
+                                                            />
+                                                            {itemSize.size}
+                                                        </label>
+                                                    </div>
+                                                ))}
+                                            </form>
                                         </form>
                                     </div>
                                     <div className={classes.flexCenter}>
@@ -249,14 +262,14 @@ const ProductScreen = ({product}) => {
                                         </button>
                                     </div>
                                     <div/>
-                                    <div style={{marginTop: "20px"}}>
+                                    <div className={classes.idProductStore}>
                                         <div>
-                                            <Typography>
+                                            <p className={classes.idProductStoreArticle}>
                                                 Артикул: 65634576527
-                                            </Typography>
-                                            <Typography>
+                                            </p>
+                                            <p className={classes.idProductStoreArticle}>
                                                 Продавец: Алиса Анарбаева
-                                            </Typography>
+                                            </p>
                                         </div>
                                         <div className={classes.flexStart}>
                                             <NextLink href={`/stores/${product.id}`}>
@@ -346,21 +359,12 @@ const ProductScreen = ({product}) => {
     );
 };
 
-
-export async function getStaticPaths() {
-    const res = await api('/products')
-    const posts = await res.data
-    const paths = posts.results.map((product) => ({
-        params: {id: product.id.toString()},
-    }))
-    return {paths, fallback: false}
-}
-
-export async function getStaticProps({params}) {
+export async function getServerSideProps({params}) {
     const res = await api(`/products/${params.id}`)
     const product = await res.data
-
-    return {props: {product}}
+    return {
+        props: {product},
+    }
 }
 
 export default ProductScreen;

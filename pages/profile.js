@@ -2,34 +2,54 @@ import React, {useEffect, useState} from 'react';
 import Layout from "../src/components/Layout";
 import useStyle from "../Utils/styles";
 import {
-    Button,
-    FormControl,
-    FormControlLabel,
-    Modal,
-    Radio,
-    RadioGroup,
-    Card,
-    Grid,
-    List,
-    ListItem,
-    Typography,
-    IconButton,
-    Box,
-    Avatar
+    Button, FormControl, FormControlLabel, Modal, Radio, Box,
+    RadioGroup, Card, Grid, List, ListItem, Typography, Avatar,
 } from "@material-ui/core";
-import EditIcon from '@mui/icons-material/Edit';
 import Email from "../src/components/Profile/Email";
 import Phone from "../src/components/Profile/Phone";
 import ProfilePages from "../src/components/Profile/ProfilePage/ProfilePages";
 import Axios from "../api/Api";
 import Born from "../src/components/Profile/born";
 import Name from "../src/components/Profile/name";
+import {AvatarCamera} from "../Utils/svg";
+import {useSnackbar} from "notistack";
+import {useRouter} from "next/router";
 
 const Profile = () => {
     const classes = useStyle();
-    const [user, setUser] = useState({})
     const [file, setFile] = useState("");
-    const [token, setToken] = useState('')
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const [open, setOpen] = useState(false);
+    const router = useRouter()
+    const [inputs, setInputs] = useState({
+        avatar: "",
+        birth_day: "",
+        email: "",
+        gender: "",
+        username: "",
+        phone: "",
+    })
+
+    const getUser = async () => {
+        try {
+          const res= await Axios.get("user/")
+            console.log(res)
+            if(res){
+            setInputs(res.data)}else {
+                router.push('/')
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [])
+
+    const handleChange = (e) => {
+        setInputs({...inputs, [e.target.name]: e.target.value})
+    }
 
     const handleImageChange = (e) => {
         e.preventDefault();
@@ -39,61 +59,53 @@ const Profile = () => {
             setFile(fileBackground);
         };
         readerBackground.readAsDataURL(fileBackground);
-        saveAvatar()
     };
 
-    useEffect(() => {
-        setToken(JSON.parse(localStorage.getItem("access")));
-        Axios.get("user/")
-            .then(res => setUser(res.data))
-    }, [])
 
-    const sendUser = async () => {
+    const sendUser = async (data) => {
+        try {
+            await Axios.patch("user/", data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const handleSubmit = async () => {
+        closeSnackbar()
         const form = new FormData();
-        form.append("avatar", file)
-        console.log(form)
+        if (file) {form.append("avatar", file)}
+        form.append("birth_day", inputs.birth_day)
+        form.append("email", inputs.email)
+        form.append("gender", inputs.gender)
+        form.append("username", inputs.username)
+        form.append("phone", inputs.phone)
         try {
-            await Axios.patch("user/", {user, form})
-                .then((data) => setUser(data))
+            await Axios.put('/user/', form)
+            setFile('')
+            enqueueSnackbar('Профил успешно сахронен', {variant: 'success'})
+            getUser()
         } catch (e) {
             console.log(e)
         }
     }
 
-    const saveAvatar = async () => {
-        try {
-            const form = new FormData();
-            // form.append("birth_day", user.birth_day)
-            // form.append("email", user.email)
-            // form.append("gender", user.gender)
-            // form.append("username", user.username)
-            form.append("avatar", file)
-            console.log(user)
-            console.log(form)
-            await fetch('http://68.183.182.243/user/', {
-                method: 'PUT',
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    authorization: `Bearer ${token}`
-                },
-
-                body: JSON.stringify({ birth_day:  user.birth_day ,email: user.email , gender:  user.gender ,username:  user.username , avatar:  form})
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    const handleChange = (e) => {
-        setUser({...user, [e.target.name]: e.target.value})
-    }
-    const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const handleClick =async () => {
+        try {
+        await  Axios.delete('/user')
+            handleClose(false);
+            router.push('/')
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
     return (
         <Layout title="Личные данные">
-            <Grid className={classes.hero}>
+            <Grid>
                 <ProfilePages/>
                 <Grid>
                     <Typography component="h4" variant="h4" pb={3}>
@@ -101,11 +113,15 @@ const Profile = () => {
                     </Typography>
                     <Card item md={3} xs={12}>
                         <List>
-                            <ListItem>
-                                <Grid item xl={12} md={1}>
-                                    <Avatar src={user.avatar} alt="Travis Howard"/>
-                                    <ListItem>
-                                        <label className="input-file">
+                            <div className={classes.profileAvatar}>
+                                <div>
+                                    <div className={classes.profileAvatarImg}>
+                                        <Avatar
+                                            className={classes.avatar}
+                                            src={inputs.avatar}
+                                            alt="Travis Howard"/>
+                                        <label className="input__file__camera"
+                                        >
                                             <input
                                                 type="file"
                                                 id="profile_pic"
@@ -114,69 +130,69 @@ const Profile = () => {
                                                 onChange={(e) => handleImageChange(e)}
                                                 className="fileInput"
                                             />
-                                            Добавить фото
+                                            <span className={classes.avatarCaemera}>
+                                                <AvatarCamera/>
+                                            </span>
                                         </label>
-                                    </ListItem>
-                                </Grid>
-                                <Grid item xl={12} md={1}>
+                                    </div>
+                                </div>
+                                <div>
                                     <Name
                                         sendUser={sendUser}
                                         handleChange={handleChange}
-                                        name="name"
-                                        user={user}
+                                        name="username"
+                                        user={inputs}
                                     />
-                                </Grid>
-                            </ListItem>
-                            <ListItem className={classes.profileItems}>
+                                </div>
+                            </div>
+                            <div className={classes.profileItems}>
                                 <Email
                                     sendUser={sendUser}
                                     handleChange={handleChange}
                                     name="email"
-                                    user={user}
+                                    user={inputs}
                                 />
                                 <Phone
                                     sendUser={sendUser}
                                     handleChange={handleChange}
                                     name="phone"
-                                    user={user}
+                                    user={inputs}
                                 />
                                 <Born
                                     sendUser={sendUser}
                                     handleChange={handleChange}
                                     name="phone"
-                                    user={user}
+                                    user={inputs}
                                 />
                                 <Typography>
-                                    <Typography>
-                                        <strong>Пароль</strong>
-                                    </Typography>
-                                    <IconButton size={"medium"}>
-                                        <EditIcon color={"primary"} fontSize={"small"}/>
-                                    </IconButton>
-                                </Typography>
-                                <Typography>
                                     <FormControl
-                                        value={user.gender}
+                                        value={inputs.gender}
                                         name="gender"
                                     >
                                         <Typography><strong>Пол</strong></Typography>
                                         <RadioGroup
                                             name="gender"
                                             row
+                                            value={inputs.gender}
+                                            onChange={handleChange}
                                         >
                                             <FormControlLabel
-                                                label={user.gender}
-                                                value={user.gender ? user.gender : ''}
+                                                label='Male'
                                                 control={<Radio/>}
+                                                value='Male'
                                             />
                                             <FormControlLabel
-                                                label={user.gender}
-                                                value={user.gender}
+                                                label='Female'
                                                 control={<Radio/>}
+                                                value='Female'
+
                                             />
                                         </RadioGroup>
                                     </FormControl>
                                 </Typography>
+                            </div>
+                            <ListItem>
+                                <button className='btn' onClick={() => handleSubmit()}>Сахранит</button>
                             </ListItem>
                         </List>
                     </Card>
@@ -212,8 +228,18 @@ const Profile = () => {
                                             Действительно хотите удалить аккаунт или нет?
                                         </Typography>
                                         <Typography pt={3}>
-                                            <Button variant={"outlined"}>Да</Button>&nbsp;
-                                            <Button variant={"outlined"}>Нет</Button>
+                                            <Button
+                                                onClick={() => handleClick()}
+                                                variant="outlined"
+                                            >
+                                                Да
+                                            </Button>&nbsp;
+                                            <Button
+                                                onClick={handleClose}
+                                                variant="outlined"
+                                            >
+                                                Нет
+                                            </Button>
                                         </Typography>
                                     </Box>
                                 </Modal>

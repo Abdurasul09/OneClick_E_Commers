@@ -162,7 +162,7 @@ const Layout = ({title, children, description}) => {
                             <div className={classes.grow}/>
                             <div className={classes.cardTitleIcon}>
                                 <Switch
-                                    color="success"
+                                    color="secondary"
                                     size="medium"
                                     checked={darkMode}
                                     onChange={darkModeChangeHandler}

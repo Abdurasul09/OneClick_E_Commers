@@ -9,7 +9,7 @@ import {
     Card,
     CircularProgress
 } from "@material-ui/core";
-import NextLink from "next/link";
+import Link from "next/link";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import useStyle from "../Utils/styles";
 import Advertising from "../src/components/Advertising/Advertising";
@@ -34,14 +34,14 @@ const Home = ({products}) => {
     }, [posts])
 
     return (
-        <>
+        <div>
             <Layout>
                 {products ? (
-                    <>
+                    <div>
                         <Advertising/>
                         <Recommend/>
                         <div className={classes.card}>
-                            <NextLink href="#" passHref>
+                            <Link href="#" passHref>
                                 <a>
                                     <Typography
                                         py={2}
@@ -50,12 +50,12 @@ const Home = ({products}) => {
                                         Хиты продаж . . .
                                     </Typography>
                                 </a>
-                            </NextLink>
+                            </Link>
                             <Grid container spacing={5}>
                                 {allProducts.map(product => (
                                     <Grid item md={3} sm={6} xs={12} key={product.id}>
                                         <Card>
-                                            <NextLink href={`/product/${product.id}`}>
+                                            <Link href={`/product/${product.id}`}>
                                                 <CardActionArea className='productImage'>
                                                     <CardMedia
                                                         component="img"
@@ -74,7 +74,7 @@ const Home = ({products}) => {
                                                         Посмотреть
                                                     </span>
                                                 </CardActionArea>
-                                            </NextLink>
+                                            </Link>
                                             <List style={{paddingBottom: 0}}>
                                                 <ListItem className={classes.priceFavoriteIcon}>
                                                     <Typography className={classes.productTitle}>
@@ -113,12 +113,12 @@ const Home = ({products}) => {
                         </div>
                         <Banners/>
                         <New/>
-                    </>
+                    </div>
                 ) : (
                     <CircularProgress/>
                 )}
             </Layout>
-        </>
+        </div>
     )
 }
 

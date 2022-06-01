@@ -16,7 +16,7 @@ import useStyle from "../Utils/styles";
 import {DecFromCart, DeleteFromCart, getCart, addToCartHandler} from "../Utils/redux/actions/CartAction";
 import {useDispatch, useSelector} from "react-redux";
 import SubTotal from "../src/components/Cart/SubTotal";
-import Buttons from "../src/components/Buttons/Buttons";
+import Buttons from "../src/components/Common/Buttons/Buttons";
 import {Delete, Minus, Plus} from "../Utils/svg";
 
 
@@ -25,6 +25,7 @@ const CartScreen = () => {
     const {cart} = useSelector(state => state.cart);
     const classes = useStyle();
 
+    console.log(cart)
     useEffect(() => {
         dispatch(getCart(JSON.parse(localStorage.getItem('cart'))))
     }, [])
@@ -92,12 +93,20 @@ const CartScreen = () => {
                                                 </TableCell>
                                                 <TableCell align="center">
                                                     <div className={classes.flex}>
-                                                        <div
-                                                            className={classes.cartDel}
-                                                            onClick={() => dispatch(DecFromCart(el.id))}
-                                                        >
-                                                            <Minus/>
-                                                        </div>
+                                                        {el.quantity === 1 ? (
+                                                            <div>
+                                                                <Minus/>
+                                                            </div>
+                                                        ) : (
+
+                                                            <div
+                                                                disabled={el.quantity === 1}
+                                                                className={classes.cartDel}
+                                                                onClick={() => dispatch(DecFromCart(el.id))}
+                                                            >
+                                                                <Minus/>
+                                                            </div>
+                                                        )}
                                                         <span className={classes.cartQuantity}>{el.quantity}</span>
                                                         <div
                                                             className={classes.cartDel}

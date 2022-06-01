@@ -42,6 +42,7 @@ const useStyle = makeStyles((theme) => ({
 
     },
     brand: {
+        marginLeft: 8,
         fontWeight: 'bold',
         fontSize: '2rem',
         cursor: 'pointer',
@@ -106,7 +107,7 @@ const useStyle = makeStyles((theme) => ({
         },
     },
     // Cart
-    cartTableContainer:{
+    cartTableContainer: {
         [theme.breakpoints.down('md')]: {
             display: 'none'
         },
@@ -134,12 +135,10 @@ const useStyle = makeStyles((theme) => ({
     section: {
         marginTop: "6rem"
     },
-    btns: {
-        margin: "5rem 0 1rem 0"
-    },
-    btn: {
-        margin: "5px"
-    },
+
+    // btn: {
+    //     margin: "5px"
+    // },
     iconSvg: {
         color: "#F6F9FC",
         [theme.breakpoints.down('md')]: {
@@ -333,20 +332,36 @@ const useStyle = makeStyles((theme) => ({
 
     // Burger menu Ul
     menu: {
-        borderRadius: "50px",
-        padding: "0 10px",
-        height: "55px",
+        paddingTop: 8,
+        cursor: 'pointer'
     },
     proFileBtns: {
         marginTop: "6rem"
     },
     profileItems: {
+        padding: '1rem',
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center"
     },
-
-
+    profileAvatar: {
+        padding: '1rem',
+        display: "flex",
+        alignItems: "center"
+    },
+    profileAvatarImg: {
+        position: 'relative'
+    },
+    avatar: {
+        width: '5rem',
+        height: '5rem'
+    },
+    // avatarCaemera
+    avatarCaemera: {
+        position: 'absolute',
+        left: '4rem',
+        bottom: '1.5rem'
+    },
 // Menu
     submenu: {
         marginTop: theme.spacing(-14.5),
@@ -386,7 +401,7 @@ const useStyle = makeStyles((theme) => ({
         fontWeight: 300
     },
     deleteProfile: {
-        marginTop: "2rem"
+        margin: "2rem 0",
     },
 
 //    Modal
@@ -439,7 +454,7 @@ const useStyle = makeStyles((theme) => ({
         padding: 0,
     },
     //outlined
-    outlined:{
+    outlined: {
         width: "100%",
         margin: "10px 0",
         height: 2,
@@ -513,12 +528,12 @@ const useStyle = makeStyles((theme) => ({
             padding: 0
         },
     },
-    idSizes:{
+    idSizes: {
         [theme.breakpoints.down('md')]: {
             padding: 0
         },
     },
-    idProductGlobalImg:{
+    idProductGlobalImg: {
         width: "400px",
         height: "540px",
         [theme.breakpoints.down('md')]: {
@@ -526,16 +541,28 @@ const useStyle = makeStyles((theme) => ({
             height: "520px",
         },
     },
-    idProdDescriptions:{
+    idProdDescriptions: {
         [theme.breakpoints.down('md')]: {
             display: 'none'
         },
     },
-    idProdDescriptionsMd:{
-        display:"none",
+    idProdDescriptionsMd: {
+        display: "none",
         [theme.breakpoints.down('md')]: {
             display: 'block'
         },
+    },
+
+    idProductColorSize: {
+        color: "gray",
+        fontSize: "1.1rem"
+    },
+    idProductStore:{
+        marginTop: '1.5rem'
+    },
+    idProductStoreArticle:{
+        fontSize: '1rem',
+        padding: '5px 0'
     },
 
     // marginTopGlobal

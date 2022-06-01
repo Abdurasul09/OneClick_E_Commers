@@ -9,7 +9,7 @@ import {useForm, Controller} from "react-hook-form";
 import {useSnackbar} from 'notistack';
 import {useDispatch} from "react-redux";
 import api from "../api/globalApi";
-import Buttons from "../src/components/Buttons/Buttons";
+import Buttons from "../src/components/Common/Buttons/Buttons";
 
 const Login = () => {
     const {

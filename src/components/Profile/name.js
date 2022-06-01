@@ -16,8 +16,10 @@ const Name = ({user, handleChange, sendUser}) => {
         <div>
             <Typography>
                 <ListItem>
-                    <Typography pr={1}>
-                        {user.username}
+                    <Typography p={2}>
+                        <strong>
+                            {user.username}
+                        </strong>
                     </Typography>
                     <IconButton size={"medium"}>
                         <EditIcon
@@ -47,7 +49,7 @@ const Name = ({user, handleChange, sendUser}) => {
                                 onChange={handleChange}
                                 fullWidth
                                 value={user.username}
-                                name="name"
+                                name="username"
                                 size="small"
                                 inputProps={{type: "text"}}
                             />
@@ -57,7 +59,7 @@ const Name = ({user, handleChange, sendUser}) => {
                                     onClick={sendUser ? handleClose : ''}
                                     variant={"outlined"}
                                 >
-                                    Сохранить
+                                    Ok
                                 </Button>&nbsp;
                                 <Button
                                     variant={"outlined"}

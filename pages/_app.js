@@ -1,7 +1,7 @@
 import '../src/styles/index.scss'
 import {useEffect} from "react";
 import {SnackbarProvider} from "notistack";
-import {store} from "../Utils/redux/store";
+import {store} from "../Utils/redux/Store";
 import {Provider} from "react-redux";
 import {createWrapper} from "next-redux-wrapper"
 function App({Component, pageProps}) {

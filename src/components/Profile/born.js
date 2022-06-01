@@ -1,9 +1,6 @@
 import React from 'react';
-import {Typography} from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import {Button, Modal, TextField} from "@material-ui/core";
-import Box from "@mui/material/Box";
+import {Button, Modal, IconButton, Typography, Box} from "@material-ui/core";
 import useStyle from "../../../Utils/styles";
 
 const Born  = ({user,handleChange, sendUser}) => {
@@ -15,7 +12,7 @@ const Born  = ({user,handleChange, sendUser}) => {
     return (
         <div>
             <Typography>
-                <Typography> <strong>Телефон</strong></Typography>
+                <Typography> <strong>Дата рождения</strong></Typography>
                 {user.birth_day}&nbsp;
                 <IconButton size={"medium"}>
                     <EditIcon
@@ -40,25 +37,27 @@ const Born  = ({user,handleChange, sendUser}) => {
                             >
                                 Изменение номера телефона
                             </Typography>
-                            <TextField
-                                onChange={handleChange}
-                                fullWidth
+                            <input
                                 value={user.birth_day}
+                                type="date"
                                 name="birth_day"
-                                id="outlined-size-small"
-                                size="small"
-                                inputProps={{type: "text"}}
+                                onChange={handleChange}
                             />
 
-                            <Typography pt={3}>
+                            <div style={{marginTop: "2rem"}}>
                                 <Button
                                     variant={"outlined"}
                                     onClick={sendUser ? handleClose : ''}
                                 >
-                                    Сохранить
+                                    Ok
                                 </Button>&nbsp;
-                                <Button variant={"outlined"}>Отменить</Button>
-                            </Typography>
+                                <Button
+                                    variant="outlined"
+                                    onClick={handleClose}
+                                >
+                                    Отменить
+                                </Button>
+                            </div>
                         </form>
                     </Box>
                 </Modal>

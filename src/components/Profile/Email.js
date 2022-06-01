@@ -19,6 +19,7 @@ const Email = ({user, handleChange, sendUser}) => {
     const classes = useStyle();
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     return (
         <div>
             <Typography>
@@ -63,10 +64,10 @@ const Email = ({user, handleChange, sendUser}) => {
                                     onClick={sendUser ? handleClose : ''}
                                     variant={"outlined"}
                                 >
-                                    Сохранить
+                                    Ok
                                 </Button>&nbsp;
                                 <Button
-                                    variant={"outlined"}
+                                    variant="outlined"
                                     onClick={handleClose}
                                 >
                                     Отменить
