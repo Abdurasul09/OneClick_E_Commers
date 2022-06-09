@@ -15,23 +15,17 @@ import useStyle from "../Utils/styles";
 import Advertising from "../src/components/Advertising/Advertising";
 import {Recommend} from "../src/components/Recommend/Recommend";
 import {addToFavorite} from "../Utils/redux/actions/FavoriteAction";
-import {useDispatch, useSelector} from "react-redux";
-import React, {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import React from "react";
 import api from "../api/globalApi";
 import Banners from "../src/components/Banners/Banners";
 import {New} from "../src/components/New/New";
 
 
 const Home = ({products}) => {
-    const [allProducts, setAllProducts] = useState(products)
     const dispatch = useDispatch()
-    const {posts} = useSelector(state => state.posts)
     const classes = useStyle();
-    useEffect(() => {
-        if (posts[0]) {
-            setAllProducts(posts)
-        }
-    }, [posts])
+
 
     return (
         <div>
@@ -52,7 +46,7 @@ const Home = ({products}) => {
                                 </a>
                             </Link>
                             <Grid container spacing={5}>
-                                {allProducts.map(product => (
+                                {products.map(product => (
                                     <Grid item md={3} sm={6} xs={12} key={product.id}>
                                         <Card>
                                             <Link href={`/product/${product.id}`}>

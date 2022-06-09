@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    Grid, List, ListItem,CardActionArea,
-    Typography,CardMedia,Card
-} from "@material-ui/core";
+import {Grid, List, ListItem,CardActionArea, Typography,CardMedia,Card} from "@material-ui/core";
 import useStyle from "../../../Utils/styles";
 import NextLink from "next/link";
 import api from "../../../api/globalApi";
@@ -12,16 +9,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {useDispatch, useSelector} from "react-redux";
 
 export const Recommend = () => {
-    // const [productsItem, setProductsItem] = useState([])
     const [allProducts, setAllProducts] = useState({})
     const {posts} = useSelector(state => state.posts)
     const dispatch = useDispatch()
     const classes = useStyle();
-
-
-
-
-
 
     useEffect(() => {
         if (posts[0]) {
@@ -45,13 +36,14 @@ export const Recommend = () => {
             <NextLink href="/rec" passHref>
                 <a>
                     {allProducts.results?.map(el => (
-                        <Typography
-                            key={el.id}
-                            py={2}
-                            className={classes.globalText}
-                        >
-                            {el.name} . . .
-                        </Typography>
+                        <div  key={el.id}>
+                            <Typography
+                                py={2}
+                                className={classes.globalText}
+                            >
+                                {el.name} . . .
+                            </Typography>
+                        </div>
                     ))}
                 </a>
             </NextLink>

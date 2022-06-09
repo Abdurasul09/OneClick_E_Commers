@@ -5,6 +5,7 @@ import {Map, Placemark, YMaps} from "react-yandex-maps";
 import useStyle from "../Utils/styles";
 import {useDispatch} from "react-redux";
 import {ActionType} from "../Utils/redux/actions/types";
+import {useRouter} from "next/router";
 
 
 const Issuepoint = () => {
@@ -12,6 +13,7 @@ const Issuepoint = () => {
     const [locations, setLocations] = useState()
     const [address, setAddress] = useState()
     const dispatch = useDispatch()
+    const router = useRouter()
 
     useEffect(() => {
         const getLocations = async () => {
@@ -30,6 +32,7 @@ const Issuepoint = () => {
         setAddress([el.lat, el.lon])
         dispatch({type: ActionType.ADD_LOCATION, payload: el})
         localStorage.setItem('address', JSON.stringify(el))
+        router.push('/checkout')
     }
 
 

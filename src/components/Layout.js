@@ -124,15 +124,19 @@ const Layout = ({title, children, description}) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        console.log(search)
         router.push(`/search?query=${search}`);
     };
+
+
 
     const queryChangeHandler =  (key, value) => {
         let object = new URLSearchParams(window.location.search);
         object.set(key, value);
         let newURL = `${window.location.pathname}?${object.toString()}`;
         router.push(newURL);
-        dispatch(fetchPosts(object));
+        console.log(search)
+        dispatch(fetchPosts(search));
     };
 
 

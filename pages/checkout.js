@@ -71,7 +71,6 @@ const Checkout = () => {
         try {
             dispatch({type: ActionType.ORDER_TRUE, payload: data})
             localStorage.setItem('delivery', JSON.stringify(delivery))
-            // setPay(' бесплатный ')
             router.push('/form')
         } catch (e) {
             console.log(e)
@@ -150,35 +149,40 @@ const Checkout = () => {
                                 </Grid>
                             </ListItem>
                             {orderProduct === "courier" ? (
-                                <List>
-                                    <ListItem>
-                                        <Typography variant='h1' component='h1'>Мои адреса</Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>Ф.И.О:</Typography>
-                                        <Typography pl={2}>{formAddress.name}</Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>Телефон:</Typography>
-                                        <Typography pl={2}>{formAddress.phone}</Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>Адрес:</Typography>
-                                        <Typography pl={2}>{formAddress.address}</Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>Подьезд:</Typography>
-                                        <Typography pl={2}>{formAddress.flor}</Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>Этаж:</Typography>
-                                        <Typography pl={2}>{formAddress.entrance}</Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Typography>Домофон:</Typography>
-                                        <Typography pl={2}>{formAddress.intercom}</Typography>
-                                    </ListItem>
-                                </List>
+
+                                <div>
+                                    {formAddress ? (
+                                            <List>
+                                                <ListItem>
+                                                    <Typography variant='h1' component='h1'>Мои адреса</Typography>
+                                                </ListItem>
+                                                <ListItem>
+                                                    <Typography>Ф.И.О:</Typography>
+                                                    <Typography pl={2}>{formAddress.name}</Typography>
+                                                </ListItem>
+                                                <ListItem>
+                                                    <Typography>Телефон:</Typography>
+                                                    <Typography pl={2}>{formAddress.phone}</Typography>
+                                                </ListItem>
+                                                <ListItem>
+                                                    <Typography>Адрес:</Typography>
+                                                    <Typography pl={2}>{formAddress.address}</Typography>
+                                                </ListItem>
+                                                <ListItem>
+                                                    <Typography>Подьезд:</Typography>
+                                                    <Typography pl={2}>{formAddress.flor}</Typography>
+                                                </ListItem>
+                                                <ListItem>
+                                                    <Typography>Этаж:</Typography>
+                                                    <Typography pl={2}>{formAddress.entrance}</Typography>
+                                                </ListItem>
+                                                <ListItem>
+                                                    <Typography>Домофон:</Typography>
+                                                    <Typography pl={2}>{formAddress.intercom}</Typography>
+                                                </ListItem>
+                                            </List>
+                                        ): (null)}
+                                </div>
                             ) : (
                                 <List>
                                     <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>

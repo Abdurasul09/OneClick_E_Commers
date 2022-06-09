@@ -1,6 +1,6 @@
 import React, { useEffect} from 'react';
 import Layout from "../src/components/Layout";
-import {Button, Link, List, ListItem, TextField, Typography} from "@mui/material";
+import {Link, List, ListItem, TextField, Typography} from "@material-ui/core";
 import useStyle from "../Utils/styles";
 import NextLink from 'next/link'
 import {ActionType} from "../Utils/redux/actions/types";

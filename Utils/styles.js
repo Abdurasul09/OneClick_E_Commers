@@ -135,10 +135,6 @@ const useStyle = makeStyles((theme) => ({
     section: {
         marginTop: "6rem"
     },
-
-    // btn: {
-    //     margin: "5px"
-    // },
     iconSvg: {
         color: "#F6F9FC",
         [theme.breakpoints.down('md')]: {
@@ -336,13 +332,15 @@ const useStyle = makeStyles((theme) => ({
         cursor: 'pointer'
     },
     proFileBtns: {
-        marginTop: "6rem"
+        marginTop: "6rem",
+        marginBottom: '2rem'
     },
     profileItems: {
-        padding: '1rem',
+        paddingRight: '2rem',
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        color: 'black',
     },
     profileAvatar: {
         padding: '1rem',
@@ -644,8 +642,21 @@ const useStyle = makeStyles((theme) => ({
     },
     payCartTitle: {
         fontSize: '.7rem'
-    }
+    },
 
+
+    transparentBackgroud: {
+        width: "600px",
+        padding: "0",
+        backgroundColor: 'transparent',
+    },
+
+    stepper: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: '1rem 0'
+    }
 }))
 
 export default useStyle;

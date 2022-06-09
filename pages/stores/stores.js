@@ -2,13 +2,9 @@ import React from 'react';
 import Layout from "../../src/components/Layout";
 import Buttons from "../../src/components/Common/Buttons/Buttons";
 import api from "../../api/globalApi";
-import {List, ListItem, Grid, Card, Typography, CardHeader, Avatar} from "@material-ui/core";
-import useStyle from "../../Utils/styles";
+import {ListItem, Grid, Card, CardHeader} from "@material-ui/core";
 
 const Stores = ({products}) => {
-    const classes = useStyle();
-
-    console.log(products)
     return (
         <Layout title='Магызины'>
             <Buttons/>

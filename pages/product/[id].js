@@ -36,11 +36,12 @@ const ProductScreen = ({product}) => {
     const [modalActive, setModalActive] = useState(false)
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
+
     const sendUrl = `https://mui.com/store/previews/onepirate/`
 
     console.log('currentProduct', currentProduct)
     console.log('product', product)
-    console.log(size)
+    console.log(currentProduct)
 
     useEffect(() => {
         if (!currentProduct) return
@@ -98,12 +99,12 @@ const ProductScreen = ({product}) => {
                             </Typography>
                         </div>
                         <Grid container spacing={1}>
-                            <Grid item md={5} xs={10}>
+                            <Grid item md={6} xs={10}>
                                 <div className={classes.flex}>
-                                    <Grid item md={4} xs={2}>
+                                    <Grid item md={2} xs={2}>
                                         <div className={classes.idSmalImage}>
                                             {currentProduct?.images.map((item, idx) => (
-                                                <List key={item}>
+                                                <List key={idx}>
                                                     <Image
                                                         src={item.image}
                                                         width={78}
@@ -117,7 +118,7 @@ const ProductScreen = ({product}) => {
                                             ))}
                                         </div>
                                     </Grid>
-                                    <Grid item md={9}>
+                                    <Grid item md={10}>
                                         <div>
                                             <img
                                                 alt={currentProduct?.images[clickedImg].title}
@@ -132,15 +133,18 @@ const ProductScreen = ({product}) => {
                                         <h1>
                                             Описание
                                         </h1>
-                                        <Typography dangerouslySetInnerHTML={{__html: product.description}}/>
+                                        {/*<div*/}
+                                        {/*    dangerouslySetInnerHTML={{*/}
+                                        {/*        __html: `${product.description}`*/}
+                                        {/*    }}/>*/}
+                                        {product.description}
                                     </div>
                                 ) : ('')}
                             </Grid>
-                            <Grid item xs={12} md={1}/>
-                            <Grid item md={4} xs={12}>
+                            <Grid item md={6} xs={12}>
                                 <div>
                                     <div className={classes.flexStart}>
-                                        <Grid item md={4} xs={4}>
+                                        <Grid item md={3} xs={4}>
                                             <Typography
                                                 component="h1"
                                                 variant="h1"
@@ -151,7 +155,7 @@ const ProductScreen = ({product}) => {
                                                 </strong>
                                             </Typography>
                                         </Grid>
-                                        <Grid item md={3} xs={4}>
+                                        <Grid item md={2} xs={4}>
                                             <Typography>
                                                 <del style={{color: "grey", fontSize: '18px'}}>
                                                     {product.price} coм
@@ -190,10 +194,10 @@ const ProductScreen = ({product}) => {
                                         </Grid>
                                     </div>
                                     <div className={classes.flexStart}>
-                                        {product.products.map(item => (
+                                        {product.products.map((item, id) => (
                                             <div
                                                 onClick={() => setCurrentProduct(item)}
-                                                key={item.id}
+                                                key={id}
                                                 style={{margin: 2}}
                                             >
                                                 <Image
@@ -220,29 +224,26 @@ const ProductScreen = ({product}) => {
                                     </div>
                                     <div style={{marginBottom: 15}}>
                                         <form className={classes.flexStart}>
-                                            <form className={classes.flexStart}>
-                                                {currentProduct?.sizes.map(itemSize => (
-                                                    <div key={itemSize} className='form_radio_btn'>
-                                                        <label
-                                                            key={itemSize.size}
-                                                            htmlFor={`${itemSize.size}`}
-                                                            style={{
-                                                                backgroundColor: size === itemSize.size ? "#0a0c0c" : null,
-                                                                color: size === itemSize.size ? "#ffffff" : null
-                                                            }}
-                                                        >
-                                                            <input
-                                                                type="radio"
-                                                                onChange={(e) => setSize(e.target.value)}
-                                                                id={`${itemSize.size}`}
-                                                                name="inputRadios"
-                                                                value={`${itemSize.size}`}
-                                                            />
-                                                            {itemSize.size}
-                                                        </label>
-                                                    </div>
-                                                ))}
-                                            </form>
+                                            {currentProduct?.sizes.map((itemSize,id) => (
+                                                <div key={id} className='form_radio_btn'>
+                                                    <label
+                                                        key={id}
+                                                        style={{
+                                                            backgroundColor: size === itemSize.size ? "#0a0c0c" : null,
+                                                            color: size === itemSize.size ? "#ffffff" : null
+                                                        }}
+                                                    >
+                                                        <input
+                                                            type="radio"
+                                                            onChange={(e) => setSize(e.target.value)}
+                                                            id={`${itemSize.size}`}
+                                                            name="inputRadios"
+                                                            value={`${itemSize.size}`}
+                                                        />
+                                                        {itemSize.size}
+                                                    </label>
+                                                </div>
+                                            ))}
                                         </form>
                                     </div>
                                     <div className={classes.flexCenter}>
@@ -342,6 +343,7 @@ const ProductScreen = ({product}) => {
                                     type="text"
                                     className='url'
                                     value={sendUrl}
+                                    onChange={(e)=>console.log(e)}
                                 />
                                 <button className='btnCart'
                                         onClick={async (event) => await navigator.clipboard.writeText(sendUrl)}

@@ -15,6 +15,7 @@ import {useDispatch} from "react-redux";
 export default function ProductItem({product}) {
     const classes = useStyle();
     const dispatch = useDispatch()
+    console.log(product)
     return (
         <div>
             <Buttons/>

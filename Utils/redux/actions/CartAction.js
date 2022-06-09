@@ -1,26 +1,28 @@
 import {ActionType} from "./types";
 
 export const addToCartHandler = (product) => {
-    return async dispatch => {
+
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const foundProduct = cart.products?.find(el => el.id === product.id)
+        const foundProduct = cart?.find(el => el.id === product.id)
+        console.log(foundProduct)
+        console.log('cart',cart)
         if(foundProduct){
-            cart = cart.products.map(el => el.id === product.id ?
+            console.log("found", foundProduct)
+            cart = cart.map(el => el.id === product.id ?
                     {...el, quantity: el.quantity + 1} : el)
         }else {
             cart = [...cart, {...product, quantity:1}]
         }
         window.localStorage.setItem('cart', JSON.stringify(cart));
-        dispatch({type: ActionType.ADD_TO_CARD, payload: product})
-    }
-}
+       return  {type: ActionType.ADD_TO_CARD, payload: product}
 
+}
 
 export const DecFromCart = (id) => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const findProduct = cart?.find(el => el.id === id)
     if (findProduct.quantity > 1)
-        cart = cart.products.map(el => el.id === id ?
+        cart = cart.map(el => el.id === id ?
             {...el, quantity: el.quantity - 1} : el)
     window.localStorage.setItem('cart', JSON.stringify(cart));
     return {type: ActionType.DEC_TO_QUANTITY, payload: id}
@@ -36,7 +38,6 @@ export const getCart = (cart) => {
         dispatch({type: ActionType.GET_CART, payload: cart});
     }
 };
-
 
 export const addToCartProductPrice = (el) => {
     return {type: ActionType.ADD_TO_CART_PRODUCT_PRICE, payload: el}

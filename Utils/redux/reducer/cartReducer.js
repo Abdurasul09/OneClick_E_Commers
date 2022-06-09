@@ -9,14 +9,17 @@ const defaultState = {
 export const CartReducer = (state = defaultState, action) => {
     switch (action.type){
         case ActionType.ADD_TO_CARD: {
-                const findProduct = state.cart.find(el => el.id === action.payload.id)
+                const findProduct = state.cart?.find(el => el.id === action.payload.id)
                 if (findProduct) {
                     return {
                         ...state, cart: state.cart.map(el => el.id === action.payload.id ?
                             {...el, quantity: el.quantity + 1} : el)
                     }
+                } else {
+                    return {...state, cart: [...state.cart, {...action.payload, quantity: 1}]};
+
                 }
-                return {...state, cart: [...state.cart, {...action.payload, quantity: 1}]};
+
         }
         case ActionType.DELETE_FROM_CARD: {
             return {...state, cart: state.cart.filter((el) => el.id !== action.payload)};

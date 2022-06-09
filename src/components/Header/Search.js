@@ -14,6 +14,7 @@ const Search = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        console.log(e)
         router.push(`/search?query=${search}`);
     };
 
@@ -22,7 +23,8 @@ const Search = () => {
         object.set(key, value);
         let newURL = `${window.location.pathname}?${object.toString()}`;
         router.push(newURL);
-        dispatch(fetchPosts(object));
+        console.log(search)
+        dispatch(fetchPosts(search));
     };
 
     const classes = useStyle();

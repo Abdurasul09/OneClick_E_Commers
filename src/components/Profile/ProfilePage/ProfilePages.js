@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, List, ListItem, Typography} from "@mui/material";
+import {Grid, List, ListItem, Typography} from "@material-ui/core";
 import NextLink from "next/link";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
@@ -10,33 +10,31 @@ const ProfilePages = () => {
     const classes = useStyle();
 
     return (
-        <Grid item md={3} xs={12}>
-            <List>
-                <ListItem className={classes.proFileBtns}>
+            <div className={classes.proFileBtns}>
+                <div className={classes.flexStart}>
                     <Typography pr={2}>
-                        <NextLink href="">
+                        <NextLink href="/profile">
                             <a className={classes.profileItems}>
-                                <HomeIcon fontSize={"small"}/>Главная
+                                <HomeIcon fontSize="small"/>&nbsp;Главная
                             </a>
                         </NextLink>
                     </Typography>
                     <Typography pr={2}>
                         <NextLink href="/purchases">
                             <a className={classes.profileItems}>
-                                <ShoppingBagIcon fontSize={"small"}/> Покупки
+                                <ShoppingBagIcon fontSize="small"/>&nbsp;Покупки
                             </a>
                         </NextLink>
                     </Typography>
                     <Typography pr={2}>
                         <NextLink href="">
                             <a className={classes.profileItems}>
-                                <ReviewsIcon fontSize={"small"}/> Отзывы
+                                <ReviewsIcon fontSize="small"/>&nbsp;Отзывы
                             </a>
                         </NextLink>
                     </Typography>
-                </ListItem>
-            </List>
-        </Grid>
+                </div>
+            </div>
     );
 };
 

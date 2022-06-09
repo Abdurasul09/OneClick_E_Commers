@@ -7,12 +7,10 @@ import {useSnackbar} from "notistack";
 
 export default function AnswerComment({comment, product}) {
     const [answer, setAnswer] = useState('')
-    const [loading, setLoading] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
 
     const submitHandler = async (e) => {
         e.preventDefault()
-        setLoading(true)
         try {
             await Axios.post("/comments",
                 {
@@ -20,11 +18,9 @@ export default function AnswerComment({comment, product}) {
                     description: answer,
                     product: product.id,
                 })
-            setLoading(false);
             enqueueSnackbar('Oтвет успешно отправлен!', {variant: 'success'});
         }catch (e){
             console.log(e)
-            setLoading(false);
             enqueueSnackbar("Error", {variant: 'error'});
         }
     }

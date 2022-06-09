@@ -8,7 +8,6 @@ import {
     TableHead,
     TableRow,
     Typography,
-    SnackbarContent,
     Table,
 } from "@material-ui/core";
 import NextLink from "next/link";
@@ -25,22 +24,23 @@ const CartScreen = () => {
     const {cart} = useSelector(state => state.cart);
     const classes = useStyle();
 
-    console.log(cart)
     useEffect(() => {
         dispatch(getCart(JSON.parse(localStorage.getItem('cart'))))
     }, [])
-
     return (
         <div className={classes.cartScreen}>
             <Layout title="Shopping cart">
                 <Buttons/>
-                <Typography component="h1" variant="h1">Корзина({cart.length})</Typography>
-                {cart?.length === 0 ? (
+                <Typography component="h1" variant="h1">Корзина({
+                    cart ? (
+                        cart.length
+                    ) : (
+                        0
+                    )
+                })</Typography>
+                {!cart ? (
                     <>
-                        <SnackbarContent
-                            variant={'outlined'}
-                            message="Корзина пуста!"
-                        />
+                        <h2>Корзина пуста!</h2>
                         <NextLink href="/"><Link>Ходить по магазинам</Link></NextLink>
                     </>
                 ) : (
@@ -58,7 +58,7 @@ const CartScreen = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {cart?.map(el => (
+                                        {cart.map(el => (
                                             <TableRow key={el.id}>
                                                 <TableCell>
                                                     {el.images.slice(0, 1).map(item => (

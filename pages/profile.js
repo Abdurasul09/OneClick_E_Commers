@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../src/components/Layout";
 import useStyle from "../Utils/styles";
-import {
-    Button, FormControl, FormControlLabel, Modal, Radio, Box,
+import {Button, FormControl, FormControlLabel, Modal, Radio, Box,
     RadioGroup, Card, Grid, List, ListItem, Typography, Avatar,
 } from "@material-ui/core";
 import Email from "../src/components/Profile/Email";

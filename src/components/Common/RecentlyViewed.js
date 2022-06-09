@@ -1,53 +1,47 @@
-import React from 'react';
-import {Grid, List, ListItem, CardActionArea, Typography, CardMedia,Card} from "@material-ui/core";
-import useStyle from "../../../Utils/styles";
-import NextLink from "next/link";
-import api from "../../../api/globalApi";
-import {useEffect, useState} from "react";
-import {addToFavorite} from "../../../Utils/redux/actions/FavoriteAction";
+import React, {useEffect, useState} from 'react';
+import Axios from "../../../api/Api";
+import {Card, CardActionArea, CardMedia, List, ListItem, Typography} from "@material-ui/core";
+import Link from "next/link";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {addToFavorite} from "../../../Utils/redux/actions/FavoriteAction";
+import useStyle from "../../../Utils/styles";
 import {useDispatch} from "react-redux";
+import Slider from "react-slick";
 
-export const New = () => {
-    const [productsItem, setProductsItem] = useState([])
-    const classes = useStyle();
+const RecentlyViewed = () => {
+    const [viewedProducts, setViewedProducts] = useState({})
     const dispatch = useDispatch()
-    const getCollections = async () => {
+    const classes = useStyle();
+
+    console.log('viewedProducts', viewedProducts)
+    const getViewedProducts = async () => {
         try {
-            await api('/collections')
-                .then(res => setProductsItem(res.data))
+            const res = await Axios.get('/viewed_products')
+            setViewedProducts(res.data)
         } catch (e) {
             console.log(e)
         }
     }
     useEffect(() => {
-        getCollections()
+        getViewedProducts()
     }, [])
+    const settings2 = {
+        dots: false,
+        infinite: true,
+        arrows:true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1
+    };
 
     return (
-        <div>
-            <NextLink href="/" passHref>
-                <a>
-                    {productsItem.results?.map(el => (
-                        <div key={el.id}>
-                            <Typography
-                                py={2}
-                                className={classes.globalText}
-                            >
-                                {/*{el.name}*/}
-                                Новинки . . .
-                            </Typography>
-                        </div>
-                    ))}
-                </a>
-            </NextLink>
-            <Grid container spacing={5}>
-                {productsItem.results?.map(productItem => (
-                    <>
-                        {productItem.products.map(product => (
-                            <Grid item md={3} sm={6} xs={12} key={product.id}>
-                                <Card>
-                                    <NextLink href={`/product/${product.id}`}>
+        <section className='viewed_product'>
+                <div className="viewed_product_content">
+                    <Slider {...settings2}>
+                        {viewedProducts.results?.map(product => (
+                            <div key={product.id}>
+                                <Card style={{margin: '10px'}}>
+                                    <Link href={`/product/${product.id}`}>
                                         <CardActionArea className='productImage'>
                                             <CardMedia
                                                 component="img"
@@ -56,24 +50,20 @@ export const New = () => {
                                                 title={product.title}
                                             />
                                             {product.discount ? (
-                                                <span
-                                                    className={classes.productDiscount}
-                                                >
-                                                -{product.discount}%
-                                            </span>
+                                                <span className={classes.productDiscount}>
+                                                           -{product.discount}%
+                                                        </span>
                                             ) : (
                                                 " "
                                             )}
                                             <span className='willLook'>
-                                                Посмотреть
-                                            </span>
+                                                        Посмотреть
+                                                    </span>
                                         </CardActionArea>
-                                    </NextLink>
+                                    </Link>
                                     <List style={{paddingBottom: 0}}>
                                         <ListItem className={classes.priceFavoriteIcon}>
-                                            <Typography
-                                                className={classes.productTitle}
-                                            >
+                                            <Typography className={classes.productTitle}>
                                                 {product.title}
                                             </Typography>
                                             <FavoriteBorderIcon
@@ -87,7 +77,7 @@ export const New = () => {
                                                     <Typography>
                                                         <strong>{product.discount_price} coм</strong>
                                                     </Typography>
-                                                    <Typography pl={1}>
+                                                    <Typography>&nbsp;
                                                         <del style={{color: "grey", fontSize: '13px'}}>
                                                             {product.price} coм
                                                         </del>
@@ -103,12 +93,12 @@ export const New = () => {
                                         </ListItem>
                                     </List>
                                 </Card>
-                            </Grid>
+                            </div>
                         ))}
-                    </>
-                ))}
-            </Grid>
-        </div>
+                    </Slider>
+                </div>
+        </section>
     );
-}
+};
 
+export default RecentlyViewed;

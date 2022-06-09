@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Grid, List, ListItem, Typography} from "@mui/material";
-import {Avatar} from "@material-ui/core";
+import React from 'react';
+import {Button, Grid, List, ListItem, Typography,Avatar} from "@material-ui/core";
 import {addToCartHandler} from "../../../Utils/redux/actions/CartAction";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {addToFavorite} from "../../../Utils/redux/actions/FavoriteAction";
