@@ -221,7 +221,7 @@ const Comment = ({item}) => {
                             <Typography variant="h2" component='h2'>Оставьте свой отзыв</Typography>
                             <div>
                                 <TextField
-                                    fullWidth
+                                    style={{width: "300px"}}
                                     variant='standard'
                                     name="review"
                                     label="Введите комментарий"

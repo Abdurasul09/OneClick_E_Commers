@@ -342,10 +342,23 @@ const useStyle = makeStyles((theme) => ({
         alignItems: "center",
         color: 'black',
     },
+    profileInfo: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "1rem",
+        [theme.breakpoints.down('md')]: {
+            display: 'block',
+            padding: "0 1rem"
+        },
+    },
     profileAvatar: {
         padding: '1rem',
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        [theme.breakpoints.down('md')]: {
+            padding: "0 1rem"
+        },
     },
     profileAvatarImg: {
         position: 'relative'
@@ -443,7 +456,7 @@ const useStyle = makeStyles((theme) => ({
     flexStart: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "start"
+        justifyContent: "start",
     },
     flexColumn: {
         display: "flex",
@@ -517,8 +530,9 @@ const useStyle = makeStyles((theme) => ({
     },
 //idProductGlobalImg
     idSmalImage: {
+        margin: "1rem",
         [theme.breakpoints.down('md')]: {
-            display: 'none'
+            display: 'none',
         },
     },
     idBigImage: {
@@ -535,8 +549,9 @@ const useStyle = makeStyles((theme) => ({
         width: "400px",
         height: "540px",
         [theme.breakpoints.down('md')]: {
-            width: "380px",
-            height: "520px",
+            width: "340px",
+            height: "450px",
+            objectFit: 'cover',
         },
     },
     idProdDescriptions: {
@@ -555,10 +570,10 @@ const useStyle = makeStyles((theme) => ({
         color: "gray",
         fontSize: "1.1rem"
     },
-    idProductStore:{
+    idProductStore: {
         marginTop: '1.5rem'
     },
-    idProductStoreArticle:{
+    idProductStoreArticle: {
         fontSize: '1rem',
         padding: '5px 0'
     },
@@ -646,7 +661,6 @@ const useStyle = makeStyles((theme) => ({
 
 
     transparentBackgroud: {
-        width: "600px",
         padding: "0",
         backgroundColor: 'transparent',
     },

@@ -2,14 +2,7 @@ import React, {useEffect, useState} from 'react';
 import NextLink from "next/link";
 import Layout from "../../src/components/Layout";
 import useStyle from "../../Utils/styles";
-import {
-    Avatar,
-    CircularProgress,
-    IconButton,
-    Grid,
-    List,
-    Typography
-} from "@material-ui/core";
+import {Avatar, CircularProgress, IconButton, Grid, List, Typography} from "@material-ui/core";
 import {useDispatch} from "react-redux";
 import api from "../../api/globalApi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -35,14 +28,10 @@ const ProductScreen = ({product}) => {
     const [size, setSize] = useState([])
     const [modalActive, setModalActive] = useState(false)
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    console.log(size)
 
 
     const sendUrl = `https://mui.com/store/previews/onepirate/`
-
-    console.log('currentProduct', currentProduct)
-    console.log('product', product)
-    console.log(currentProduct)
-
     useEffect(() => {
         if (!currentProduct) return
         setCartProduct(currentProduct)
@@ -100,11 +89,11 @@ const ProductScreen = ({product}) => {
                         </div>
                         <Grid container spacing={1}>
                             <Grid item md={6} xs={10}>
-                                <div className={classes.flex}>
-                                    <Grid item md={2} xs={2}>
+                                <div className={classes.flexStart}>
+                                    <Grid item md={2} >
                                         <div className={classes.idSmalImage}>
                                             {currentProduct?.images.map((item, idx) => (
-                                                <List key={idx}>
+                                                <div key={idx}>
                                                     <Image
                                                         src={item.image}
                                                         width={78}
@@ -114,12 +103,12 @@ const ProductScreen = ({product}) => {
                                                             setClickedImg(idx)
                                                         }}
                                                     />
-                                                </List>
+                                                </div>
                                             ))}
                                         </div>
                                     </Grid>
-                                    <Grid item md={10}>
-                                        <div>
+                                    <Grid item md={10} xs={8}>
+                                        <div className='idLargeImage'>
                                             <img
                                                 alt={currentProduct?.images[clickedImg].title}
                                                 src={currentProduct?.images[clickedImg].image}
@@ -133,11 +122,10 @@ const ProductScreen = ({product}) => {
                                         <h1>
                                             Описание
                                         </h1>
-                                        {/*<div*/}
-                                        {/*    dangerouslySetInnerHTML={{*/}
-                                        {/*        __html: `${product.description}`*/}
-                                        {/*    }}/>*/}
-                                        {product.description}
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: `${product.description}`
+                                            }}/>
                                     </div>
                                 ) : ('')}
                             </Grid>
@@ -224,26 +212,28 @@ const ProductScreen = ({product}) => {
                                     </div>
                                     <div style={{marginBottom: 15}}>
                                         <form className={classes.flexStart}>
-                                            {currentProduct?.sizes.map((itemSize,id) => (
-                                                <div key={id} className='form_radio_btn'>
-                                                    <label
-                                                        key={id}
-                                                        style={{
-                                                            backgroundColor: size === itemSize.size ? "#0a0c0c" : null,
-                                                            color: size === itemSize.size ? "#ffffff" : null
-                                                        }}
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            onChange={(e) => setSize(e.target.value)}
-                                                            id={`${itemSize.size}`}
-                                                            name="inputRadios"
-                                                            value={`${itemSize.size}`}
-                                                        />
-                                                        {itemSize.size}
-                                                    </label>
-                                                </div>
-                                            ))}
+                                            <div className='form-radio'>
+                                                {currentProduct?.sizes.map((itemSize, id) => (
+                                                    <div className='form_radio_btn' key={id}>
+                                                        <label
+                                                            key={id}
+                                                            style={{
+                                                                backgroundColor: size === itemSize.size ? "#0a0c0c" : null,
+                                                                color: size === itemSize.size ? "#ffffff" : null
+                                                            }}
+                                                        >
+                                                            <input
+                                                                type="radio"
+                                                                onChange={(e) => setSize(e.target.value)}
+                                                                id={`${itemSize.size}`}
+                                                                name="inputRadios"
+                                                                value={`${itemSize.size}`}
+                                                            />
+                                                            {itemSize.size}
+                                                        </label>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </form>
                                     </div>
                                     <div className={classes.flexCenter}>
@@ -343,7 +333,7 @@ const ProductScreen = ({product}) => {
                                     type="text"
                                     className='url'
                                     value={sendUrl}
-                                    onChange={(e)=>console.log(e)}
+                                    onChange={(e) => console.log(e)}
                                 />
                                 <button className='btnCart'
                                         onClick={async (event) => await navigator.clipboard.writeText(sendUrl)}

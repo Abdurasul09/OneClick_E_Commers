@@ -13,6 +13,7 @@ const Purchases = () => {
     const [orders, setOrders] = useState()
     const classes = useStyle();
 
+    console.log(orders)
     const toggleTab = (index) => {
         setToggleState(index);
     };
@@ -38,7 +39,7 @@ const Purchases = () => {
     return (
         <Layout title="Покупки">
             <ProfilePages/>
-            <div className="container">
+            <div>
                 <ul className="tab-list">
                     <li
                         className={`tabs ${getActiveClass(1, "active-tabs")}`}
@@ -71,38 +72,43 @@ const Purchases = () => {
                         <div key={el.id}>
                             <Card style={{padding: "0 10px", marginTop: 10}}>
                                 <div className={`content ${getActiveClass(1, "active-content")}`}>
-                                    <div className={classes.flexStart}>
-                                        {el.items?.map(item => (
-                                            <div className={`content ${getActiveClass(1, "active-content")}`}
-                                                 key={item.id}>
-                                                <table className='content__table'>
-                                                    <thead>
-                                                    <tr className='content__row'>
-                                                        <th className='content__row__header'>
-                                                            <img
-                                                                className='content__row__header__image'
-                                                                src={item.image}
-                                                                alt="product image"
-                                                            />
-                                                        </th>
+                                    {el.items?.map(item => (
+                                        <div key={item.id}>
+                                            <table className='content__table'>
+                                                <thead className='table__head'>
+                                                <tr className='content__row'>
+                                                    <th className='content__row__header'>
+                                                        <img
+                                                            className='content__row__header__image'
+                                                            src={item.image}
+                                                            alt="product image"
+                                                        />
+                                                    </th>
+                                                    <div className='content__title__price'>
                                                         <th className='content__row__header'>
                                                             <h3>{item.name}</h3>
                                                             <p>{item.title}</p>
+                                                            <span className='content__row__date'>
+                                                                    Дата заказа {el.created_at.substring(0, 10)}
+                                                                </span>
                                                         </th>
-                                                        <th className='content__row__header'>{item.price} C</th>
-                                                        <th className=''>{}</th>
-                                                    </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                        ))}
-                                        <CheckoutWizard status={el.status}/>
-                                    </div>
+                                                        <th className='content__row__header'>
+                                                            <p>{item.price} C</p>
+                                                            <span className='content__row__delete'>
+                                                                Удалит
+                                                            </span>
+                                                        </th>
+                                                    </div>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    ))}
+                                    <CheckoutWizard status={el.status}/>
                                 </div>
                             </Card>
                         </div>
                     ))}
-
                     {purchases.results?.map(el => (
                         <div key={el.id}>
                             <Card style={{padding: "0 10px", marginTop: 10}}>
@@ -130,10 +136,6 @@ const Purchases = () => {
                             </Card>
                         </div>
                     ))}
-
-                    <div className={`content ${getActiveClass(3, "active-content")}`}>
-                        <h2>{''}</h2>
-                    </div>
                 </div>
             </div>
             <RecentlyViewed/>

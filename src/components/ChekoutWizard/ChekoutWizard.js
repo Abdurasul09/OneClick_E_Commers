@@ -8,7 +8,6 @@ const CheckoutWizard = ({status}) => {
     const classes = useStyle();
     useEffect(() => {
         if (!status) return
-        console.log("hhh")
         if (status === "accepted") {
             setActiveStep(1)
             setLable({title: 'Заказ принят'})

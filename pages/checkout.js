@@ -79,33 +79,34 @@ const Checkout = () => {
 
     return (
         <Layout>
-            <Buttons/>
-            <form onSubmit={handleSubmit(submitHandler)}>
-                <Grid container spacing={1}>
-                    <Grid item xs={12} md={7}>
-                        <List>
-                            <ListItem>
-                                <Typography component='h1' variant='h1'>
-                                    <strong>
-                                        Оформление заказа
-                                    </strong>
-                                </Typography>
-                            </ListItem>
-                            <ListItem>
-                                <Typography component='h2' variant='h2'>
-                                    Cпособ доставки
-                                </Typography>
-                            </ListItem>
-                            <ListItem>
-                                <Grid container>
-                                    <Grid item md={5}>
-                                        <Typography
-                                            variant='h2'
-                                            component='h2'
-                                        >
-                                            Платный
-                                        </Typography>
-                                        <button className='btnFav'>
+            <div>
+                <Buttons/>
+                <form onSubmit={handleSubmit(submitHandler)}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12} md={7}>
+                            <List>
+                                <div>
+                                    <Typography component='h1' variant='h1'>
+                                        <strong>
+                                            Оформление заказа
+                                        </strong>
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Typography component='h2' variant='h2'>
+                                        Cпособ доставки
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Grid container>
+                                        <Grid item md={2}>
+                                            <Typography
+                                                variant='h2'
+                                                component='h2'
+                                            >
+                                                Платный
+                                            </Typography>
+                                            <button className='btnFav'>
                                             <span className='free'>
                                                 <label onClick={() => Order('courier')} key="Курьером">
                                                     <input
@@ -118,40 +119,39 @@ const Checkout = () => {
                                                     КУРЬЕРОМ
                                                 </label>
                                             </span>
-                                        </button>
-                                    </Grid>
-                                    <Grid item cs={12} md={2} className={classes.reviewItem}/>
-                                    <Grid item md={3}>
-                                        <Typography variant='h2' component='h2'>Бесплатный</Typography>
-                                        <div className={classes.flex1}>
-                                            <NextLink href='/issuepoint'>
-                                                <a style={{textDecoration: 'none'}}>
-                                                    <button className='btnFav'>
-                                                        ПУНК ВЫДАЧИ
-                                                    </button>
-                                                </a>
-                                            </NextLink>
-                                            <div className='free deliverFree'>
-                                                <label key="Курьером Только по городу Бишкек">
-                                                    <input
-                                                        onClick={() => Order('courier')}
-                                                        type="radio"
-                                                        onChange={(e) => setDelivery(e.target.value)}
-                                                        name="inputRadios"
-                                                        value='free'
-                                                    />
-                                                    КУРЬЕРОМ
-                                                    <p style={{fontSize: '0.4rem'}}>Только по городу Бишкек</p>
-                                                </label>
+                                            </button>
+                                        </Grid>
+                                        <Grid item cs={12} md={1} className={classes.reviewItem}/>
+                                        <Grid item md={3}>
+                                            <Typography variant='h2' component='h2'>Бесплатный</Typography>
+                                            <div className={classes.flex1}>
+                                                <NextLink href='/issuepoint'>
+                                                    <a style={{textDecoration: 'none'}}>
+                                                        <button className='btnFav'>
+                                                            ПУНК ВЫДАЧИ
+                                                        </button>
+                                                    </a>
+                                                </NextLink>
+                                                <div className='free deliverFree'>
+                                                    <label key="Курьером Только по городу Бишкек">
+                                                        <input
+                                                            onClick={() => Order('courier')}
+                                                            type="radio"
+                                                            onChange={(e) => setDelivery(e.target.value)}
+                                                            name="inputRadios"
+                                                            value='free'
+                                                        />
+                                                        КУРЬЕРОМ
+                                                        <p style={{fontSize: '0.4rem'}}>Только по городу Бишкек</p>
+                                                    </label>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </ListItem>
-                            {orderProduct === "courier" ? (
-
-                                <div>
-                                    {formAddress ? (
+                                </div>
+                                {orderProduct === "courier" ? (
+                                    <div>
+                                        {formAddress ? (
                                             <List>
                                                 <ListItem>
                                                     <Typography variant='h1' component='h1'>Мои адреса</Typography>
@@ -181,23 +181,22 @@ const Checkout = () => {
                                                     <Typography pl={2}>{formAddress.intercom}</Typography>
                                                 </ListItem>
                                             </List>
-                                        ): (null)}
-                                </div>
-                            ) : (
+                                        ) : (null)}
+                                    </div>
+                                ) : (
+                                    <List>
+                                        <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>
+                                        <p className={classes.address}>
+                                            {address.name}
+                                        </p>
+                                    </List>
+                                )}
                                 <List>
-                                    <Typography variant='h1' component='h1'>Мои адреса пункт</Typography>
-                                    <p className={classes.address}>
-                                        {address.name}
-                                    </p>
-                                </List>
-                            )}
-                            <List>
-                                <ListItem>
-                                    <Typography component='h1' variant='h2' id='#chek'>
-                                        Способ оплаты
-                                    </Typography>
-                                </ListItem>
-                                <ListItem className={classes.flexStart}>
+                                    <div>
+                                        <Typography component='h1' variant='h2' id='#chek'>
+                                            Способ оплаты
+                                        </Typography>
+                                    </div>
                                     <div className='checkboxPaymentCart'>
                                         <div className='payWithCart'>
                                             <label>
@@ -327,151 +326,154 @@ const Checkout = () => {
                                             </label>
                                         </div>
                                     </div>
-                                </ListItem>
-                                <List className={cashPaymentActive ? "block" : 'none'}>
-                                    <ListItem>
-                                        <Typography variant='h2' component='h2'>
-                                            Оплата наличными курьеру
-                                        </Typography>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Grid container>
-                                            <Grid item xs={12} md={5}>
-                                                <label>
-                                                    Сдача с: <input
-                                                    className='phone'
-                                                    type='phone'
-                                                    placeholder='+996 xx xx xx'
-                                                    onChange={(e) => setPayment(e.target.value)}
-                                                />
-                                                </label>
+                                    <List className={cashPaymentActive ? "block" : 'none'}>
+                                        <div className={classes.flexStart}>
+                                            <Typography variant='h2' component='h2'>
+                                                Оплата наличными курьеру
+                                            </Typography>
+                                        </div>
+                                        <div className={classes.flexStart}>
+                                            <Grid container>
+                                                <Grid item xs={12} md={5}>
+                                                    <label>
+                                                        Сдача с: {'   '}
+                                                        <input
+                                                            className='phone'
+                                                            type='phone'
+                                                            placeholder='+996 xx xx xx'
+                                                            onChange={(e) => setPayment(e.target.value)}
+                                                        />
+                                                    </label>
+                                                </Grid>
+                                                <Grid item xs={12} md={4}>
+                                                    <div className={classes.flexCenter}>
+                                                        <span>Без сдачи:</span> &nbsp;
+                                                        <input
+                                                            type='radio'
+                                                            onChange={(e) => setPayment(e.target.value)}
+                                                        />
+                                                    </div>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={12} md={4} className={classes.flexCenter}>
-                                                <label>
-                                                    Без сдачи: <input
-                                                    type='radio'
-                                                    onChange={(e) => setPayment(e.target.value)}
-                                                />
-                                                </label>
-                                            </Grid>
-                                        </Grid>
-                                    </ListItem>
-                                </List>
-                                <List className={active ? "block" : 'none'}>
-                                    <ListItem>
-                                        <Typography variant='h2' component='h2'>
-                                            MBank Online от Банка КЫРГЫЗСТАН
-                                        </Typography>
-                                    </ListItem>
-                                    <div>
-                                        <Grid container className={classes.flexCenter}>
-                                            <Grid item xs={12} md={1} style={{paddingLeft: 10}}>
-                                                <span className={classes.exclamatory}>!</span>
-                                            </Grid>
-                                            <Grid item xs={12} md={8}>
+                                        </div>
+                                    </List>
+                                    <List className={active ? "block" : 'none'}>
+                                        <ListItem>
+                                            <Typography variant='h2' component='h2'>
+                                                MBank Online от Банка КЫРГЫЗСТАН
+                                            </Typography>
+                                        </ListItem>
+                                        <div>
+                                            <Grid container className={classes.flexCenter}>
+                                                <Grid item xs={12} md={1} style={{paddingLeft: 10}}>
+                                                    <span className={classes.exclamatory}>!</span>
+                                                </Grid>
+                                                <Grid item xs={12} md={8}>
                                                 <span className={classes.payCartTitle}>
                                                      «Бесплатная доставка» действует при оплате свыше 990 сом.
                                                      Оплата за доставку при заказе менее 990 сом согласно тарифной
                                                      политике Namba Food.
                                                 </span>
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
-                                    </div>
-                                    <ListItem>
-                                        <Grid container>
-                                            <Grid item xs={12} md={3}>
+                                        </div>
+                                        <ListItem>
+                                            <Grid container>
+                                                <Grid item xs={12} md={3}>
                                             <span style={{fontSize: 14}}>
                                                 Введите ваш номер
                                                 телефона:
                                             </span>
+                                                </Grid>
+                                                <Grid item xs={12} md={5}>
+                                                    <TextField
+                                                        variant='outlined'
+                                                        type='phone'
+                                                        placeholder='+996 xxx xxx xxx'
+                                                        onChange={(e) => setPhone(e.target.value)}
+                                                    />
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={12} md={5}>
-                                                <TextField
-                                                    variant="outlined"
-                                                    type='phone'
-                                                    placeholder='+996 xxx xxx xxx'
-                                                    onChange={(e) => setPhone(e.target.value)}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Grid container>
-                                            <Grid item xs={12} md={9}>
+                                        </ListItem>
+                                        <ListItem>
+                                            <Grid container>
+                                                <Grid item xs={12} md={9}>
                                             <span style={{fontSize: '.7rem'}}>
                                                Вам будет отправлен запрос на оплату услуг Nambafood.
                                                Если номер вашего MBank Online отличается от текущего, то измените его.
                                             </span><br/>
-                                                <span style={{fontSize: '.7rem'}}> При оплате этим способом - БЕСПЛАТНАЯ ДОСТАВКА</span>
+                                                    <span style={{fontSize: '.7rem'}}> При оплате этим способом - БЕСПЛАТНАЯ ДОСТАВКА</span>
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
-                                    </ListItem>
+                                        </ListItem>
+                                    </List>
                                 </List>
                             </List>
-                        </List>
+                        </Grid>
+                        <Grid xs={12} md={2}/>
+                        <Grid item xs={12} md={3}>
+                            <Card>
+                                <List>
+                                    <ListItem className={classes.flex}>
+                                        <div>
+                                            <Typography variant='h1'>
+                                                Итого:
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <Typography variant='h2'>
+                                                {product?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(1)} coм
+                                            </Typography>
+                                        </div>
+                                    </ListItem>
+                                    <ListItem className={classes.flex}>
+                                        <div>
+                                            <Typography>
+                                                Товары:
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <Typography>
+                                                {product?.reduce((a, c) => a + c.quantity, 0)} шт
+                                            </Typography>
+                                        </div>
+                                    </ListItem>
+                                    <ListItem className={classes.flex}>
+                                        <div>
+                                            <Typography>
+                                                Скидки:
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <Typography>
+                                                10%
+                                            </Typography>
+                                        </div>
+                                    </ListItem>
+                                    <ListItem>
+                                        <button
+                                            className='globalBtn'
+                                            type='submit'
+                                        >
+                                            <NextLink href='/checkouttotal'>
+                                                <a>
+                                                    Заказать
+                                                </a>
+                                            </NextLink>
+                                        </button>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography style={{fontSize: '12px'}} color={"gray"}>
+                                            Согласен с условиями Правил пользования торговой площадкой и правилами
+                                            возврата
+                                        </Typography>
+                                    </ListItem>
+                                </List>
+                            </Card>
+                        </Grid>
                     </Grid>
-                    <Grid xs={12} md={2}/>
-                    <Grid item xs={12} md={3}>
-                        <Card>
-                            <List>
-                                <ListItem className={classes.flex}>
-                                    <div>
-                                        <Typography variant='h1'>
-                                            Итого:
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography variant='h2'>
-                                            {product?.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(1)} coм
-                                        </Typography>
-                                    </div>
-                                </ListItem>
-                                <ListItem className={classes.flex}>
-                                    <div>
-                                        <Typography>
-                                            Товары:
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography>
-                                            {product?.reduce((a, c) => a + c.quantity, 0)} шт
-                                        </Typography>
-                                    </div>
-                                </ListItem>
-                                <ListItem className={classes.flex}>
-                                    <div>
-                                        <Typography>
-                                            Скидки:
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography>
-                                            10%
-                                        </Typography>
-                                    </div>
-                                </ListItem>
-                                <ListItem>
-                                    <button
-                                        className='globalBtn'
-                                        type='submit'
-                                    >
-                                        <NextLink href='/checkouttotal'>
-                                            <a>
-                                                Заказать
-                                            </a>
-                                        </NextLink>
-                                    </button>
-                                </ListItem>
-                                <ListItem>
-                                    <Typography style={{fontSize: '12px'}} color={"gray"}>
-                                        Согласен с условиями Правил пользования торговой площадкой и правилами возврата
-                                    </Typography>
-                                </ListItem>
-                            </List>
-                        </Card>
-                    </Grid>
-                </Grid>
-            </form>
+                </form>
+            </div>
         </Layout>
     );
 };

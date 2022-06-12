@@ -14,6 +14,7 @@ $btnColor: #7582EBFF;
   }
 }
 
+
 .form_radio_btn input[type=radio] {
   display: none;
 }
@@ -59,7 +60,6 @@ $btnColor: #7582EBFF;
   opacity: .7;
 }
 
-
 .url {
   width: 100%;
   outline: none;
@@ -72,7 +72,6 @@ $btnColor: #7582EBFF;
   margin-right: 20px;
 }
 
-// Buttons
 .btns{
   margin: 5rem 0 1rem 0;
 }
@@ -97,4 +96,13 @@ $btnColor: #7582EBFF;
   background: none;
   color: #0a0c0c;
   cursor: pointer;
+}
+
+
+
+@media (max-width: 414px) {
+  .form-radio{
+    width: 500px;
+    overflow-x: scroll;
+  }
 }

@@ -15,7 +15,7 @@ const Contact = () => {
     return (
         <>
             <section className='contact'>
-                <Container>
+                <div className='container'>
                     <div className='contact__content'>
                         <div className='contact__content__logo'>
                             <Typography className={classes.brand}>
@@ -96,7 +96,7 @@ const Contact = () => {
                             </div>
                         </div>
                     </div>
-                </Container>
+                </div>
             </section>
             <Footer/>
         </>

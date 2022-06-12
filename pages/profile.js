@@ -144,7 +144,7 @@ const Profile = () => {
                                     />
                                 </div>
                             </div>
-                            <div className={classes.profileItems}>
+                            <div className={classes.profileInfo}>
                                 <Email
                                     sendUser={sendUser}
                                     handleChange={handleChange}

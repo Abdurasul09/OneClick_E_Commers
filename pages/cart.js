@@ -61,7 +61,7 @@ const CartScreen = () => {
                                         {cart.map(el => (
                                             <TableRow key={el.id}>
                                                 <TableCell>
-                                                    {el.images.slice(0, 1).map(item => (
+                                                    {el.images?.slice(0, 1).map(item => (
                                                         <div key={item.id}>
                                                             <NextLink
                                                                 href={`/product/${el.id}`}
@@ -142,7 +142,7 @@ const CartScreen = () => {
                                         <div key={el.id}>
                                             <div className={classes.flexStart}>
                                                 <div>
-                                                    {el.images.slice(0, 1).map(item => (
+                                                    {el.images?.slice(0, 1).map(item => (
                                                         <div key={item.id}>
                                                             <NextLink
                                                                 href={`/product/${el.id}`}
